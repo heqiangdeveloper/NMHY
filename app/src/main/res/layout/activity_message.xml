@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/activity_message_title"/>
+    <LinearLayout
+        android:layout_marginTop="1dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/recycler_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dip"
+            android:background="@android:color/white"
+            android:visibility="visible">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/message_fragment_recyclerview_margin"
+                android:layout_marginRight="@dimen/message_fragment_recyclerview_margin"
+                android:scrollbars="vertical" />
+        </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+    <!--more-->
+    <!--<LinearLayout
+        android:id="@+id/message_popup_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_marginTop="70dp"
+        android:elevation="20dp"
+        android:translationZ="20dp"
+        android:outlineProvider="bounds"
+        android:background="@color/white"
+        android:layout_gravity="center|top">
+        <include layout="@layout/message_popup_menu"/>
+    </LinearLayout>-->
+</android.support.design.widget.CoordinatorLayout>

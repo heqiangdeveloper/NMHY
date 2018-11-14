@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cimcitech.nmhy.activity.main.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/home_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey"/>
+
+    <com.chaychan.library.BottomBarLayout
+        android:id="@+id/bbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/main_bottombar_padding"
+        android:paddingBottom="@dimen/main_bottombar_padding"
+        android:background="#FAFBFE">
+        <com.chaychan.library.BottomBarItem
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:iconWidth="@dimen/tab_icon_size"
+            app:iconHeight="@dimen/tab_icon_size"
+            app:iconSelected="@mipmap/icon_message_s"
+            app:iconNormal="@mipmap/icon_message_n"
+            app:itemText="@string/tab_message_label"
+            app:itemTextSize="@dimen/text_size_12"
+            app:textColorSelected="@color/colorPrimary"
+            app:textColorNormal="@color/grey"
+            />
+        <com.chaychan.library.BottomBarItem
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:iconWidth="@dimen/tab_icon_size"
+            app:iconHeight="@dimen/tab_icon_size"
+            app:iconNormal="@mipmap/icon_home_n"
+            app:iconSelected="@mipmap/icon_home_s"
+            app:itemText="@string/tab_home_label"
+            app:itemTextSize="@dimen/text_size_12"
+            app:textColorNormal="@color/grey"
+            app:textColorSelected="@color/colorPrimary"/>
+        <com.chaychan.library.BottomBarItem
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:iconWidth="@dimen/tab_icon_size"
+            app:iconHeight="@dimen/tab_icon_size"
+            app:itemTextSize="@dimen/text_size_12"
+            app:iconSelected="@mipmap/icon_me_s"
+            app:iconNormal="@mipmap/icon_me_n"
+            app:itemText="@string/tab_me_label"
+            app:textColorNormal="@color/grey"
+            app:textColorSelected="@color/colorPrimary"/>
+    </com.chaychan.library.BottomBarLayout>
+
+</LinearLayout>

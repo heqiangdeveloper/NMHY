@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        applicationId "com.cimcitech.nmhy"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库（不需要的删除即可）。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "5968d14b3ddb8c5a3f713c63", //JPush上注册的包名对应的appkey（*换成你的*）
+                JPUSH_CHANNEL: "developer-default" //暂时填写默认值即可.
+        ]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    //在apk文件后边生成版本号信息
+    //like: v1.01_vcode101_release_com.cimcitech.lyt_20181106.apk
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.each {
+                output ->
+                    output.outputFile = new File(output.outputFile.parent,
+                            "v${defaultConfig.versionName}_"
+                                    + "vcode${defaultConfig.versionCode}_"
+                                    + buildType.name
+                                    + "_${defaultConfig.applicationId}"
+                                    + "_${releaseTime()}.apk"
+                    );
+            }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile files('libs/BASE64Encoder.jar')
+    compile files('libs/gson-2.7.jar')
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:cardview-v7:24.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.zhy:okhttputils:2.6.2'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.chaychan:BottomBarLayout:1.1.2'
+    compile 'cn.jiguang:jpush:2.1.8'
+    testCompile 'junit:junit:4.12'
+    compile 'com.youth.banner:banner:1.4.9'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+}

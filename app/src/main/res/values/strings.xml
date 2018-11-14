@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">内贸航运</string>
+    <string name="login_user_hint">请输入手机号</string>
+    <string name="login_password_hint">请输入密码</string>
+    <string name="login_label">登录</string>
+    <string name="register_balel">注册</string>
+    <string name="forget_password_label">忘记密码？</string>
+    <string name="tab_message_label">消息</string>
+    <string name="tab_home_label">首页</string>
+    <string name="tab_me_label">我的</string>
+    <string name="settings_title">设置</string>
+    <string name="message_dialog_is_opend">标为已读</string>
+    <string name="message_dialog_not_opend">标为未读</string>
+    <string name="message_dialog_remove">移除</string>
+    <string name="message_top_category_label_open">∧</string>
+    <string name="message_top_category_label_close">∨</string>
+    <string name="item_oil">油耗数据</string>
+    <string name="item_ship">船舶动态</string>
+    <string name="item_plan">航次计划</string>
+</resources>
