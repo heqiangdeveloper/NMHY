@@ -58,6 +58,7 @@
             android:background="@color/colorPrimary"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/forget_password_tv"
             android:layout_marginTop="@dimen/login_password_margin_top"
             android:layout_width="wrap_content"

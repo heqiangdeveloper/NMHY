@@ -17,4 +17,5 @@
     <string name="item_oil">油耗数据</string>
     <string name="item_ship">船舶动态</string>
     <string name="item_plan">航次计划</string>
+    <string name="network_error">网络连接错误，请检查网络!</string>
 </resources>

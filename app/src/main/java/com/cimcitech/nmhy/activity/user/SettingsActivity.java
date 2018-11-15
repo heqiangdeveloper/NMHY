@@ -41,14 +41,14 @@ public class SettingsActivity extends AppCompatActivity {
     private final Context context = SettingsActivity.this;
     private SharedPreferences sp;
 
-    public static final String CALL_FINISH = "com.cimcitech.lyt.mainactivity.finish";
+    public static final String CALL_FINISH = "com.cimcitech.nmhy.mainactivity.finish";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        //sp = getSharedPreferences(Config.KEY_LOGIN_AUTO, MODE_PRIVATE);
+        sp = getSharedPreferences(Config.sharedPreferenceName, MODE_PRIVATE);
         initTitle();
         checkCache();
     }
@@ -123,6 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ModifyUserInfoPreference();//清除登录信息
                                 startActivity(new Intent(context, LoginActivity.class));
+                                //由于MainActivity页面没有关闭，需要发送关闭MainActivity的广播
                                 sendMainActivityFinishBroadcast();
                                 finish();
                             }
@@ -139,11 +140,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void ModifyUserInfoPreference(){
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("password", "");
-        editor.putInt("accountId", 0);
+        editor.putInt("accountId",-1);
+        editor.putString("accountNo","");
+        editor.putString("accountType","");
+        editor.putString("userName","");
         editor.putString("token","");
-        //  editor.putString("userName","");
-        editor.putInt("accountType",-1);
         editor.commit();
     }
 
