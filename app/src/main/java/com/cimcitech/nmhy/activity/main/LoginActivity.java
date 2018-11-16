@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.bean.login.LoginVo;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.widget.MyBaseActivity;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MyBaseActivity {
     @Bind(R.id.register_tv)
     TextView register_Tv;
     @Bind(R.id.user_et)
@@ -99,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(){
+        mCommittingDialog.show();
         String telNo = user_Et.getText().toString().trim();
         String password = password_Et.getText().toString().trim();
         OkHttpUtils
@@ -110,12 +112,14 @@ public class LoginActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        mCommittingDialog.dismiss();
                         Toast.makeText(LoginActivity.this,getResources().getString(R.string.network_error),
                                 Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        mCommittingDialog.dismiss();
                         LoginVo loginVo = new Gson().fromJson(response,LoginVo.class);
                         if(null != loginVo && loginVo.isSuccess()){
                             int accountId = loginVo.getData().getAccountId();
