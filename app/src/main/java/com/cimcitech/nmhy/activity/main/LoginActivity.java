@@ -53,8 +53,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void initView(){
-        user_Et.setText("");
-        password_Et.setText("");
+        user_Et.setText("17620465672");
+        password_Et.setText("12345678");
     }
 
     public void addWatcher(TextView tv){
