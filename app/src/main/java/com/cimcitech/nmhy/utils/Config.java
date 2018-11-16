@@ -13,7 +13,7 @@ public class Config {
     public static String token = "";
     public static String password = "";
 
-    public static String IP = "http://192.168.1.111:8080/nmhy/";
+    public static String IP = "http://192.168.1.119:8080/nmhy/";
 
     //登录
     public static String login_url = IP + "user/login";

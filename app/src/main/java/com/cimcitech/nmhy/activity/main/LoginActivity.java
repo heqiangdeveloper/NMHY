@@ -71,6 +71,7 @@ public class LoginActivity extends MyBaseActivity {
                 //密码由可见变为不可见
                 password_Et.setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
+            password_Et.setSelection(password_Et.getText().toString().length());
         }
     }
     public void initView(){
