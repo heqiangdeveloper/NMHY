@@ -5,10 +5,15 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +42,8 @@ public class LoginActivity extends MyBaseActivity {
     Button login_Bt;
     @Bind(R.id.forget_password_tv)
     TextView forget_password_Tv;
+    @Bind(R.id.password_cb)
+    CheckBox password_cB;
 
     private SharedPreferences sp;
 
@@ -48,11 +55,24 @@ public class LoginActivity extends MyBaseActivity {
         ButterKnife.bind(this);
         sp = this.getSharedPreferences(Config.sharedPreferenceName, MODE_PRIVATE);
 
+        password_cB.setOnCheckedChangeListener(new PasswordChange());
         addWatcher(user_Et);
         addWatcher(password_Et);
         initView();
     }
 
+    class PasswordChange implements CompoundButton.OnCheckedChangeListener{
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked){
+                //密码由不可见变为可见
+                password_Et.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }else{
+                //密码由可见变为不可见
+                password_Et.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        }
+    }
     public void initView(){
         user_Et.setText("17620465672");
         password_Et.setText("12345678");

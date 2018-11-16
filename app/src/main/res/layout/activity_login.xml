@@ -39,18 +39,30 @@
             android:layout_height="1dp"
             android:background="@color/colorPrimary"/>
 
-        <EditText
-            android:id="@+id/password_et"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            android:layout_marginTop="@dimen/login_password_margin_top"
-            android:drawablePadding="@dimen/login_edit_padding"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/login_password_icon"
-            android:hint="@string/login_password_hint"
-            android:background="@null"
-            android:inputType="textPassword"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/login_password_margin_top">
+            <EditText
+                android:id="@+id/password_et"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:drawablePadding="@dimen/login_edit_padding"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/login_password_icon"
+                android:hint="@string/login_password_hint"
+                android:background="@null"
+                android:inputType="textPassword"/>
+            <CheckBox
+                android:id="@+id/password_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:button="@drawable/checkbox_password_bg"/>
+        </LinearLayout>
+
         <View
             android:layout_marginTop="@dimen/login_divede_line_margin"
             android:layout_width="match_parent"

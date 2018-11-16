@@ -3,9 +3,9 @@
     <dimen name="login_logo_margin_top">50dp</dimen>
     <dimen name="login_user_margin_top">50dp</dimen>
     <dimen name="login_linear_margin">35dp</dimen>
-    <dimen name="login_btn_margin_top">50dp</dimen>
+    <dimen name="login_btn_margin_top">60dp</dimen>
     <dimen name="login_edit_padding">15dp</dimen>
-    <dimen name="login_password_margin_top">20dp</dimen>
+    <dimen name="login_password_margin_top">10dp</dimen>
     <dimen name="login_divede_line_margin">10dp</dimen>
     <dimen name="text_size_24">24sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
