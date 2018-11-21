@@ -418,11 +418,13 @@ public class OilDataActivity extends AppCompatActivity {
                     }
                 }*/
                 if(location.getAddress() != null && location.getCity() != null){
+                    Log.d("loclog","loc is :" + location.getAddrStr());
                     locSb = new StringBuffer();
-                    locSb.append(location.getCity());
-                    locSb.append(location.getDistrict());
-                    locSb.append(location.getStreet());
-                    locSb.append(location.getStreetNumber());
+//                    locSb.append(location.getCity());
+//                    locSb.append(location.getDistrict());
+//                    locSb.append(location.getStreet());
+//                    locSb.append(location.getStreetNumber());
+                    locSb.append(location.getAddrStr());
                     sendMsg(LOCATESUCCESS);
                 }else{
                     sendMsg(LOCATEFAIL);

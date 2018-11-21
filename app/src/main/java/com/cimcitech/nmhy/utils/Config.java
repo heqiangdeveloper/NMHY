@@ -18,7 +18,7 @@ public class Config {
 
     //public static String IP = "http://192.168.1.119:8080/nmhy/";
 
-    public static String IP = "http://10.33.195.151:8080/nmhy/";
+    public static String IP = "http://10.33.176.97:8081/nmhy/";
 
     //登录
     public static String login_url = IP + "user/login";
