@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+              android:background="#fff"
+    android:paddingLeft="2dp">
+    <TextView
+        android:drawablePadding="@dimen/more_menu_item_padding"
+        android:drawableLeft="@mipmap/current"
+        android:gravity="center_vertical"
+        android:background="@drawable/more_item_bg"
+        android:layout_marginTop="0dp"
+        android:textSize="@dimen/more_menu_item_text_size"
+        android:textColor="@color/black"
+        android:id="@+id/item_current_tv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:paddingLeft="@dimen/more_menu_item_padding"
+        android:text="@string/more_popup_menu_item_current"/>
+    <TextView
+        android:drawablePadding="@dimen/more_menu_item_padding"
+        android:drawableLeft="@mipmap/history"
+        android:gravity="center_vertical"
+        android:background="@drawable/more_item_bg"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="@dimen/more_menu_item_padding"
+        android:textSize="@dimen/more_menu_item_text_size"
+        android:textColor="@color/black"
+        android:id="@+id/item_history_tv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:text="@string/more_popup_menu_item_history"/>
+
+</LinearLayout>

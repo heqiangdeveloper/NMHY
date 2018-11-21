@@ -4,60 +4,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
-    android:theme="@style/AppTheme.AppBarOverlay"
-    app:elevation="0dp">
+    android:theme="@style/AppTheme.AppBarOverlay">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:fitsSystemWindows="true"
         app:contentInsetEnd="0dp"
         app:contentInsetLeft="0dp"
         app:contentInsetRight="0dp"
         app:contentInsetStart="0dp"
         app:navigationIcon="@null"
+        android:fitsSystemWindows="true"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <RelativeLayout
+            android:fitsSystemWindows="true"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:fitsSystemWindows="true">
+            android:layout_height="?actionBarSize">
 
             <ImageView
+                android:fitsSystemWindows="true"
                 android:id="@+id/back_iv"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:fitsSystemWindows="true"
-                android:paddingLeft="@dimen/back_margin"
+                android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:src="@mipmap/back"/>
 
             <TextView
                 android:id="@+id/titleName_tv"
+                android:layout_toRightOf="@id/back_iv"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="联系人信息详情"
+                android:layout_marginLeft="0dp"
+                android:text="拜访详情"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16"/>
 
             <TextView
-                android:id="@+id/more_tv"
-                android:layout_width="?actionBarSize"
+                android:id="@+id/save_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:gravity="center"
-                android:paddingRight="@dimen/back_margin"
-                android:text="●●●"
-                android:textColor="@color/white"
-                android:textSize="6sp"/>
+                android:gravity="center_vertical"
+                android:paddingRight="10dip"
+                android:text="保存"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_16"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

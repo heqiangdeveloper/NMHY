@@ -9,4 +9,6 @@
     <color name="red">#f00</color>
     <color name="transparent">#00000000</color>
     <color name="dialog_bg">#AFAFAF</color>
+    <color name="message_item_devid_color">#F4F4F4</color>
+    <color name="contact_detail_more_item_clicked">#F0F0F0</color>
 </resources>

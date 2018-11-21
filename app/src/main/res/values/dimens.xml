@@ -25,4 +25,13 @@
     <dimen name="message_fragment_top_label_margin">5dp</dimen>
     <dimen name="message_fragment_recyclerview_margin">10dp</dimen>
     <dimen name="tab_icon_size">80px</dimen>
+    <dimen name="drawable_padding_size">10dp</dimen>
+    <dimen name="linear_margin_top">2dp</dimen>
+    <dimen name="light_oil_text_margin_top">5dp</dimen>
+    <dimen name="text_padding_size">10dp</dimen>
+    <dimen name="oil_data_content_margin">2dp</dimen>
+    <dimen name="oil_data_linear_margin">10dp</dimen>
+    <dimen name="more_menu_item_text_size">16sp</dimen>
+    <dimen name="more_menu_item_padding">10dp</dimen>
+    <dimen name="back_margin">10dp</dimen>
 </resources>
