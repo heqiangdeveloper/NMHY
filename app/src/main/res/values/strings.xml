@@ -14,7 +14,17 @@
     <string name="message_dialog_remove">移除</string>
     <string name="message_top_category_label_open">∧</string>
     <string name="message_top_category_label_close">∨</string>
-    <string name="item_oil">油耗数据</string>
+    <string name="item_oil_request">燃油申请</string>
+    <string name="item_oil_request_detail">燃油申请明细</string>
+    <string name="add_oil_report_label">新增燃油动态</string>
+    <string name="query_oil_report_label">查看燃油动态</string>
+    <string name="query_oil_report_detail_label">查看燃油动态明细</string>
+
+    <string name="add_oil_report_detail_label">新增燃油动态明细</string>
+    <string name="item_oil_report_history">燃油动态</string>
+    <string name="item_oil_report_history_detail">燃油上报历史详情</string>
+    <string name="item_oil_request_history">燃油申请历史</string>
+    <string name="item_oil_request_history_detail">燃油申请历史详情</string>
     <string name="item_ship">船舶动态</string>
     <string name="item_plan">航次计划</string>
     <string name="network_error">网络连接错误，请检查网络!</string>
@@ -22,6 +32,7 @@
     <string name="type_heavy_oil">重油（吨）</string>
     <string name="type_machine_oil">机油（桶）</string>
     <string name="btn_commit_label">提交</string>
+    <string name="choice_label">选择</string>
     <string name="more_popup_menu_item_current">目前油耗</string>
     <string name="more_popup_menu_item_history">历史油耗</string>
     <string name="time_label">时间</string>
@@ -29,4 +40,48 @@
     <string name="ship_name_label">船名</string>
     <string name="ship_type_label">类型</string>
     <string name="ship_voyage_no_label">航次号</string>
+    <string name="apply_reason_label">申请理由</string>
+    <string name="apply_company_label">申请公司</string>
+    <string name="supply_name_label">供应商</string>
+    <string name="pay_method_label">付款方式</string>
+    <string name="money_type_label">币种</string>
+    <string name="is_advance_label">是否预付款</string>
+    <string name="advance_money_label">预付金额</string>
+    <string name="yes_label">是</string>
+    <string name="no_label">否</string>
+    <string name="cancel_label">取消</string>
+    <!--申请明细-->
+    <string name="fuelKind_label">品种</string>
+    <string name="taxId_label">税种</string>
+    <string name="taxRate_label">税率</string>
+    <string name="estimateQty_label">预计数量</string>
+    <string name="estimatePrice_label">预计单价</string>
+    <string name="estimateAmount_label">预计总价</string>
+    <string name="actualQty_label">实际加油量</string>
+    <string name="actualPrice_label">实际结算单价(含税)</string>
+    <string name="actualAmount_label">实际结算金额(含税)</string>
+    <string name="settleId_label">结算单据编号</string>
+    <string name="tax_label">税金</string>
+    <string name="taxFreeAmount_label">实际金额（不含税)</string>
+    <!--燃油上报-->
+    <string name="voyageStatus_label">航次状态</string>
+    <string name="longitude_label">经度</string>
+    <string name="latitude_label">纬度</string>
+    <!--燃油上报明细-->
+    <string name="unit_value_ton">吨</string>
+    <string name="unit_value_bucket">桶</string>
+    <string name="unit_label">计量单位</string>
+    <string name="realStoreQty_label">现有油量</string>
+    <string name="realyAmount_label">现有金额(含税)</string>
+    <string name="taxfreeRealyAmount_label">现有金额(不含税)</string>
+    <string name="addFuelQty_label">本次加油量</string>
+    <string name="addAmount_label">本次加油金额(含税)</string>
+    <string name="taxfreeAddAmount_label">本次加油金额(不含税)</string>
+    <string name="consumeQuantity_label">本航次累计消耗量</string>
+    <string name="taxfreeConsumeQuantity_label">累计消耗金额(不含税)</string>
+    <string name="consumeAmount_label">累计消耗金额(含税)</string>
+
+    <string name="no_data_warn">暂无数据</string>
+    <string name="commit_success_msg">提交成功</string>
+    <string name="commit_fail_msg">提交失败</string>
 </resources>

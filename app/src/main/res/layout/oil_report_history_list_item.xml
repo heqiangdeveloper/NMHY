@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginLeft="@dimen/oil_report_history_list_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/voyageStatus_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="状态123"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black_33"
+            android:textSize="@dimen/text_size_14"/>
+
+        <TextView
+            android:id="@+id/location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="位置22"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black_33"
+            android:textSize="@dimen/text_size_14"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/reportTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="2018-12-12"
+            android:textColor="@color/black_33"
+            android:textSize="@dimen/text_size_14"/>
+    </LinearLayout>
+    <View
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorPrimary"/>
+</LinearLayout>

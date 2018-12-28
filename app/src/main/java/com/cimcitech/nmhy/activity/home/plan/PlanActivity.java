@@ -34,9 +34,9 @@ public class PlanActivity extends AppCompatActivity {
     @Bind(R.id.more_tv)
     TextView more_Tv;
 
-    public DataCleanManager manager = null;
-    private final Context context = PlanActivity.this;
-    private SharedPreferences sp;
+    //public DataCleanManager manager = null;
+    //private final Context context = PlanActivity.this;
+    //private SharedPreferences sp;
 
     public static final String CALL_FINISH = "com.cimcitech.lyt.mainactivity.finish";
 

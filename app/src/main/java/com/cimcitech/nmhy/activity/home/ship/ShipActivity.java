@@ -11,6 +11,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,12 +20,15 @@ import android.widget.Toast;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.main.LoginActivity;
 import com.cimcitech.nmhy.utils.DataCleanManager;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 
 public class ShipActivity extends AppCompatActivity {

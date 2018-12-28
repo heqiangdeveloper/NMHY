@@ -1,10 +1,8 @@
-package com.cimcitech.nmhy.activity.home.oildata;
+package com.cimcitech.nmhy.activity.home.oil;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,9 +21,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,36 +34,42 @@ import com.baidu.location.Poi;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.main.ApkApplication;
 import com.cimcitech.nmhy.activity.main.EditValueActivity;
-import com.cimcitech.nmhy.activity.main.LoginActivity;
 import com.cimcitech.nmhy.baidu.LocationService;
+import com.cimcitech.nmhy.bean.oil.OilReportHistoryVo;
+import com.cimcitech.nmhy.bean.oil.OilReportReq;
+import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DataCleanManager;
 import com.cimcitech.nmhy.utils.DateTool;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
+import com.cimcitech.nmhy.utils.ToastUtil;
+import com.cimcitech.nmhy.widget.MyBaseActivity;
+import com.google.gson.Gson;
+import com.roger.catloadinglibrary.CatLoadingView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.w3c.dom.Text;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 
 
-public class OilDataActivity extends AppCompatActivity {
+public class OilReportActivity extends MyBaseActivity {
     @Bind(R.id.titleName_tv)
     TextView titleName_Tv;
     @Bind(R.id.back_iv)
     ImageView back_Iv;
     @Bind(R.id.more_tv)
     TextView more_Tv;
-    @Bind(R.id.light_oil_tv)
-    TextView light_oil_Tv;
-    @Bind(R.id.heavy_oil_tv)
-    TextView heavy_oil_Tv;
-    @Bind(R.id.machine_oil_tv)
-    TextView machine_oil_Tv;
+
     @Bind(R.id.commit_bt)
     Button commit_Bt;
     @Bind(R.id.empty_rl)
@@ -75,19 +78,21 @@ public class OilDataActivity extends AppCompatActivity {
     LinearLayout content_Ll;
     @Bind(R.id.time_tv)
     TextView time_Tv;
+    @Bind(R.id.voyageStatus_tv)
+    TextView voyageStatus_Tv;
     @Bind(R.id.location_tv)
     TextView location_Tv;
-    @Bind(R.id.ship_name_tv)
-    TextView ship_name_Tv;
-    @Bind(R.id.ship_type_tv)
-    TextView ship_type_Tv;
-    @Bind(R.id.ship_voyageNo_tv)
-    TextView ship_voyageNo_Tv;
+    @Bind(R.id.longitude_tv)
+    TextView longitude_Tv;
+    @Bind(R.id.latitude_tv)
+    TextView latitude_Tv;
     @Bind(R.id.popup_menu_layout)
     LinearLayout popup_menu_Ll;
+    @Bind(R.id.add_ib)
+    ImageButton add_Ib;
 
     public DataCleanManager manager = null;
-    private final Context context = OilDataActivity.this;
+    private final Context context = OilReportActivity.this;
     private SharedPreferences sp;
 
     public static final String CALL_FINISH = "com.cimcitech.lyt.mainactivity.finish";
@@ -104,9 +109,14 @@ public class OilDataActivity extends AppCompatActivity {
     private static final int LOCATEFAIL = 4;
 
     private StringBuffer locSb ;
+    private double longitude = 0;
+    private double latitude = 0;
     private static final int requestLocTime = 7000;
     private boolean isFinishlocating = false;
     private final int LOCATION_REQUESTCODE = 1;
+    private CatLoadingView mLoadingView = null;
+    private boolean isAdd = true;
+    private OilReportHistoryVo.DataBean.ListBean oilData = null;
 
     Handler handler = new Handler(){
         @Override
@@ -115,7 +125,7 @@ public class OilDataActivity extends AppCompatActivity {
             switch (msg.what){
                 case STARTTOLOCATING:
                     isFinishlocating = false;
-                    dialog = new ProgressDialog(OilDataActivity.this);
+                    dialog = new ProgressDialog(OilReportActivity.this);
                     dialog.setMessage("定位中…");
                     dialog.setCancelable(true);
                     dialog.show();
@@ -126,58 +136,87 @@ public class OilDataActivity extends AppCompatActivity {
                         dialog.dismiss();
                     if(locSb != null && locSb.toString().length() != 0 && !locSb.toString().contains("null")){
                         location_Tv.setText(locSb.toString());
+                        longitude_Tv.setText(longitude + "");
+                        latitude_Tv.setText(latitude + "");
                     }
                     break;
                 case LOCATEFAIL:
                     isFinishlocating = true;
-                    location_Tv.setText("");
+                    location_Tv.setText("测试地1");
                     if(dialog.isShowing())
                         dialog.dismiss();
-                    Toast.makeText(OilDataActivity.this,"定位失败！请检查网络或GPS",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OilReportActivity.this,"定位失败！请检查网络或GPS",Toast.LENGTH_SHORT).show();
                     break;
             }
+            addWatcher(voyageStatus_Tv);
         }
     };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oil_data);
+        setContentView(R.layout.activity_oil_report);
         ButterKnife.bind(this);
+
+        oilData = (OilReportHistoryVo.DataBean.ListBean)getIntent().getSerializableExtra("oilData");
+        if(oilData == null){
+            isAdd = true;
+        }else{
+            isAdd = false;
+        }
+
         initTitle();
 
-        locationService = ((ApkApplication) getApplication()).locationService;
-        locationService.registerListener(mListener);
         initView();
     }
 
     public void initTitle(){
-        titleName_Tv.setText(getResources().getString(R.string.item_oil));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.VISIBLE);
         popup_menu_Ll.setVisibility(View.GONE);
+        if(isAdd){
+            add_Ib.setVisibility(View.GONE);
+            commit_Bt.setText(getResources().getString(R.string.btn_commit_label));
+            titleName_Tv.setText(getResources().getString(R.string.add_oil_report_label));
+            locationService = ((ApkApplication) getApplication()).locationService;
+            locationService.registerListener(mListener);
+        }else{
+            add_Ib.setVisibility(View.VISIBLE);
+            commit_Bt.setText(getResources().getString(R.string.query_oil_report_detail_label));
+            titleName_Tv.setText(getResources().getString(R.string.query_oil_report_label));
+        }
     }
 
     public void initView(){
-        if(NetWorkUtil.isConn(OilDataActivity.this)){
+        addWatcher(time_Tv);
+        addWatcher(voyageStatus_Tv);
+        addWatcher(location_Tv);
+        addWatcher(longitude_Tv);
+        addWatcher(latitude_Tv);
+        if(isAdd){
+            if(NetWorkUtil.isConn(OilReportActivity.this)){
+                empty_Rl.setVisibility(View.GONE);
+                content_Ll.setVisibility(View.VISIBLE);
+                initContent();
+                initLocation();
+            }else {
+                empty_Rl.setVisibility(View.VISIBLE);
+                content_Ll.setVisibility(View.GONE);
+            }
+        }else {
             empty_Rl.setVisibility(View.GONE);
             content_Ll.setVisibility(View.VISIBLE);
-            addWatcher(light_oil_Tv);
-            addWatcher(heavy_oil_Tv);
-            addWatcher(machine_oil_Tv);
-            light_oil_Tv.setText("12.22");
-            heavy_oil_Tv.setText("12.22");
-            machine_oil_Tv.setText("12.22");
-            initContent();
-            initLocation();
-        }else {
-            empty_Rl.setVisibility(View.VISIBLE);
-            content_Ll.setVisibility(View.GONE);
+            time_Tv.setText(oilData.getReportTime() + "");
+            voyageStatus_Tv.setText(oilData.getVoyageStatus() + "");
+            location_Tv.setText(oilData.getLocation() + "");
+            longitude_Tv.setText(oilData.getLongitude() + "");
+            latitude_Tv.setText(oilData.getLatitude() + "");
         }
     }
 
     public void initContent(){
         time_Tv.setText(DateTool.getSystemDate());
+        commit_Bt.setClickable(false);
     }
 
     public void sendMsg(int flag){
@@ -188,21 +227,21 @@ public class OilDataActivity extends AppCompatActivity {
 
     public void initLocation(){
         List<String> permissionList = new ArrayList<>();
-        if(ContextCompat.checkSelfPermission(OilDataActivity.this, Manifest.permission
+        if(ContextCompat.checkSelfPermission(OilReportActivity.this, Manifest.permission
                 .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
-        if(ContextCompat.checkSelfPermission(OilDataActivity.this,Manifest.permission
+        if(ContextCompat.checkSelfPermission(OilReportActivity.this,Manifest.permission
                 .READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.READ_PHONE_STATE);
         }
-        if(ContextCompat.checkSelfPermission(OilDataActivity.this,Manifest.permission
+        if(ContextCompat.checkSelfPermission(OilReportActivity.this,Manifest.permission
                 .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if(!permissionList.isEmpty()){
             String [] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(OilDataActivity.this,permissions,LOCATION_REQUESTCODE);
+            ActivityCompat.requestPermissions(OilReportActivity.this,permissions,LOCATION_REQUESTCODE);
         }else {
             getLocation();
         }
@@ -217,9 +256,7 @@ public class OilDataActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(light_oil_Tv.getText().toString().trim().length() != 0 &&
-                        heavy_oil_Tv.getText().toString().trim().length() != 0 &&
-                        machine_oil_Tv.getText().toString().trim().length() != 0){
+                if(!isEmpty()){
                     commit_Bt.setClickable(true);
                     commit_Bt.setBackground(getResources().getDrawable(R.drawable.shape_login_button_on));
                 }else{
@@ -235,47 +272,53 @@ public class OilDataActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.back_iv,R.id.light_oil_tv,R.id.heavy_oil_tv,R.id.machine_oil_tv,R.id.commit_bt,
-              R.id.more_tv,R.id.location_tv,R.id.item_current_tv,R.id.item_history_tv})
+    public boolean isEmpty(){
+        if(voyageStatus_Tv.getText().toString().trim().length() != 0 &&
+                location_Tv.getText().toString().trim().length() != 0 &&
+                longitude_Tv.getText().toString().trim().length() != 0 &&
+                latitude_Tv.getText().toString().trim().length() != 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @OnClick({R.id.back_iv,R.id.voyageStatus_tv,R.id.commit_bt,R.id.location_tv,R.id.add_ib})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_iv:
                 finish();
                 break;
-            case R.id.light_oil_tv:
-                startEditActivity("num",getResources().getString(R.string.type_light_oil),
-                        light_oil_Tv.getText().toString().trim(),REQUESTCODE_LIGHT_OIL);
-                break;
-            case R.id.heavy_oil_tv:
-                startEditActivity("num",getResources().getString(R.string.type_heavy_oil),
-                        heavy_oil_Tv.getText().toString().trim(),REQUESTCODE_HEAVY_OIL);
-                break;
-            case R.id.machine_oil_tv:
-                startEditActivity("num",getResources().getString(R.string.type_machine_oil),
-                        machine_oil_Tv.getText().toString().trim(),REQUESTCODE_MACHINE_OIL);
-                break;
             case R.id.commit_bt:
-
-                break;
-            case R.id.more_tv:
-                popup_menu_Ll.setVisibility(View.VISIBLE);
+                if(isAdd){//提交 新的燃油动态
+                    commitData();
+                }else {//查看 燃油动态明细
+                    Intent i = new Intent(OilReportActivity.this,OilReportHistoryDetailActivity.class);
+                    i.putExtra("dynamicinfoId",oilData.getDynamicinfoId());
+                    i.putExtra("isAdd",false);
+                    startActivity(i);
+                }
                 break;
             case R.id.location_tv:
                 if(location_Tv.getText().toString().trim().equals("")){
                     getLocation();
                 }
                 break;
-            case R.id.item_current_tv:
-                popup_menu_Ll.setVisibility(View.GONE);
+            case R.id.voyageStatus_tv:
+                startEditActivity(Config.TEXT_TYPE_STR,getResources().getString(R.string.voyageStatus_label),
+                        voyageStatus_Tv.getText().toString().trim(),1);
                 break;
-            case R.id.item_history_tv:
-                popup_menu_Ll.setVisibility(View.GONE);
+            case R.id.add_ib://新增  燃油动态
+                Intent i = new Intent(OilReportActivity.this,OilReportDetailActivity.class);
+                i.putExtra("dynamicinfoId",oilData.getDynamicinfoId());
+                i.putExtra("isAdd",true);
+                startActivity(i);
                 break;
         }
     }
 
     public void startEditActivity(String type,String title,String content,int requestCode){
-        Intent intent2 = new Intent(OilDataActivity.this, EditValueActivity.class);
+        Intent intent2 = new Intent(OilReportActivity.this, EditValueActivity.class);
         intent2.putExtra("type",type);
         intent2.putExtra("title",title);
         intent2.putExtra("content",content);
@@ -288,14 +331,8 @@ public class OilDataActivity extends AppCompatActivity {
         if(RESULT_OK == resultCode){
             String result = data.getStringExtra("result");
             switch (requestCode){
-                case REQUESTCODE_LIGHT_OIL:
-                    light_oil_Tv.setText(result);
-                    break;
-                case REQUESTCODE_HEAVY_OIL:
-                    heavy_oil_Tv.setText(result);
-                    break;
-                case REQUESTCODE_MACHINE_OIL:
-                    machine_oil_Tv.setText(result);
+                case 1:
+                    voyageStatus_Tv.setText(result);
                     break;
             }
         }
@@ -309,14 +346,14 @@ public class OilDataActivity extends AppCompatActivity {
                 if(grantResults.length > 0){
                     for(int result : grantResults){
                         if(result != PackageManager.PERMISSION_GRANTED){
-                            Toast.makeText(OilDataActivity.this,"必须同意所有的权限才能使用定位",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OilReportActivity.this,"必须同意所有的权限才能使用定位",Toast.LENGTH_SHORT).show();
                             finish();
                             return;
                         }
                     }
                     getLocation();
                 }else {
-                    Toast.makeText(OilDataActivity.this,"发送未知错误",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OilReportActivity.this,"发送未知错误",Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -377,8 +414,10 @@ public class OilDataActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         // TODO Auto-generated method stub
-        locationService.unregisterListener(mListener); //注销掉监听
-        locationService.stop(); //停止定位服务
+        if(locationService != null){
+            locationService.unregisterListener(mListener); //注销掉监听
+            locationService.stop(); //停止定位服务
+        }
         super.onStop();
     }
 
@@ -404,8 +443,10 @@ public class OilDataActivity extends AppCompatActivity {
                 locationService.stop();
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("\nlatitude : ");// 纬度
+                latitude = location.getLatitude();
                 sb.append(location.getLatitude());
                 sb.append("\nlontitude : ");// 经度
+                longitude = location.getLongitude();
                 sb.append(location.getLongitude());
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
@@ -439,4 +480,49 @@ public class OilDataActivity extends AppCompatActivity {
     };
 
     /***********地图定位相关end************/
+
+    public void commitData(){
+        mLoadingView = new CatLoadingView();
+        mLoadingView.show(getSupportFragmentManager(),"");
+        long bargeId = 5;
+        long voyagePlanId = 101;
+        int voyageStatus = 1;
+        String location = location_Tv.getText().toString().trim();
+
+        location = "测试地址1";location_Tv.setText(location);
+        String json = new Gson().toJson(new OilReportReq(bargeId,voyagePlanId,voyageStatus, location,longitude,latitude));
+        OkHttpUtils
+                .postString()
+                .url(Config.add_oil_report_url)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mLoadingView.dismiss();
+                        ToastUtil.showNetError();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mLoadingView.dismiss();
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            if(object.getBoolean("success")){
+                                ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
+                                int dynamicinfoId = object.getInt("id");
+                                Intent i = new Intent(OilReportActivity.this,OilReportDetailActivity.class);
+                                i.putExtra("dynamicinfoId",dynamicinfoId);
+                                startActivity(i);
+                            }else{
+                                ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
+                            }
+                        }catch (JSONException e){
+
+                        }
+                    }
+                });
+
+    }
 }

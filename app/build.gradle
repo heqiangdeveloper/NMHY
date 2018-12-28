@@ -9,6 +9,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.cimcitech.nmhy"
+        multiDexEnabled true
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 101
@@ -44,12 +45,13 @@ android {
 
     sourceSets {
         main {
+            //关联百度地图的so文件，如果把so放在jniLibs下，则不需要这句话
             jniLibs.srcDirs = ['libs']
         }
     }
 
     //在apk文件后边生成版本号信息
-    //like: v1.01_vcode101_release_com.cimcitech.lyt_20181106.apk
+    //like: v1.01_vcode101_release_com.cimcitech.nmhy_20181106.apk
     android.applicationVariants.all {
         variant ->
             variant.outputs.each {
@@ -58,7 +60,7 @@ android {
                             "v${defaultConfig.versionName}_"
                                     + "vcode${defaultConfig.versionCode}_"
                                     + buildType.name
-                                    + "_${defaultConfig.applicationId}"
+                                    //+ "_${defaultConfig.applicationId}"
                                     + "_${releaseTime()}.apk"
                     );
             }
@@ -87,5 +89,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/universal-image-loader-1.8.5-with-sources.jar')
+    //debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
+    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+    compile 'com.roger.catloadinglibrary:catloadinglibrary:1.0.4'
 }

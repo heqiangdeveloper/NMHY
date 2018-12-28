@@ -120,8 +120,15 @@ public class HomeGridAdapter extends BaseAdapter {
 
     //客户拜访
     public void addCustomerVisit(){
-        ImageLists.add(R.mipmap.oil);
-        TextLists.add(context.getResources().getString(R.string.item_oil));
+        ImageLists.add(R.mipmap.oil_request);
+        TextLists.add(context.getResources().getString(R.string.item_oil_request));
+        ImageLists.add(R.mipmap.oil_report);
+        TextLists.add(context.getResources().getString(R.string.add_oil_report_label));
+        ImageLists.add(R.mipmap.oil_history);
+        TextLists.add(context.getResources().getString(R.string.item_oil_request_history));
+        ImageLists.add(R.mipmap.oil_report_history);
+        TextLists.add(context.getResources().getString(R.string.item_oil_report_history));
+
         ImageLists.add(R.mipmap.ship);
         TextLists.add(context.getResources().getString(R.string.item_ship));
         ImageLists.add(R.mipmap.plan);

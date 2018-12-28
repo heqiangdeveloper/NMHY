@@ -41,5 +41,8 @@ public class ApkApplication extends Application {
         locationService = new LocationService(getApplicationContext());
         mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         SDKInitializer.initialize(getApplicationContext());
+
+        //检测Activity的泄露
+        //LeakCanary.install(this);
     }
 }

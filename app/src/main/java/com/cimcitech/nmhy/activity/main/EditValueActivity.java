@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cimcitech.nmhy.R;
+import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 
 import butterknife.Bind;
@@ -27,8 +28,10 @@ public class EditValueActivity extends MyBaseActivity {
     @Bind(R.id.save_tv)
     TextView save_Tv;
 
-    public static final String [] TYPE = {"num","str","int"};
+    //public static final String [] TYPE = {"num","str","int"};
+    public static final String [] TYPE = {Config.TEXT_TYPE_NUM,Config.TEXT_TYPE_STR,Config.TEXT_TYPE_INT};
     public String type = "";
+    private InputMethodManager imm = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +46,7 @@ public class EditValueActivity extends MyBaseActivity {
         setTextWatcher(string_content_Et);
         initView(title,content,type);
         //弹出软键盘
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
@@ -100,6 +103,10 @@ public class EditValueActivity extends MyBaseActivity {
     public void onclick(View view) {
         switch (view.getId()){
             case R.id.save_tv:
+                //收回软键盘
+                if ( imm.isActive( ) ) {
+                    imm.hideSoftInputFromWindow(view.getApplicationWindowToken( ) , 0 );
+                }
                 Intent i = new Intent();
                 i.putExtra("result",string_content_Et.getText().toString().trim());
                 setResult(RESULT_OK,i);

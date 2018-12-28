@@ -11,4 +11,6 @@
     <color name="dialog_bg">#AFAFAF</color>
     <color name="message_item_devid_color">#F4F4F4</color>
     <color name="contact_detail_more_item_clicked">#F0F0F0</color>
+    <color name="black_33">#666666</color>
+    <color name="alpha30">#20000000</color>
 </resources>
