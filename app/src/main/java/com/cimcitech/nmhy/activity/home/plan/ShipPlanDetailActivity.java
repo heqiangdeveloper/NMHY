@@ -90,7 +90,15 @@ public class ShipPlanDetailActivity extends AppCompatActivity {
             portTransportOrder_Tv.setText(shipDetailData.getPortTransportOrder() + "");
             owerCompName_Tv.setText(shipDetailData.getOwerCompName() + "");
             shipCompName_Tv.setText(shipDetailData.getShipCompName() + "");
-            rentType_Tv.setText(shipDetailData.getRentType() + "");
+            String rentTypeStr = shipDetailData.getRentType();
+            String rentTypeValue = "未知类型";
+            for (String key : Config.rentTypeMap.keySet()){
+                if(rentTypeStr.equals(key)){
+                    rentTypeValue = Config.rentTypeMap.get(key);
+                    break;
+                }
+            }
+            rentType_Tv.setText(rentTypeValue);
             distance_Tv.setText(shipDetailData.getDistance() + "");
         }
     }

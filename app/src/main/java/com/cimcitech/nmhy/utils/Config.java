@@ -4,7 +4,9 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by qianghe on 2018/11/12.
@@ -26,11 +28,20 @@ public class Config {
     public static final List<String> voyageStatusList = new ArrayList<String>(Arrays.asList
             ("计划中-不确定","计划中-确定","计划执行中","执行结束"));
 
+    //币种
     public static final List<String> currencyList = new ArrayList<String>(Arrays.asList
             ("人民币","美元"));
 
+    //燃油供应商
     public static final List<String> supplyList = new ArrayList<String>(Arrays.asList
             ("中石油","中石化","中海油"));
+
+    //租用类型
+    public static final Map<String,String> rentTypeMap = new HashMap<String,String>(){{
+        put("RT01","次租");
+        put("RT02","期租");
+        put("RT03","自有");
+    }};
 
     //智能
     public static String IP = "http://192.168.1.120:8087/nmhy/";
