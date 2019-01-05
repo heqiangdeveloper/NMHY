@@ -41,6 +41,7 @@ import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DataCleanManager;
 import com.cimcitech.nmhy.utils.DateTool;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
+import com.cimcitech.nmhy.utils.ShowListValueWindow;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 import com.google.gson.Gson;
@@ -92,7 +93,7 @@ public class OilReportActivity extends MyBaseActivity {
     ImageButton add_Ib;
 
     public DataCleanManager manager = null;
-    private final Context context = OilReportActivity.this;
+    private final Context mContext = OilReportActivity.this;
     private SharedPreferences sp;
 
     public static final String CALL_FINISH = "com.cimcitech.lyt.mainactivity.finish";
@@ -117,6 +118,7 @@ public class OilReportActivity extends MyBaseActivity {
     private CatLoadingView mLoadingView = null;
     private boolean isAdd = true;
     private OilReportHistoryVo.DataBean.ListBean oilData = null;
+    private String TAG = "oillog";
 
     Handler handler = new Handler(){
         @Override
@@ -125,7 +127,7 @@ public class OilReportActivity extends MyBaseActivity {
             switch (msg.what){
                 case STARTTOLOCATING:
                     isFinishlocating = false;
-                    dialog = new ProgressDialog(OilReportActivity.this);
+                    dialog = new ProgressDialog(mContext);
                     dialog.setMessage("定位中…");
                     dialog.setCancelable(true);
                     dialog.show();
@@ -145,7 +147,7 @@ public class OilReportActivity extends MyBaseActivity {
                     location_Tv.setText("测试地1");
                     if(dialog.isShowing())
                         dialog.dismiss();
-                    Toast.makeText(OilReportActivity.this,"定位失败！请检查网络或GPS",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"定位失败！请检查网络或GPS",Toast.LENGTH_SHORT).show();
                     break;
             }
             addWatcher(voyageStatus_Tv);
@@ -178,12 +180,16 @@ public class OilReportActivity extends MyBaseActivity {
             add_Ib.setVisibility(View.GONE);
             commit_Bt.setText(getResources().getString(R.string.btn_commit_label));
             titleName_Tv.setText(getResources().getString(R.string.add_oil_report_label));
+            voyageStatus_Tv.setClickable(true);
             locationService = ((ApkApplication) getApplication()).locationService;
             locationService.registerListener(mListener);
         }else{
             add_Ib.setVisibility(View.VISIBLE);
             commit_Bt.setText(getResources().getString(R.string.query_oil_report_detail_label));
             titleName_Tv.setText(getResources().getString(R.string.query_oil_report_label));
+            voyageStatus_Tv.setClickable(false);
+            voyageStatus_Tv.setCompoundDrawables(null,null,null,null);
+            voyageStatus_Tv.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.drawable_padding_size));
         }
     }
 
@@ -194,7 +200,7 @@ public class OilReportActivity extends MyBaseActivity {
         addWatcher(longitude_Tv);
         addWatcher(latitude_Tv);
         if(isAdd){
-            if(NetWorkUtil.isConn(OilReportActivity.this)){
+            if(NetWorkUtil.isConn(mContext)){
                 empty_Rl.setVisibility(View.GONE);
                 content_Ll.setVisibility(View.VISIBLE);
                 initContent();
@@ -227,15 +233,15 @@ public class OilReportActivity extends MyBaseActivity {
 
     public void initLocation(){
         List<String> permissionList = new ArrayList<>();
-        if(ContextCompat.checkSelfPermission(OilReportActivity.this, Manifest.permission
+        if(ContextCompat.checkSelfPermission(mContext, Manifest.permission
                 .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
-        if(ContextCompat.checkSelfPermission(OilReportActivity.this,Manifest.permission
+        if(ContextCompat.checkSelfPermission(mContext,Manifest.permission
                 .READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.READ_PHONE_STATE);
         }
-        if(ContextCompat.checkSelfPermission(OilReportActivity.this,Manifest.permission
+        if(ContextCompat.checkSelfPermission(mContext,Manifest.permission
                 .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
@@ -293,7 +299,7 @@ public class OilReportActivity extends MyBaseActivity {
                 if(isAdd){//提交 新的燃油动态
                     commitData();
                 }else {//查看 燃油动态明细
-                    Intent i = new Intent(OilReportActivity.this,OilReportHistoryDetailActivity.class);
+                    Intent i = new Intent(mContext,OilReportHistoryDetailActivity.class);
                     i.putExtra("dynamicinfoId",oilData.getDynamicinfoId());
                     i.putExtra("isAdd",false);
                     startActivity(i);
@@ -305,11 +311,17 @@ public class OilReportActivity extends MyBaseActivity {
                 }
                 break;
             case R.id.voyageStatus_tv:
-                startEditActivity(Config.TEXT_TYPE_STR,getResources().getString(R.string.voyageStatus_label),
-                        voyageStatus_Tv.getText().toString().trim(),1);
+//                startEditActivity(Config.TEXT_TYPE_STR,getResources().getString(R.string.voyageStatus_label),
+//                        voyageStatus_Tv.getText().toString().trim(),1);
+
+                String title = getResources().getString(R.string.choice_label) +
+                        getResources().getString(R.string.voyageStatus_label);
+                ShowListValueWindow window = new ShowListValueWindow(mContext,title,Config
+                            .voyageStatusList, voyageStatus_Tv);
+                window.show();
                 break;
             case R.id.add_ib://新增  燃油动态
-                Intent i = new Intent(OilReportActivity.this,OilReportDetailActivity.class);
+                Intent i = new Intent(mContext,OilReportHistoryDetailActivity.class);
                 i.putExtra("dynamicinfoId",oilData.getDynamicinfoId());
                 i.putExtra("isAdd",true);
                 startActivity(i);
@@ -318,7 +330,7 @@ public class OilReportActivity extends MyBaseActivity {
     }
 
     public void startEditActivity(String type,String title,String content,int requestCode){
-        Intent intent2 = new Intent(OilReportActivity.this, EditValueActivity.class);
+        Intent intent2 = new Intent(mContext, EditValueActivity.class);
         intent2.putExtra("type",type);
         intent2.putExtra("title",title);
         intent2.putExtra("content",content);
@@ -346,14 +358,14 @@ public class OilReportActivity extends MyBaseActivity {
                 if(grantResults.length > 0){
                     for(int result : grantResults){
                         if(result != PackageManager.PERMISSION_GRANTED){
-                            Toast.makeText(OilReportActivity.this,"必须同意所有的权限才能使用定位",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"必须同意所有的权限才能使用定位",Toast.LENGTH_SHORT).show();
                             finish();
                             return;
                         }
                     }
                     getLocation();
                 }else {
-                    Toast.makeText(OilReportActivity.this,"发送未知错误",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"发送未知错误",Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -486,7 +498,14 @@ public class OilReportActivity extends MyBaseActivity {
         mLoadingView.show(getSupportFragmentManager(),"");
         long bargeId = 5;
         long voyagePlanId = 101;
-        int voyageStatus = 1;
+        int voyageStatus = -1;
+        for(int i = 0; i < Config.voyageStatusList.size(); i++){
+            if(voyageStatus_Tv.getText().toString().trim().equals(Config.voyageStatusList.get(i))){
+                voyagePlanId = i;
+                break;
+            }
+        }
+        Log.d(TAG,"voyagePlanId is: " + voyagePlanId);
         String location = location_Tv.getText().toString().trim();
 
         location = "测试地址1";location_Tv.setText(location);
@@ -512,8 +531,7 @@ public class OilReportActivity extends MyBaseActivity {
                             if(object.getBoolean("success")){
                                 ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
                                 int dynamicinfoId = object.getInt("id");
-                                Intent i = new Intent(OilReportActivity.this,OilReportDetailActivity.class);
-                                i.putExtra("dynamicinfoId",dynamicinfoId);
+                                Intent i = new Intent(mContext,OilReportHistoryActivity.class);
                                 startActivity(i);
                             }else{
                                 ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));

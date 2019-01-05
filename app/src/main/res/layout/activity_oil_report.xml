@@ -105,7 +105,6 @@
                     android:drawableRight="@mipmap/icon_location"
                     android:gravity="right"
                     android:padding="@dimen/text_padding_size"
-                    android:text="121"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14"
                     />
@@ -123,18 +122,18 @@
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
+
                 <TextView
                     android:id="@+id/longitude_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="121"
                     android:drawablePadding="@dimen/drawable_padding_size"
                     android:drawableRight="@mipmap/white_icon"
-                    android:textSize="@dimen/text_size_14"
-                    android:textColor="@color/black"
+                    android:gravity="right"
                     android:padding="@dimen/text_padding_size"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14"
                     />
             </LinearLayout>
             <LinearLayout
@@ -150,18 +149,18 @@
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
+
                 <TextView
                     android:id="@+id/latitude_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="121"
                     android:drawablePadding="@dimen/drawable_padding_size"
                     android:drawableRight="@mipmap/white_icon"
-                    android:textSize="@dimen/text_size_14"
-                    android:textColor="@color/black"
+                    android:gravity="right"
                     android:padding="@dimen/text_padding_size"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14"
                     />
             </LinearLayout>
 

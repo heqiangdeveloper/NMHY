@@ -87,6 +87,12 @@
                   android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.home.oil.OilRequestActivity2"
+                  android:windowSoftInputMode="adjustPan"
+                  android:launchMode="singleTask"
+                  android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name=".activity.home.oil.OilRequestDetailActivity"
                   android:windowSoftInputMode="adjustPan"
                   android:launchMode="singleTask"
@@ -117,7 +123,13 @@
                   android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.home.plan.PlanActivity"
+        <activity android:name=".activity.home.plan.ShipPlanActivity"
+                  android:windowSoftInputMode="adjustPan"
+                  android:launchMode="singleTask"
+                  android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".activity.home.plan.ShipPlanDetailActivity"
                   android:windowSoftInputMode="adjustPan"
                   android:launchMode="singleTask"
                   android:screenOrientation="portrait">

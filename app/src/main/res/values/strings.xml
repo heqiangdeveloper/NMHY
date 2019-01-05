@@ -17,9 +17,13 @@
     <string name="item_oil_request">燃油申请</string>
     <string name="item_oil_request_detail">燃油申请明细</string>
     <string name="add_oil_report_label">新增燃油动态</string>
+    <string name="add_oil_request_label">新增燃油申请</string>
     <string name="query_oil_report_label">查看燃油动态</string>
+    <string name="query_oil_request_label">查看燃油申请</string>
     <string name="query_oil_report_detail_label">查看燃油动态明细</string>
+    <string name="query_oil_request_detail_label">查看燃油申请明细</string>
 
+    <string name="add_oil_request_detail_label">新增燃油申请明细</string>
     <string name="add_oil_report_detail_label">新增燃油动态明细</string>
     <string name="item_oil_report_history">燃油动态</string>
     <string name="item_oil_report_history_detail">燃油上报历史详情</string>
@@ -84,4 +88,14 @@
     <string name="no_data_warn">暂无数据</string>
     <string name="commit_success_msg">提交成功</string>
     <string name="commit_fail_msg">提交失败</string>
+
+    <!--航次计划-->
+    <string name="ship_plan_detail_title">航次计划详情</string>
+    <string name="voyageNo_label">航次号</string>
+    <string name="routeName_label">线路名称</string>
+    <string name="portTransportOrder_label">航次顺序</string>
+    <string name="owerCompName_label">公司名称</string>
+    <string name="shipCompName_label">船公司名称</string>
+    <string name="rentType_label">租用类型</string>
+    <string name="distance_label">线路距离</string>
 </resources>

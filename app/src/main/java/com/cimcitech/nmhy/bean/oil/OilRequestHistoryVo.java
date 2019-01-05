@@ -1,5 +1,6 @@
 package com.cimcitech.nmhy.bean.oil;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class OilRequestHistoryVo {
         private List<ListBean> list;
         private List<Integer> navigatepageNums;
 
-        public static class ListBean{
+        public static class ListBean implements Serializable{
             private int applyId;
             private String applyReason;
             private String applyTime;

@@ -147,7 +147,7 @@ public class OilReportDetailActivity extends AppCompatActivity {
     public void showContent(){
         empty_Rl.setVisibility(View.GONE);
         content_Ll.setVisibility(View.VISIBLE);
-        showWhiteIcon();
+        //showWhiteIcon();
     }
 
     public void showWhiteIcon(){

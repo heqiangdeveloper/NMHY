@@ -102,6 +102,8 @@ public class OilRequestHistoryActivity extends MyBaseActivity {
                 finish();
                 break;
             case R.id.add_ib:
+                Intent i = new Intent(OilRequestHistoryActivity.this,OilRequestActivity2.class);
+                startActivity(i);
                 break;
         }
     }
@@ -175,9 +177,11 @@ public class OilRequestHistoryActivity extends MyBaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 OilRequestHistoryVo.DataBean.ListBean bean = (OilRequestHistoryVo.DataBean.ListBean) adapter.getAll().get(position);
-                Intent intent = new Intent(OilRequestHistoryActivity.this, OilRequestHistoryDetailActivity.class);
-                intent.putExtra("applyId", bean.getApplyId());
+                Intent intent = new Intent(OilRequestHistoryActivity.this,
+                        OilRequestActivity2.class);
+                intent.putExtra("oilData",bean);
                 startActivity(intent);
+                finish();
             }
 
             @Override

@@ -18,20 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/empty_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_empty"
                 android:layout_centerInParent="true"/>
-            <TextView
-                android:text="@string/no_data_warn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_below="@id/empty_iv"/>
         </RelativeLayout>
         <LinearLayout
-            android:visibility="visible"
             android:id="@+id/content_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,18 +37,45 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/fuelKind_label"
+                    android:text="@string/voyageNo_label"
+                    android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/grey"
+                    android:padding="@dimen/text_padding_size"/>
+                <TextView
+                    android:id="@+id/voyageNo_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="121"
+                    android:drawablePadding="@dimen/drawable_padding_size"
+                    android:drawableRight="@mipmap/white_icon"
+                    android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/text_padding_size"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/oil_data_content_margin"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/routeName_label"
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
 
                 <TextView
-                    android:id="@+id/fuelKind_tv"
+                    android:id="@+id/routeName_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
+                    android:drawableRight="@mipmap/white_icon"
                     android:gravity="right"
                     android:padding="@dimen/text_padding_size"
                     android:textColor="@color/black"
@@ -72,20 +91,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/unit_label"
+                    android:text="@string/portTransportOrder_label"
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
 
                 <TextView
-                    android:id="@+id/unit_tv"
+                    android:id="@+id/portTransportOrder_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
+                    android:drawableRight="@mipmap/white_icon"
                     android:gravity="right"
                     android:padding="@dimen/text_padding_size"
+                    android:text="121"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14"
                     />
@@ -99,22 +119,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/realStoreQty_label"
+                    android:text="@string/owerCompName_label"
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
-
                 <TextView
-                    android:id="@+id/realStoreQty_tv"
+                    android:id="@+id/owerCompName_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
                     android:gravity="right"
-                    android:padding="@dimen/text_padding_size"
-                    android:textColor="@color/black"
+                    android:text="121"
+                    android:drawablePadding="@dimen/drawable_padding_size"
+                    android:drawableRight="@mipmap/white_icon"
                     android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/text_padding_size"
                     />
             </LinearLayout>
             <LinearLayout
@@ -126,22 +146,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/realyAmount_label"
+                    android:text="@string/shipCompName_label"
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
-
                 <TextView
-                    android:id="@+id/realyAmount_tv"
+                    android:id="@+id/shipCompName_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
                     android:gravity="right"
-                    android:padding="@dimen/text_padding_size"
-                    android:textColor="@color/black"
+                    android:text="121"
+                    android:drawablePadding="@dimen/drawable_padding_size"
+                    android:drawableRight="@mipmap/white_icon"
                     android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/text_padding_size"
                     />
             </LinearLayout>
             <LinearLayout
@@ -153,22 +173,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/taxfreeRealyAmount_label"
+                    android:text="@string/rentType_label"
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
-
                 <TextView
-                    android:id="@+id/taxfreeRealyAmount_tv"
+                    android:id="@+id/rentType_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
                     android:gravity="right"
-                    android:padding="@dimen/text_padding_size"
-                    android:textColor="@color/black"
+                    android:text="121"
+                    android:drawablePadding="@dimen/drawable_padding_size"
+                    android:drawableRight="@mipmap/white_icon"
                     android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/text_padding_size"
                     />
             </LinearLayout>
             <LinearLayout
@@ -180,79 +200,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addFuelQty_label"
+                    android:text="@string/distance_label"
                     android:textSize="@dimen/text_size_14"
                     android:textColor="@color/grey"
                     android:padding="@dimen/text_padding_size"/>
-
                 <TextView
-                    android:id="@+id/addFuelQty_tv"
+                    android:id="@+id/distance_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
                     android:gravity="right"
-                    android:padding="@dimen/text_padding_size"
-                    android:textColor="@color/black"
+                    android:text="121"
+                    android:drawablePadding="@dimen/drawable_padding_size"
+                    android:drawableRight="@mipmap/white_icon"
                     android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/text_padding_size"
                     />
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/oil_data_content_margin"
-                android:background="@color/white">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/addAmount_label"
-                    android:textSize="@dimen/text_size_14"
-                    android:textColor="@color/grey"
-                    android:padding="@dimen/text_padding_size"/>
 
-                <TextView
-                    android:id="@+id/addAmount_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
-                    android:gravity="right"
-                    android:padding="@dimen/text_padding_size"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/oil_data_content_margin"
-                android:background="@color/white">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/taxfreeAddAmount_label"
-                    android:textSize="@dimen/text_size_14"
-                    android:textColor="@color/grey"
-                    android:padding="@dimen/text_padding_size"/>
-
-                <TextView
-                    android:id="@+id/taxfreeAddAmount_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawablePadding="@dimen/drawable_padding_size"
-                    android:drawableRight="@mipmap/more_icon"
-                    android:gravity="right"
-                    android:padding="@dimen/text_padding_size"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14"
-                    />
-            </LinearLayout>
             <Button
+                android:visibility="gone"
                 android:id="@+id/commit_bt"
                 android:layout_marginTop="@dimen/login_btn_margin_top"
                 android:layout_width="match_parent"
@@ -278,5 +246,4 @@
         android:layout_gravity="end|top">
         <include layout="@layout/more_popup_menu"/>
     </LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>

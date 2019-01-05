@@ -20,6 +20,9 @@ public class OilReq {
     //查询燃油动态的子表  历史
     private ShipFualDynamicInfosubBean ShipFualDynamicInfosub;
 
+    //新增 燃油申请 主表
+    private FuelApply FuelApplyBean;
+
     //查询燃油申请的主表   历史
     public OilReq(int pageNum, int pageSize, String orderBy) {
         this.pageNum = pageNum;
@@ -51,6 +54,11 @@ public class OilReq {
         ShipFualDynamicInfosub = shipFualDynamicInfosub;
     }
 
+    //新增 燃油申请 主表
+    public OilReq(FuelApply fuelApplyBean) {
+        FuelApplyBean = fuelApplyBean;
+    }
+
     public static class ShipFualDynamicInfoBean{
         private String beginTime;
         private String endTime;
@@ -76,6 +84,32 @@ public class OilReq {
 
         public FuelApplyDetailBean(int applyId) {
             this.applyId = applyId;
+        }
+    }
+
+    public static class FuelApply{
+        private String applyTime;
+        private String bargeName;
+        private int voyagePlanId;
+        private String applyReason;
+        private int owerCompId;
+        private int supplierId;
+        private String paymentMethod;
+        private String currency;
+        private String ifPrepaid;
+        private double pepaidAmount;
+
+        public FuelApply(String applyTime, String bargeName, int voyagePlanId, String applyReason, int owerCompId, int supplierId, String paymentMethod, String currency, String ifPrepaid, double pepaidAmount) {
+            this.applyTime = applyTime;
+            this.bargeName = bargeName;
+            this.voyagePlanId = voyagePlanId;
+            this.applyReason = applyReason;
+            this.owerCompId = owerCompId;
+            this.supplierId = supplierId;
+            this.paymentMethod = paymentMethod;
+            this.currency = currency;
+            this.ifPrepaid = ifPrepaid;
+            this.pepaidAmount = pepaidAmount;
         }
     }
 }

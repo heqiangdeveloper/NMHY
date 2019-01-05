@@ -14,10 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.home.oil.OilRequestHistoryActivity;
-import com.cimcitech.nmhy.activity.home.oil.OilReportActivity;
 import com.cimcitech.nmhy.activity.home.oil.OilReportHistoryActivity;
-import com.cimcitech.nmhy.activity.home.oil.OilRequestActivity;
-import com.cimcitech.nmhy.activity.home.plan.PlanActivity;
+import com.cimcitech.nmhy.activity.home.plan.ShipPlanActivity;
 import com.cimcitech.nmhy.activity.home.ship.ShipActivity;
 import com.cimcitech.nmhy.adapter.home.HomeGridAdapter;
 import com.cimcitech.nmhy.widget.MyGridView;
@@ -66,23 +64,23 @@ public class HomeFragment extends Fragment implements OnBannerListener {
                     TextView textView = (TextView) view.findViewById(R.id.tv_logo);
                     //String itemName = textView.getText().toString();
                     switch(position){
-                        case 0://燃油申请
-                            startActivity(new Intent(mContext, OilRequestActivity.class));
-                            break;
-                        case 1://燃油上报
-                            startActivity(new Intent(mContext, OilReportActivity.class));
-                            break;
-                        case 2://燃油申请历史
+//                        case 0://燃油申请
+//                            startActivity(new Intent(mContext, OilRequestActivity.class));
+//                            break;
+//                        case 1://燃油上报
+//                            startActivity(new Intent(mContext, OilReportActivity.class));
+//                            break;
+                        case 0://燃油申请历史
                             startActivity(new Intent(mContext, OilRequestHistoryActivity.class));
                             break;
-                        case 3://燃油上报历史
+                        case 1://燃油上报历史
                             startActivity(new Intent(mContext, OilReportHistoryActivity.class));
                             break;
-                        case 4://船舶动态
+                        case 2://船舶动态
                             startActivity(new Intent(mContext, ShipActivity.class));
                             break;
-                        case 5://航次计划
-                            startActivity(new Intent(mContext, PlanActivity.class));
+                        case 3://航次计划
+                            startActivity(new Intent(mContext, ShipPlanActivity.class));
                             break;
                     }
                 }

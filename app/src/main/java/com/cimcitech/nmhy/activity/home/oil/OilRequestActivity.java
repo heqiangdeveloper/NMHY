@@ -90,13 +90,6 @@ public class OilRequestActivity extends AppCompatActivity {
     private final int REQUESTCODE_OWERCOMPID = 4;
     private final int REQUESTCODE_PEPAIDAMOUNT = 5;
     private NetWorkUtil netWorkUtil = null;
-    private LocationService locationService;
-    private ArrayList<Poi> pois = new ArrayList<>(); //获取到的定位位置的对象
-
-    private StringBuffer locSb ;
-    private static final int requestLocTime = 7000;
-    private boolean isFinishlocating = false;
-    private final int LOCATION_REQUESTCODE = 1;
 
     private final Context context = OilRequestActivity.this;
     private PopupWindow pop = null;

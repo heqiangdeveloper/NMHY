@@ -30,7 +30,7 @@ public class ShowListValueWindow implements AdapterView.OnItemClickListener{
     *   各参数的含义：
     *   context：上下文
     *   title: 标题
-    *   list: 传入的List数组
+    *   list: 传入的List数组,用于显示
     *   tv: 被点击的对象
     * */
     public ShowListValueWindow(Context context, String title, final List<String> list, TextView tv) {

@@ -1,29 +1,34 @@
-package com.cimcitech.nmhy.activity.home.oil;
+package com.cimcitech.nmhy.activity.home.plan;
 
-import com.cimcitech.nmhy.widget.MyBaseActivity;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.renderscript.Int4;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cimcitech.nmhy.R;
-import com.cimcitech.nmhy.adapter.oil.OilReportHistoryAdapter;
-import com.cimcitech.nmhy.bean.oil.OilReportHistoryReq;
+import com.cimcitech.nmhy.activity.home.oil.OilReportActivity;
+import com.cimcitech.nmhy.adapter.plan.ShipPlanAdapter;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryVo;
+import com.cimcitech.nmhy.bean.plan.ShipBean;
+import com.cimcitech.nmhy.bean.plan.ShipPlanReq;
+import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +38,14 @@ import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
 
-/**
- * Created by qianghe on 2018/12/20.
- */
 
-public class OilReportHistoryActivity extends MyBaseActivity {
+public class ShipPlanActivity extends AppCompatActivity {
+    @Bind(R.id.titleName_tv)
+    TextView titleName_Tv;
+    @Bind(R.id.back_iv)
+    ImageView back_Iv;
+    @Bind(R.id.more_tv)
+    TextView more_Tv;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.swipeRefreshLayout)
@@ -46,37 +54,31 @@ public class OilReportHistoryActivity extends MyBaseActivity {
     CoordinatorLayout recyclerViewLayout;
     @Bind(R.id.popup_menu_layout)
     LinearLayout popup_menu_Layout;
-    @Bind(R.id.more_tv)
-    TextView more_Tv;
-    @Bind(R.id.titleName_tv)
-    TextView titleName_Tv;
 
-    private int pageNum = 1;
-    private OilReportHistoryAdapter adapter;
-    private boolean isLoading;
-    private List<OilReportHistoryVo.DataBean.ListBean> data = new ArrayList<>();
+    private static final String TAG = "shipPlanlog";
+    private ShipPlanAdapter adapter = null;
+    private Context mContext = ShipPlanActivity.this;
+    private List<ShipPlanVo.DataBean.ListBean> data = new ArrayList<>();
     private Handler handler = new Handler();
-    private String TAG = "oillog";
-    private OilReportHistoryVo oilReportHistoryVo = null;
+    private boolean isLoading;
+    private int pageNum = 1;
+    private ShipPlanVo shipPlanVo = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oil_report_history);
+        setContentView(R.layout.activity_plan);
         ButterKnife.bind(this);
         initTitle();
-        initPopupMenu();
+
         initViewData();
         updateData();
     }
 
     public void initTitle(){
-        more_Tv.setVisibility(View.VISIBLE);
-        titleName_Tv.setText(getResources().getString(R.string.item_oil_report_history));
-    }
-
-    public void initPopupMenu(){
-        popup_menu_Layout.setVisibility(View.GONE);
+        titleName_Tv.setText(getResources().getString(R.string.item_plan));
+        back_Iv.setVisibility(View.VISIBLE);
+        more_Tv.setVisibility(View.GONE);
     }
 
     //刷新数据
@@ -94,21 +96,17 @@ public class OilReportHistoryActivity extends MyBaseActivity {
         getData(); //获取数据
     }
 
-    @OnClick({R.id.back_iv, R.id.add_ib})
-    public void onclick(View view) {
-        switch (view.getId()) {
+    @OnClick({R.id.back_iv})
+    public void onClick(View view){
+        switch (view.getId()){
             case R.id.back_iv:
                 finish();
-                break;
-            case R.id.add_ib:
-                Intent i = new Intent(OilReportHistoryActivity.this,OilReportActivity.class);
-                startActivity(i);
                 break;
         }
     }
 
     public void initViewData() {
-        adapter = new OilReportHistoryAdapter(OilReportHistoryActivity.this, data);
+        adapter = new ShipPlanAdapter(mContext, data);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -132,7 +130,7 @@ public class OilReportHistoryActivity extends MyBaseActivity {
                 }, 1000);
             }
         });
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(OilReportHistoryActivity.this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -160,7 +158,7 @@ public class OilReportHistoryActivity extends MyBaseActivity {
                             @Override
                             public void run() {
                                 //上拉加载
-                                if (oilReportHistoryVo.getData().isHasNextPage()) {
+                                if (shipPlanVo.getData().isHasNextPage()) {
                                     pageNum++;
                                     getData();//添加数据
                                 }
@@ -172,15 +170,14 @@ public class OilReportHistoryActivity extends MyBaseActivity {
             }
         });
         //给List添加点击事件
-        adapter.setOnItemClickListener(new OilReportHistoryAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ShipPlanAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                OilReportHistoryVo.DataBean.ListBean bean = (OilReportHistoryVo.DataBean.ListBean)
-                        adapter.getAll().get(position);
-                Intent intent = new Intent(OilReportHistoryActivity.this, OilReportActivity.class);
-                intent.putExtra("oilData",bean);
+                ShipPlanVo.DataBean.ListBean bean = (ShipPlanVo.DataBean.ListBean) adapter.getAll().get(position);
+                Intent intent = new Intent(mContext, ShipPlanDetailActivity.class);
+                intent.putExtra("shipDetailData",bean);
                 startActivity(intent);
-                finish();
+                //finish();
             }
 
             @Override
@@ -190,14 +187,10 @@ public class OilReportHistoryActivity extends MyBaseActivity {
         });
     }
     public void getData() {
-        String json = new Gson().toJson(new OilReportHistoryReq(pageNum, 10, "",
-                new OilReportHistoryReq.ShipFualDynamicInfoBean(null,null,null)));
-
-        Log.e(TAG, "oilreporthistory request: " + json);
+        String json = new Gson().toJson(new ShipPlanReq(pageNum,10,"",null));
         OkHttpUtils
                 .postString()
-                .url(Config.oil_report_history_url)
-                //.addHeader("checkTokenKey", Config.TOKEN)
+                .url(Config.query_voyage_plan_url)
                 .content(json)
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
@@ -213,15 +206,15 @@ public class OilReportHistoryActivity extends MyBaseActivity {
                             public void onResponse(String response, int id) {
                                 Log.d(TAG,"oilreporthistory response is: " + response);
 
-                                oilReportHistoryVo = new Gson().fromJson(response, OilReportHistoryVo.class);
-                                if (oilReportHistoryVo != null) {
-                                    if (oilReportHistoryVo.isSuccess()) {
-                                        if (oilReportHistoryVo.getData().getList() != null && oilReportHistoryVo.getData().getList().size() > 0) {
-                                            for (int i = 0; i < oilReportHistoryVo.getData().getList().size(); i++) {
-                                                data.add(oilReportHistoryVo.getData().getList().get(i));
+                                shipPlanVo = new Gson().fromJson(response, ShipPlanVo.class);
+                                if (shipPlanVo != null) {
+                                    if (shipPlanVo.isSuccess()) {
+                                        if (shipPlanVo.getData().getList() != null && shipPlanVo.getData().getList().size() > 0) {
+                                            for (int i = 0; i < shipPlanVo.getData().getList().size(); i++) {
+                                                data.add(shipPlanVo.getData().getList().get(i));
                                             }
                                         }
-                                        if (oilReportHistoryVo.getData().isHasNextPage()) {
+                                        if (shipPlanVo.getData().isHasNextPage()) {
                                             adapter.setNotMoreData(false);
                                         } else {
                                             adapter.setNotMoreData(true);
