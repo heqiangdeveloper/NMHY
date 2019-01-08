@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +44,25 @@ public class Config {
         put("RT03","自有");
     }};
 
+    //航次状态
+    //这里使用LinkedHashMap，确保Map中的元素顺序与元素添加的先后顺序一致
+    //若使用HashMap,则Map中的元素顺序与元素添加的先后顺序不一致
+    //https://blog.csdn.net/qq_27093465/article/details/72676102
+    public static final Map<String,Integer> voyageStatusMap = new LinkedHashMap<String,Integer>(){{
+        put("抵锚地",1);
+        put("航次开始",2);
+        put("靠泊",3);
+        put("装货",4);
+        put("装货完工",5);
+        put("卸货",6);
+        put("卸货完工",7);
+        put("起航",8);
+        put("停航",9);
+        put("航次结束",10);
+    }};
+
     //智能
-    public static String IP = "http://192.168.1.120:8087/nmhy/";
+    public static String IP = "http://192.168.1.120:8081/nmhy/";
 
     //public static String IP = "http://10.33.88.206:8080/nmhy/";
 

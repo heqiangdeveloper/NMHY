@@ -180,7 +180,6 @@ public class OilReportHistoryActivity extends MyBaseActivity {
                 Intent intent = new Intent(OilReportHistoryActivity.this, OilReportActivity.class);
                 intent.putExtra("oilData",bean);
                 startActivity(intent);
-                finish();
             }
 
             @Override

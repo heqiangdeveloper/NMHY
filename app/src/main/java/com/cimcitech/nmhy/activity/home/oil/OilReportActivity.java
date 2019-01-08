@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -187,8 +188,13 @@ public class OilReportActivity extends MyBaseActivity {
             add_Ib.setVisibility(View.VISIBLE);
             commit_Bt.setText(getResources().getString(R.string.query_oil_report_detail_label));
             titleName_Tv.setText(getResources().getString(R.string.query_oil_report_label));
+            Drawable drawable = getResources().getDrawable(R.mipmap.white_icon);
+            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+
             voyageStatus_Tv.setClickable(false);
-            voyageStatus_Tv.setCompoundDrawables(null,null,null,null);
+            //drawable left,top,right,bottom
+            voyageStatus_Tv.setCompoundDrawables(null,null,drawable,null);
+            //drawablePadding
             voyageStatus_Tv.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.drawable_padding_size));
         }
     }
@@ -213,7 +219,15 @@ public class OilReportActivity extends MyBaseActivity {
             empty_Rl.setVisibility(View.GONE);
             content_Ll.setVisibility(View.VISIBLE);
             time_Tv.setText(oilData.getReportTime() + "");
-            voyageStatus_Tv.setText(oilData.getVoyageStatus() + "");
+            String voyageStatus = oilData.getVoyageStatus();
+            String voyageStatusStr = "";
+            for(String key : Config.voyageStatusMap.keySet()){
+                if(Integer.parseInt(voyageStatus) == Config.voyageStatusMap.get(key)){
+                    voyageStatusStr = key;
+                    break;
+                }
+            }
+            voyageStatus_Tv.setText(voyageStatusStr);
             location_Tv.setText(oilData.getLocation() + "");
             longitude_Tv.setText(oilData.getLongitude() + "");
             latitude_Tv.setText(oilData.getLatitude() + "");
@@ -316,8 +330,11 @@ public class OilReportActivity extends MyBaseActivity {
 
                 String title = getResources().getString(R.string.choice_label) +
                         getResources().getString(R.string.voyageStatus_label);
-                ShowListValueWindow window = new ShowListValueWindow(mContext,title,Config
-                            .voyageStatusList, voyageStatus_Tv);
+                List<String> voyageStatusNameList = new ArrayList<String>();
+                for(String key : Config.voyageStatusMap.keySet()){
+                    voyageStatusNameList.add(key);
+                }
+                ShowListValueWindow window = new ShowListValueWindow(mContext,title,voyageStatusNameList, voyageStatus_Tv);
                 window.show();
                 break;
             case R.id.add_ib://新增  燃油动态
@@ -499,17 +516,19 @@ public class OilReportActivity extends MyBaseActivity {
         long bargeId = 5;
         long voyagePlanId = 101;
         int voyageStatus = -1;
-        for(int i = 0; i < Config.voyageStatusList.size(); i++){
-            if(voyageStatus_Tv.getText().toString().trim().equals(Config.voyageStatusList.get(i))){
-                voyagePlanId = i;
+        for(String key : Config.voyageStatusMap.keySet()){
+            if(voyageStatus_Tv.getText().toString().trim().equals(key)){
+                voyageStatus = Config.voyageStatusMap.get(key);
                 break;
             }
         }
-        Log.d(TAG,"voyagePlanId is: " + voyagePlanId);
+        Log.d(TAG,"voyageStatus is: " + voyageStatus);
         String location = location_Tv.getText().toString().trim();
 
-        location = "测试地址1";location_Tv.setText(location);
-        String json = new Gson().toJson(new OilReportReq(bargeId,voyagePlanId,voyageStatus, location,longitude,latitude));
+        location = location.length() == 0 ? "测试地址1":location;
+        location_Tv.setText(location);
+        String json = new Gson().toJson(new OilReportReq(bargeId,voyagePlanId,voyageStatus,
+               location,longitude,latitude));
         OkHttpUtils
                 .postString()
                 .url(Config.add_oil_report_url)
