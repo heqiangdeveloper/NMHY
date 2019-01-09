@@ -9,13 +9,13 @@ public class OilReportDetailReq {
     private String fuelKind;
     private String unit;
     private double realStoreQty;
-    private long realyAmount;
-    private long taxfreeRealyAmount;
+    private double realyAmount;
+    private double taxfreeRealyAmount;
     private double addFuelQty;
-    private long addAmount;
+    private double addAmount;
     private double taxfreeAddAmount;
 
-    public OilReportDetailReq(long dynamicinfoId, String fuelKind, String unit, double realStoreQty, long realyAmount, long taxfreeRealyAmount, double addFuelQty, long addAmount, double taxfreeAddAmount) {
+    public OilReportDetailReq(long dynamicinfoId, String fuelKind, String unit, double realStoreQty, double realyAmount, double taxfreeRealyAmount, double addFuelQty, double addAmount, double taxfreeAddAmount) {
         this.dynamicinfoId = dynamicinfoId;
         this.fuelKind = fuelKind;
         this.unit = unit;

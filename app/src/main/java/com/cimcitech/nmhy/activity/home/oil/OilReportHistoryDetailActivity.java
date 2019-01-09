@@ -1,6 +1,8 @@
 package com.cimcitech.nmhy.activity.home.oil;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -24,16 +26,23 @@ import android.widget.TextView;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.main.EditValueActivity;
 import com.cimcitech.nmhy.adapter.all.PopupWindowAdapter;
+import com.cimcitech.nmhy.bean.oil.OilReportDetailReq;
 import com.cimcitech.nmhy.bean.oil.OilReq;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryDetailVo;
+import com.cimcitech.nmhy.bean.oil.OilRequestDetailReq;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.utils.EnumUtil;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ShowListValueWindow;
+import com.cimcitech.nmhy.utils.ToastUtil;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +105,7 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
     private final int ADDFUELQTY_CODE = 4;
     private final int ADDAMOUNT_CODE = 5;
     private final int TAXFREEADDAMOUNT_CODE = 6;
+    private CatLoadingView mCatLoadingView = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -231,7 +241,11 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
 
     public void initData(OilReportHistoryDetailVo.DataBean.OilData oilData){
         if(oilData != null){
-            fuelKind_Tv.setText(oilData.getFuelKind());
+            String fuelKindStr = oilData.getFuelKind();
+            if(fuelKindStr.startsWith("FP") && fuelKindStr.length() == 4){
+                fuelKindStr = EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelKindStr);
+            }
+            fuelKind_Tv.setText(fuelKindStr);
             unit_Tv.setText(oilData.getUnit());
             realStoreQty_Tv.setText(oilData.getRealStoreQty() + "");
             realyAmount_Tv.setText(oilData.getRealyAmount() + "");
@@ -244,35 +258,55 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
 
     @OnClick({R.id.back_iv,R.id.fuelKind_tv,R.id.unit_tv,R.id.realStoreQty_tv,R.id
             .realyAmount_tv,R.id.taxfreeRealyAmount_tv,R.id.addAmount_tv,R.id.addFuelQty_tv,
-            R.id.taxfreeAddAmount_tv})
+            R.id.taxfreeAddAmount_tv,R.id.commit_bt})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_iv:
-                finish();
+                if(isAdd && isAddInfo()){
+                    new AlertDialog.Builder(mContext)
+                            //.setTitle("提示")
+                            .setMessage(mContext.getResources().getString(R.string.ask_if_exit))
+                            .setCancelable(true)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).create().show();
+                }else{
+                    finish();
+                }
                 break;
             case R.id.fuelKind_tv:
                 String fuelKindTitle = mContext.getResources().getString(R.string.choice_label) +
                         mContext.getResources().getString(R.string.fuelKind_label);
                 List<String> contentList = new ArrayList<>();
                 if(isAdd){//新增
-                    contentList.add("轻油");
-                    contentList.add("重油");
-                    contentList.add("机油");
+                    for(String key : Config.fuelTypeMap.keySet()){
+                        contentList.add(Config.fuelTypeMap.get(key));
+                    }
+                    ShowListValueWindow window = new ShowListValueWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
+                    window.show();
                 }else{//查看
                     for(int i = 0; i < data.size(); i++){
-                        contentList.add(data.get(i).getFuelKind());
+                        String fuelTypeStr = data.get(i).getFuelKind();
+                        contentList.add(EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelTypeStr));
                     }
+                    ShowWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
                 }
-                ShowListValueWindow window = new ShowListValueWindow(mContext,fuelKindTitle,contentList,fuelKind_Tv);
-                window.show();
                 break;
             case R.id.unit_tv:
                 String unitTitle = mContext.getResources().getString(R.string.choice_label) +
                         mContext.getResources().getString(R.string.unit_label);
                 List<String> unitList = new ArrayList<>();
-//                for(int i = 0; i < data.size(); i++){
-//                    contentList.add(data.get(i).getFuelKind());
-//                }
                 unitList.add("吨");
                 unitList.add("桶");
                 ShowListValueWindow unitWindow = new ShowListValueWindow(mContext,unitTitle,unitList,unit_Tv);
@@ -302,6 +336,24 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
                 startEditActivity(Config.TEXT_TYPE_NUM,getResources().getString(R.string.taxfreeAddAmount_label),
                         taxfreeAddAmount_Tv.getText().toString().trim(),TAXFREEADDAMOUNT_CODE);
                 break;
+            case R.id.commit_bt:
+                commitData();
+                break;
+        }
+    }
+
+    public boolean isAddInfo(){
+        if(fuelKind_Tv.getText().toString().trim().length() != 0 ||
+                unit_Tv.getText().toString().trim().length() != 0 ||
+                realyAmount_Tv.getText().toString().trim().length() != 0 ||
+                realStoreQty_Tv.getText().toString().trim().length() != 0 ||
+                taxfreeRealyAmount_Tv.getText().toString().trim().length() != 0 ||
+                addAmount_Tv.getText().toString().trim().length() != 0 ||
+                addFuelQty_Tv.getText().toString().trim().length() != 0 ||
+                taxfreeAddAmount_Tv.getText().toString().trim().length() != 0){
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -341,9 +393,85 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        back_Iv.callOnClick();
+    private void commitData(){
+        mCatLoadingView = new CatLoadingView();
+        mCatLoadingView.show(getSupportFragmentManager(),"");
+
+        String fuelKindStr = EnumUtil.findKeyByValueSS(Config.fuelTypeMap,fuelKind_Tv.getText().toString().trim());
+        String unit = unit_Tv.getText().toString().trim();
+        double realStoreQty = Double.parseDouble(realStoreQty_Tv.getText().toString().trim());
+        double realyAmount = Double.parseDouble(realyAmount_Tv.getText().toString().trim());
+        double taxfreeRealyAmount = Double.parseDouble(taxfreeRealyAmount_Tv.getText().toString().trim());
+        double addFuelQty = Double.parseDouble(addFuelQty_Tv.getText().toString().trim());
+        double addAmount = Double.parseDouble(addAmount_Tv.getText().toString().trim());
+        double taxfreeAddAmount = Double.parseDouble(taxfreeAddAmount_Tv.getText().toString().trim());
+        String json = new Gson().toJson(new OilReportDetailReq(dynamicinfoId,fuelKindStr,unit,realStoreQty,
+                realyAmount,taxfreeRealyAmount,addFuelQty,addAmount,taxfreeAddAmount));
+        OkHttpUtils
+                .postString()
+                .url(Config.add_oil_report_detail_url)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mCatLoadingView.dismiss();
+                        ToastUtil.showNetError();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mCatLoadingView.dismiss();
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            if(object.getBoolean("success")){
+                                ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
+                                fuelKind_Tv.setText("");unit_Tv.setText("");realStoreQty_Tv.setText("");
+                                realyAmount_Tv.setText("");taxfreeRealyAmount_Tv.setText("");addAmount_Tv.setText("");
+                                addFuelQty_Tv.setText("");taxfreeAddAmount_Tv.setText("");
+                            }else{
+                                ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
+                            }
+                        }catch (JSONException e){
+
+                        }
+                    }
+                });
+    }
+
+    public void ShowWindow(Context context, String title, final List<String> list, TextView tv) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        // 引入窗口配置文件
+        View view = inflater.inflate(R.layout.dialog_add_client_view, null);
+        view.getBackground().setAlpha(100);
+        // 创建PopupWindow对象
+        pop = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, false);
+        View pop_reward_view = view.findViewById(R.id.pop_reward_view);
+        TextView title_tv = view.findViewById(R.id.title_tv);
+        title_tv.setText(title);
+        final PopupWindowAdapter adapter = new PopupWindowAdapter(context, list);
+        ListView listView = view.findViewById(R.id.listContent);
+        listView.setAdapter(adapter);
+        // 需要设置一下此参数，点击外边可消失
+        pop.setBackgroundDrawable(new BitmapDrawable());
+        // 设置点击窗口外边窗口消失
+        pop.setOutsideTouchable(true);
+        // 设置此参数获得焦点，否则无法点击
+        pop.setFocusable(true);
+        pop_reward_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pop.dismiss();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                initData(data.get(position));
+                pop.dismiss();
+            }
+        });
+        pop.showAtLocation(tv, Gravity.CENTER, 0, 0);
     }
 }

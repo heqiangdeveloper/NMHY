@@ -2,6 +2,7 @@ package com.cimcitech.nmhy.activity.home.oil;
 
 import com.cimcitech.nmhy.adapter.oil.OilRequestHistoryAdapter;
 import com.cimcitech.nmhy.bean.oil.OilRequestHistoryVo;
+import com.cimcitech.nmhy.utils.EventBusMessage;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 
 import android.content.Intent;
@@ -25,6 +26,11 @@ import com.cimcitech.nmhy.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +71,8 @@ public class OilRequestHistoryActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oil_report_history);
         ButterKnife.bind(this);
+        //注册EventBus订阅者
+        EventBus.getDefault().register(this);
         initTitle();
         initPopupMenu();
         initViewData();
@@ -181,7 +189,6 @@ public class OilRequestHistoryActivity extends MyBaseActivity {
                         OilRequestActivity2.class);
                 intent.putExtra("oilData",bean);
                 startActivity(intent);
-                finish();
             }
 
             @Override
@@ -236,5 +243,19 @@ public class OilRequestHistoryActivity extends MyBaseActivity {
                             }
                         }
                 );
+    }
+
+    //订阅者 方法
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        Log.d("eventBusLog","receive eventbus action...");
+        updateData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //注销订阅者
+        EventBus.getDefault().unregister(this);
     }
 }

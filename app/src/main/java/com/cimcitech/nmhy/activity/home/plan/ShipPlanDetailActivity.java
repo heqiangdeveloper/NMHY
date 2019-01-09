@@ -23,6 +23,7 @@ import com.cimcitech.nmhy.adapter.plan.ShipPlanAdapter;
 import com.cimcitech.nmhy.bean.plan.ShipPlanReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.utils.EnumUtil;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -90,14 +91,8 @@ public class ShipPlanDetailActivity extends AppCompatActivity {
             portTransportOrder_Tv.setText(shipDetailData.getPortTransportOrder() + "");
             owerCompName_Tv.setText(shipDetailData.getOwerCompName() + "");
             shipCompName_Tv.setText(shipDetailData.getShipCompName() + "");
-            String rentTypeStr = shipDetailData.getRentType();
             String rentTypeValue = "未知类型";
-            for (String key : Config.rentTypeMap.keySet()){
-                if(rentTypeStr.equals(key)){
-                    rentTypeValue = Config.rentTypeMap.get(key);
-                    break;
-                }
-            }
+            rentTypeValue = EnumUtil.findValueByKeySS(Config.rentTypeMap,shipDetailData.getRentType());
             rentType_Tv.setText(rentTypeValue);
             distance_Tv.setText(shipDetailData.getDistance() + "");
         }

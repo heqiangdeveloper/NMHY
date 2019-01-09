@@ -98,4 +98,5 @@
     <string name="shipCompName_label">船公司名称</string>
     <string name="rentType_label">租用类型</string>
     <string name="distance_label">线路距离</string>
+    <string name="ask_if_exit">信息还未提交或保存，是否退出？</string>
 </resources>

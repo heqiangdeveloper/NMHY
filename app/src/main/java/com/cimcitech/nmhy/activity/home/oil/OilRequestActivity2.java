@@ -42,6 +42,7 @@ import com.cimcitech.nmhy.bean.oil.OilRequestHistoryVo;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DataCleanManager;
 import com.cimcitech.nmhy.utils.DateTool;
+import com.cimcitech.nmhy.utils.EventBusMessage;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ShowListValueWindow;
 import com.cimcitech.nmhy.utils.ShowValueWindow;
@@ -52,6 +53,7 @@ import com.roger.catloadinglibrary.CatLoadingView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -184,6 +186,12 @@ public class OilRequestActivity2 extends MyBaseActivity {
             applyReason_Tv.setText(oilData.getApplyReason() + "");
             bargeName_Tv.setText(oilData.getBargeName() + "");
             pepaidAmount_Tv.setText(oilData.getPepaidAmount() + "");
+            currency_Tv.setText(oilData.getCurrency() + "");
+
+            String yesLabel = getResources().getString(R.string.yes_label);//"是"
+            String noLabel = getResources().getString(R.string.no_label);//"否"
+            String ifPrepaidStr = oilData.getIfPrepaid().equals("0") ? noLabel : yesLabel;
+            ifPrepaid_Tv.setText(ifPrepaidStr);
 
             setDrawable(applyTime_Tv);setDrawable(bargeName_Tv);setDrawable(voyagePlanId_Tv);setDrawable(applyReason_Tv);
             setDrawable(owerCompId_Tv);setDrawable(supplierId_Tv);setDrawable(paymentMethod_Tv);setDrawable(currency_Tv);
@@ -250,7 +258,7 @@ public class OilRequestActivity2 extends MyBaseActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_iv:
-                returnToMainPage();
+                finish();
                 break;
             case R.id.commit_bt:
                 if(isAdd){//提交 新的燃油申请
@@ -367,19 +375,19 @@ public class OilRequestActivity2 extends MyBaseActivity {
         mLoadingView.show(getSupportFragmentManager(),"");
 
         String applyTime = applyTime_Tv.getText().toString().trim();
-        String bargeName = bargeName_Tv.getText().toString().trim();
+        final String bargeName = bargeName_Tv.getText().toString().trim();
         int voyagePlanId = 101;
         String applyReason = applyReason_Tv.getText().toString().trim();
         int owerCompId = 6;
         int supplierId = 2;
         String paymentMethod = paymentMethod_Tv.getText().toString().trim();
         String currency = currency_Tv.getText().toString().trim();
-        String ifPrepaid = ifPrepaid_Tv.getText().toString().trim();
+        String yesLabel = getResources().getString(R.string.yes_label);//"是"
+        String ifPrepaid = ifPrepaid_Tv.getText().toString().trim().equals(yesLabel) ? "1" : "0";
         double pepaidAmount =Double.parseDouble(pepaidAmount_Tv.getText().toString().trim());
 
-        String json = new Gson().toJson(new OilReq(new OilReq.FuelApply(applyTime,bargeName,
-                voyagePlanId,applyReason,owerCompId,supplierId,paymentMethod,currency,ifPrepaid,
-                pepaidAmount)));
+        String json = new Gson().toJson(new OilReq(applyTime,bargeName,
+                voyagePlanId,applyReason,owerCompId,supplierId,paymentMethod,currency,ifPrepaid, pepaidAmount));
         OkHttpUtils
                 .postString()
                 .url(Config.add_oil_request_url)
@@ -396,12 +404,15 @@ public class OilRequestActivity2 extends MyBaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         mLoadingView.dismiss();
+                        // 发布事件
+                        EventBus.getDefault().post(new EventBusMessage("addNewOilRequest"));
                         try{
                             JSONObject object = new JSONObject(response);
                             if(object.getBoolean("success")){
                                 ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
-                                int dynamicinfoId = object.getInt("id");
-                                returnToMainPage();
+                                //int dynamicinfoId = object.getInt("id");
+                                bargeName_Tv.setText("");
+                                applyReason_Tv.setText("");
                             }else{
                                 ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
                             }
@@ -422,6 +433,6 @@ public class OilRequestActivity2 extends MyBaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        returnToMainPage();
+        back_Iv.callOnClick();
     }
 }

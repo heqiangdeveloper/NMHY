@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.adapter.all.PopupWindowAdapter;
+import com.cimcitech.nmhy.adapter.oil.OilReportHistoryAdapter;
 
 import java.util.List;
 
@@ -73,9 +74,5 @@ public class ShowListValueWindow implements AdapterView.OnItemClickListener{
     //对话框显示的位置
     public void show(){
         pop.showAtLocation(content_Tv, Gravity.CENTER, 0, 0);
-    }
-
-    public int getIndex(){
-        return index;
     }
 }

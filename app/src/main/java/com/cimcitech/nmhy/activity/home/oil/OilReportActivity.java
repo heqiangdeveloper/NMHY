@@ -41,9 +41,11 @@ import com.cimcitech.nmhy.bean.oil.OilReportReq;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DataCleanManager;
 import com.cimcitech.nmhy.utils.DateTool;
+import com.cimcitech.nmhy.utils.EnumUtil;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ShowListValueWindow;
 import com.cimcitech.nmhy.utils.ToastUtil;
+import com.cimcitech.nmhy.utils.WhiteIcon;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
@@ -188,14 +190,8 @@ public class OilReportActivity extends MyBaseActivity {
             add_Ib.setVisibility(View.VISIBLE);
             commit_Bt.setText(getResources().getString(R.string.query_oil_report_detail_label));
             titleName_Tv.setText(getResources().getString(R.string.query_oil_report_label));
-            Drawable drawable = getResources().getDrawable(R.mipmap.white_icon);
-            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
-
-            voyageStatus_Tv.setClickable(false);
-            //drawable left,top,right,bottom
-            voyageStatus_Tv.setCompoundDrawables(null,null,drawable,null);
-            //drawablePadding
-            voyageStatus_Tv.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.drawable_padding_size));
+            WhiteIcon voyageStatusWhiteIcon = new WhiteIcon(mContext,voyageStatus_Tv);
+            voyageStatusWhiteIcon.setWhiteIcon();
         }
     }
 
@@ -219,15 +215,8 @@ public class OilReportActivity extends MyBaseActivity {
             empty_Rl.setVisibility(View.GONE);
             content_Ll.setVisibility(View.VISIBLE);
             time_Tv.setText(oilData.getReportTime() + "");
-            String voyageStatus = oilData.getVoyageStatus();
-            String voyageStatusStr = "";
-            for(String key : Config.voyageStatusMap.keySet()){
-                if(Integer.parseInt(voyageStatus) == Config.voyageStatusMap.get(key)){
-                    voyageStatusStr = key;
-                    break;
-                }
-            }
-            voyageStatus_Tv.setText(voyageStatusStr);
+            voyageStatus_Tv.setText(EnumUtil.findKeyByValueSI(Config.voyageStatusMap,Integer
+                    .parseInt(oilData.getVoyageStatus())));
             location_Tv.setText(oilData.getLocation() + "");
             longitude_Tv.setText(oilData.getLongitude() + "");
             latitude_Tv.setText(oilData.getLatitude() + "");
@@ -515,13 +504,8 @@ public class OilReportActivity extends MyBaseActivity {
         mLoadingView.show(getSupportFragmentManager(),"");
         long bargeId = 5;
         long voyagePlanId = 101;
-        int voyageStatus = -1;
-        for(String key : Config.voyageStatusMap.keySet()){
-            if(voyageStatus_Tv.getText().toString().trim().equals(key)){
-                voyageStatus = Config.voyageStatusMap.get(key);
-                break;
-            }
-        }
+        int voyageStatus = EnumUtil.findValueByKeySI(Config.voyageStatusMap,voyageStatus_Tv
+                .getText().toString().trim());
         Log.d(TAG,"voyageStatus is: " + voyageStatus);
         String location = location_Tv.getText().toString().trim();
 

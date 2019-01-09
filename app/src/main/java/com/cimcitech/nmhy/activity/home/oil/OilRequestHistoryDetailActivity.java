@@ -1,6 +1,8 @@
 package com.cimcitech.nmhy.activity.home.oil;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -20,23 +22,34 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.main.EditValueActivity;
 import com.cimcitech.nmhy.adapter.all.PopupWindowAdapter;
 import com.cimcitech.nmhy.bean.oil.OilReq;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryDetailVo;
+import com.cimcitech.nmhy.bean.oil.OilRequestDetailReq;
 import com.cimcitech.nmhy.bean.oil.OilRequestHistoryDetailVo;
 import com.cimcitech.nmhy.bean.oil.OilRequestHistoryVo;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.utils.EnumUtil;
+import com.cimcitech.nmhy.utils.EventBusMessage;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ShowListValueWindow;
+import com.cimcitech.nmhy.utils.ToastUtil;
+import com.cimcitech.nmhy.utils.WhiteIcon;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +114,7 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
     private final int ESTIMATEQTY_CODE = 4;
     private final int ESTIMATEPRICE_CODE = 5;
     private final int ESTIMATEAMOUNT_CODE = 6;
+    private CatLoadingView mCatLoadingView = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,6 +145,10 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
             titleName_Tv.setText(getResources().getString(R.string.add_oil_request_detail_label));
             showContent();
             commit_Bt.setVisibility(View.VISIBLE);
+
+            //去掉estimateAmount_Tv右边的“更多”图片
+            WhiteIcon wi = new WhiteIcon(mContext,estimateAmount_Tv);
+            wi.setWhiteIcon();
         }else {//查看
             titleName_Tv.setText(getResources().getString(R.string.query_oil_request_detail_label));
             showEmpty();
@@ -238,7 +256,11 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
 
     public void initData(OilRequestHistoryDetailVo.DataBean.OilData oilData){
         if(oilData != null){
-            fuelKind_Tv.setText(oilData.getFuelKind());
+            String fuelKindStr = oilData.getFuelKind();
+            if(fuelKindStr.startsWith("FP") && fuelKindStr.length() == 4){
+                fuelKindStr = EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelKindStr);
+            }
+            fuelKind_Tv.setText(fuelKindStr);
             unit_Tv.setText(oilData.getUnit());
             estimateAmount_Tv.setText(oilData.getEstimateAmount() + "");
             estimatePrice_Tv.setText(oilData.getEstimatePrice() + "");
@@ -247,27 +269,50 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
     }
 
     @OnClick({R.id.back_iv,R.id.fuelKind_tv,R.id.taxId_tv,R.id.taxRate_tv,R.id.unit_tv,R.id.estimateQty_tv,
-            R.id.estimatePrice_tv,R.id.estimateAmount_tv})
+            R.id.estimatePrice_tv,R.id.commit_bt})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_iv:
-                finish();
+                if(isAdd && isAddInfo()){//当新增时，如有未提交的信息，提示用户是否要退出
+                    new AlertDialog.Builder(mContext)
+                            //.setTitle("提示")
+                            .setMessage(mContext.getResources().getString(R.string.ask_if_exit))
+                            .setCancelable(true)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).create().show();
+                }else {
+                    finish();
+                }
                 break;
             case R.id.fuelKind_tv:
                 String fuelKindTitle = mContext.getResources().getString(R.string.choice_label) +
                         mContext.getResources().getString(R.string.fuelKind_label);
                 List<String> contentList = new ArrayList<>();
                 if(isAdd){//新增
-                    contentList.add("轻油");
-                    contentList.add("重油");
-                    contentList.add("机油");
-                }else{
-                    for(int i = 0; i < data.size(); i++){
-                        contentList.add(data.get(i).getFuelKind());
+                    for(String key : Config.fuelTypeMap.keySet()){
+                        contentList.add(Config.fuelTypeMap.get(key));
                     }
+                    ShowListValueWindow window = new ShowListValueWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
+                    window.show();
+                }else{//查看
+                    for(int i = 0; i < data.size(); i++){
+                        String fuelTypeStr = data.get(i).getFuelKind();
+                        contentList.add(EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelTypeStr));
+                    }
+                    ShowWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
                 }
-                ShowListValueWindow window = new ShowListValueWindow(mContext,fuelKindTitle, contentList,fuelKind_Tv);
-                window.show();
                 break;
             case R.id.taxId_tv:
                 startEditActivity(Config.TEXT_TYPE_STR,getResources().getString(R.string.taxId_label),
@@ -294,12 +339,59 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
                 startEditActivity(Config.TEXT_TYPE_NUM,getResources().getString(R.string.estimatePrice_label),
                         estimatePrice_Tv.getText().toString().trim(),ESTIMATEPRICE_CODE);
                 break;
-            case R.id.estimateAmount_tv:
-                startEditActivity(Config.TEXT_TYPE_NUM,getResources().getString(R.string.estimateAmount_label),
-                        estimateAmount_Tv.getText().toString().trim(),ESTIMATEAMOUNT_CODE);
+            case R.id.commit_bt:
+                commitData();
                 break;
         }
     }
+
+    private void commitData(){
+        mCatLoadingView = new CatLoadingView();
+        mCatLoadingView.show(getSupportFragmentManager(),"");
+
+        String fuelKindStr = EnumUtil.findKeyByValueSS(Config.fuelTypeMap,fuelKind_Tv.getText().toString().trim());
+        String taxId = taxId_Tv.getText().toString().trim();
+        double taxRate = Double.parseDouble(taxRate_Tv.getText().toString().trim());
+        String unit = unit_Tv.getText().toString().trim();
+        double estimateQty = Double.parseDouble(estimateQty_Tv.getText().toString().trim());
+        double estimatePrice = Double.parseDouble(estimatePrice_Tv.getText().toString().trim());
+        final double estimateAmount = Double.parseDouble(estimateAmount_Tv.getText().toString().trim());
+        String json = new Gson().toJson(new OilRequestDetailReq(applyId,fuelKindStr,taxId,
+                taxRate,unit,estimateQty,estimatePrice,estimateAmount));
+        OkHttpUtils
+                .postString()
+                .url(Config.add_oil_request_detail_url)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mCatLoadingView.dismiss();
+                        ToastUtil.showNetError();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mCatLoadingView.dismiss();
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            if(object.getBoolean("success")){
+                                ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
+                                fuelKind_Tv.setText("");
+                                estimateAmount_Tv.setText("");
+                                estimatePrice_Tv.setText("");
+                                estimateQty_Tv.setText("");
+                            }else{
+                                ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
+                            }
+                        }catch (JSONException e){
+
+                        }
+                    }
+                });
+    }
+
     public void startEditActivity(String type,String title,String content,int requestCode){
         Intent intent2 = new Intent(mContext, EditValueActivity.class);
         intent2.putExtra("type",type);
@@ -320,16 +412,76 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
                 case TAXRATE_CODE:
                     taxRate_Tv.setText(result);
                     break;
-                case ESTIMATEQTY_CODE:
+                case ESTIMATEQTY_CODE://预计数量
                     estimateQty_Tv.setText(result);
+                    setEstimateAmount();
                     break;
-                case ESTIMATEPRICE_CODE:
+                case ESTIMATEPRICE_CODE://预计单价
                     estimatePrice_Tv.setText(result);
-                    break;
-                case ESTIMATEAMOUNT_CODE:
-                    estimateAmount_Tv.setText(result);
+                    setEstimateAmount();
                     break;
             }
+        }
+    }
+
+    public void setEstimateAmount(){
+        String estimateQty = estimateQty_Tv.getText().toString();
+        String estimatePrice = estimatePrice_Tv.getText().toString();
+        if(estimateQty.length() != 0 && estimatePrice.length() != 0){
+            double quantity = Double.parseDouble(estimateQty);
+            double price = Double.parseDouble(estimatePrice);
+            DecimalFormat df = new DecimalFormat("#.00");
+            String estimateAmount = df.format(quantity * price);
+            estimateAmount_Tv.setText(estimateAmount);
+            Log.d("estimateLog","estimateAmount is: " + estimateAmount);
+        }
+    }
+
+    public void ShowWindow(Context context, String title, final List<String> list, TextView tv) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        // 引入窗口配置文件
+        View view = inflater.inflate(R.layout.dialog_add_client_view, null);
+        view.getBackground().setAlpha(100);
+        // 创建PopupWindow对象
+        pop = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, false);
+        View pop_reward_view = view.findViewById(R.id.pop_reward_view);
+        TextView title_tv = view.findViewById(R.id.title_tv);
+        title_tv.setText(title);
+        final PopupWindowAdapter adapter = new PopupWindowAdapter(context, list);
+        ListView listView = view.findViewById(R.id.listContent);
+        listView.setAdapter(adapter);
+        // 需要设置一下此参数，点击外边可消失
+        pop.setBackgroundDrawable(new BitmapDrawable());
+        // 设置点击窗口外边窗口消失
+        pop.setOutsideTouchable(true);
+        // 设置此参数获得焦点，否则无法点击
+        pop.setFocusable(true);
+        pop_reward_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pop.dismiss();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                initData(data.get(position));
+                pop.dismiss();
+            }
+        });
+        pop.showAtLocation(tv, Gravity.CENTER, 0, 0);
+    }
+
+    public boolean isAddInfo(){
+        if(fuelKind_Tv.getText().toString().trim().length() != 0 ||
+                taxId_Tv.getText().toString().trim().length() != 0 ||
+                taxRate_Tv.getText().toString().trim().length() != 0 ||
+                unit_Tv.getText().toString().trim().length() != 0 ||
+                estimateQty_Tv.getText().toString().trim().length() != 0 ||
+                estimatePrice_Tv.getText().toString().trim().length() != 0){
+            return true;
+        }else{
+            return false;
         }
     }
 }

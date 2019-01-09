@@ -44,6 +44,13 @@ public class Config {
         put("RT03","自有");
     }};
 
+    //租用类型
+    public static final Map<String,String> fuelTypeMap = new LinkedHashMap<String,String>(){{
+        put("FP01","重油");
+        put("FP02","轻油");
+        put("FP03","机油");
+    }};
+
     //航次状态
     //这里使用LinkedHashMap，确保Map中的元素顺序与元素添加的先后顺序一致
     //若使用HashMap,则Map中的元素顺序与元素添加的先后顺序不一致
@@ -62,7 +69,7 @@ public class Config {
     }};
 
     //智能
-    public static String IP = "http://192.168.1.120:8081/nmhy/";
+    public static String IP = "http://192.168.1.120:8087/nmhy/";
 
     //public static String IP = "http://10.33.88.206:8080/nmhy/";
 
@@ -94,6 +101,9 @@ public class Config {
 
     //新增 燃油申请 主表
     public static String add_oil_request_url = IP + "fuelApply/addFuelApply";
+
+    //新增 燃油申请 子表
+    public static String add_oil_request_detail_url = IP + "fuelApplyDetail/addFuelApplyDetail";
 
     //分页查询所有航次计划
     public static String query_voyage_plan_url = IP + "voyagePlan/queryAllVoyagePlan";

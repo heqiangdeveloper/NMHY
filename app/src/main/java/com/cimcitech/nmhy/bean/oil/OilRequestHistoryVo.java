@@ -65,10 +65,19 @@ public class OilRequestHistoryVo {
             private String applyUserName;
             private String bargeName;
             private String fstatus;
-            private int ifPrepaid;
+            private String ifPrepaid;
             private String paymentName;
             private double pepaidAmount;
             private int voyagePlanId;
+            private String currency;
+
+            public String getCurrency() {
+                return currency;
+            }
+
+            public void setCurrency(String currency) {
+                this.currency = currency;
+            }
 
             public int getApplyId() {
                 return applyId;
@@ -118,11 +127,11 @@ public class OilRequestHistoryVo {
                 this.fstatus = fstatus;
             }
 
-            public int getIfPrepaid() {
+            public String getIfPrepaid() {
                 return ifPrepaid;
             }
 
-            public void setIfPrepaid(int ifPrepaid) {
+            public void setIfPrepaid(String ifPrepaid) {
                 this.ifPrepaid = ifPrepaid;
             }
 
