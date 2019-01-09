@@ -61,14 +61,14 @@ public class OilReportHistoryDetailVo {
             private String fuelKind;
             private String unit;
             private double realStoreQty;
-            private long realyAmount;
-            private long taxfreeRealyAmount;
+            private double realyAmount;
+            private double taxfreeRealyAmount;
             private double addFuelQty;
-            private long addAmount;
+            private double addAmount;
             private double taxfreeAddAmount;
             private double consumeQuantity;
             private double taxfreeConsumeQuantity;
-            private long consumeAmount;
+            private double consumeAmount;
 
             public String getFuelKind() {
                 return fuelKind;
@@ -94,7 +94,7 @@ public class OilReportHistoryDetailVo {
                 this.realStoreQty = realStoreQty;
             }
 
-            public long getRealyAmount() {
+            public double getRealyAmount() {
                 return realyAmount;
             }
 
@@ -102,7 +102,7 @@ public class OilReportHistoryDetailVo {
                 this.realyAmount = realyAmount;
             }
 
-            public long getTaxfreeRealyAmount() {
+            public double getTaxfreeRealyAmount() {
                 return taxfreeRealyAmount;
             }
 
@@ -118,7 +118,7 @@ public class OilReportHistoryDetailVo {
                 this.addFuelQty = addFuelQty;
             }
 
-            public long getAddAmount() {
+            public double getAddAmount() {
                 return addAmount;
             }
 
@@ -150,7 +150,7 @@ public class OilReportHistoryDetailVo {
                 this.taxfreeConsumeQuantity = taxfreeConsumeQuantity;
             }
 
-            public long getConsumeAmount() {
+            public double getConsumeAmount() {
                 return consumeAmount;
             }
 
