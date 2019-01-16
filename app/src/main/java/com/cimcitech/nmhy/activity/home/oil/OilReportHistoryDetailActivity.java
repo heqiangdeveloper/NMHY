@@ -123,12 +123,13 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
         more_Tv.setVisibility(View.VISIBLE);
         popup_menu_Ll.setVisibility(View.GONE);
         if(isAdd){//新增
-            addWatcher(fuelKind_Tv);addWatcher(unit_Tv);addWatcher(realStoreQty_Tv);
-            addWatcher(realyAmount_Tv);addWatcher(taxfreeRealyAmount_Tv);addWatcher(addAmount_Tv);
-            addWatcher(addFuelQty_Tv);addWatcher(taxfreeAddAmount_Tv);
             titleName_Tv.setText(getResources().getString(R.string.add_oil_report_detail_label));
             showContent();
             commit_Bt.setVisibility(View.VISIBLE);
+            addWatcher(fuelKind_Tv);addWatcher(unit_Tv);addWatcher(realStoreQty_Tv);
+            addWatcher(realyAmount_Tv);addWatcher(taxfreeRealyAmount_Tv);addWatcher(addAmount_Tv);
+            addWatcher(addFuelQty_Tv);addWatcher(taxfreeAddAmount_Tv);
+            fuelKind_Tv.setText("");
         }else {//查看
             titleName_Tv.setText(getResources().getString(R.string.query_oil_report_detail_label));
             showEmpty();
@@ -220,8 +221,8 @@ public class OilReportHistoryDetailActivity extends MyBaseActivity {
                                     showWhiteIcon();
                                     for (int i = 0; i < oilReportHistoryDetailVo.getData().getList().size(); i++) {
                                         data.add(oilReportHistoryDetailVo.getData().getList().get(i));
-                                        initData(data.get(0));
                                     }
+                                    initData(data.get(0));
                                 }
                             }
                         }

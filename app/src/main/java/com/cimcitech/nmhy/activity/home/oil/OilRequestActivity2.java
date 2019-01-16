@@ -176,7 +176,7 @@ public class OilRequestActivity2 extends MyBaseActivity {
                 empty_Rl.setVisibility(View.VISIBLE);
                 content_Ll.setVisibility(View.GONE);
             }
-        }else {
+        }else {//查看
             commit_Bt.setClickable(true);
             commit_Bt.setBackground(getResources().getDrawable(R.drawable.shape_login_button_on));
 

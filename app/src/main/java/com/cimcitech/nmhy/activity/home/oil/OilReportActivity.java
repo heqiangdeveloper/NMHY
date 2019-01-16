@@ -215,8 +215,8 @@ public class OilReportActivity extends MyBaseActivity {
             empty_Rl.setVisibility(View.GONE);
             content_Ll.setVisibility(View.VISIBLE);
             time_Tv.setText(oilData.getReportTime() + "");
-            voyageStatus_Tv.setText(EnumUtil.findKeyByValueSI(Config.voyageStatusMap,Integer
-                    .parseInt(oilData.getVoyageStatus())));
+//            voyageStatus_Tv.setText(EnumUtil.findKeyByValueSI(Config.voyageStatusMap,Integer
+//                    .parseInt(oilData.getVoyageStatus())));
             location_Tv.setText(oilData.getLocation() + "");
             longitude_Tv.setText(oilData.getLongitude() + "");
             latitude_Tv.setText(oilData.getLatitude() + "");

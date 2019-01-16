@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         bbL.setMsg(2,"NEW");
 
         initBBL();
-        bbL.getBottomItem(0).callOnClick();//选中消息页
+        bbL.getBottomItem(1).callOnClick();//选中消息页
     }
 
     public void initBBL(){

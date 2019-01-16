@@ -174,8 +174,8 @@ public class ShipPlanActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 ShipPlanVo.DataBean.ListBean bean = (ShipPlanVo.DataBean.ListBean) adapter.getAll().get(position);
-                Intent intent = new Intent(mContext, ShipPlanDetailActivity.class);
-                intent.putExtra("shipDetailData",bean);
+                Intent intent = new Intent(mContext, ShipPlanDetailActivity2.class);
+                intent.putExtra("voyagePlanId",bean.getVoyagePlanId());
                 startActivity(intent);
                 //finish();
             }

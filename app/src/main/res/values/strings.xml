@@ -24,6 +24,7 @@
     <string name="query_oil_request_detail_label">查看燃油申请明细</string>
 
     <string name="add_oil_request_detail_label">新增燃油申请明细</string>
+    <string name="add_oil_report_detail_label2">燃油动态明细</string>
     <string name="add_oil_report_detail_label">新增燃油动态明细</string>
     <string name="item_oil_report_history">燃油动态</string>
     <string name="item_oil_report_history_detail">燃油上报历史详情</string>
@@ -54,6 +55,7 @@
     <string name="yes_label">是</string>
     <string name="no_label">否</string>
     <string name="cancel_label">取消</string>
+    <string name="sure_label">确定</string>
     <!--申请明细-->
     <string name="fuelKind_label">品种</string>
     <string name="taxId_label">税种</string>
@@ -71,6 +73,9 @@
     <string name="voyageStatus_label">航次状态</string>
     <string name="longitude_label">经度</string>
     <string name="latitude_label">纬度</string>
+    <string name="add_oil_data_label">待报燃油动态</string>
+    <string name="history_oil_data_label">已报燃油动态</string>
+    <string name="history_oil_data_detail_label">已报燃油动态详情</string>
     <!--燃油上报明细-->
     <string name="unit_value_ton">吨</string>
     <string name="unit_value_bucket">桶</string>
@@ -85,7 +90,7 @@
     <string name="taxfreeConsumeQuantity_label">累计消耗金额(不含税)</string>
     <string name="consumeAmount_label">累计消耗金额(含税)</string>
 
-    <string name="no_data_warn">暂无数据</string>
+    <string name="no_data_warn">暂无数据或网络异常</string>
     <string name="commit_success_msg">提交成功</string>
     <string name="commit_fail_msg">提交失败</string>
 
@@ -99,4 +104,32 @@
     <string name="rentType_label">租用类型</string>
     <string name="distance_label">线路距离</string>
     <string name="ask_if_exit">信息还未提交或保存，是否退出？</string>
+    <string name="add_oil_amount_hint_label">请输入加油量</string>
+    <string name="add_oil_dialog_title">是否提交以下信息？</string>
+
+    <string name="report_ship_plan_label">汇报详情</string>
+    <string name="portName_label">码头名称</string>
+    <string name="jobTypeValue_label">作业类型</string>
+    <string name="voyageStatusDesc_label">航次状态</string>
+    <string name="estimatedTime_label">预计时间</string>
+    <string name="occurTime_label">发生时间</string>
+    <string name="reportTime_label">报告时间</string>
+    <string name="reason_label">原因</string>
+    <string name="speed_label">速度(节)</string>
+    <string name="weather_label">天气</string>
+    <string name="feedback_label">反馈信息</string>
+    <string name="remark_label">备注</string>
+    <string name="speed_hint">请填写速度</string>
+    <string name="weather_hint">请填写天气</string>
+    <string name="reason_hint">请填写原因</string>
+    <string name="feedback_hint">请填写反馈信息</string>
+    <string name="remark_hint">请填写备注</string>
+
+    <string name="ic_email">&#xe087;</string>
+    <string name="ic_add">&#xe006;</string>
+    <string name="ic_close">&#xe048;</string>
+    <string name="ic_keyboard_arrow_down">&#xe0c5;</string>
+    <string name="ic_keyboard_arrow_left">&#xe0c6;</string>
+    <string name="ic_keyboard_arrow_right">&#xe0c7;</string>
+    <string name="ic_folder">&#xe09d;</string>
 </resources>

@@ -32,4 +32,5 @@ public class ShipPlanReq {
             this.fstatus = fstatus;
         }
     }
+
 }

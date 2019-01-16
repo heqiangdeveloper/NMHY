@@ -1,13 +1,18 @@
-package com.cimcitech.nmhy.bean.oil;
+package com.cimcitech.nmhy.bean.plan;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by qianghe on 2018/12/20.
+ * Created by qianghe on 2019/1/3.
  */
 
-public class OilReportHistoryDetailVo {
+public class ShipPlanDetailVo {
     private DataBean data;
+    private int id;
     private String msg;
     private boolean success;
 
@@ -17,6 +22,14 @@ public class OilReportHistoryDetailVo {
 
     public void setData(DataBean data) {
         this.data = data;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMsg() {
@@ -54,128 +67,110 @@ public class OilReportHistoryDetailVo {
         private int size;
         private int startRow;
         private int total;
-        private List<OilData> list;
+        private List<ListBean> list;
         private List<Integer> navigatepageNums;
 
-        public static class OilData{
-            private String fuelKind;
-            private String fuelKindName;
-            private String unit;
-            private String unitName;
-            private double realStoreQty;
-            private double realyAmount;
-            private double taxfreeRealyAmount;
-            private double addFuelQty;
-            private double addAmount;
-            private double taxfreeAddAmount;
-            private double consumeQuantity;
-            private double taxfreeConsumeQuantity;
-            private double consumeAmount;
+       public static class ListBean implements Serializable{
+           private long dynamicId;
+           private long voyagePlanId;
+           private int currPortId;
+           private String portName;
+           private int dispNo;
+           private String jobType;
+           private String jobTypeValue;
+           private String voyageStatus;
+           private String voyageStatusDesc;
+           private String reason;
+           private  String location;
 
-            public String getFuelKindName() {
-                return fuelKindName;
-            }
+           public String getJobTypeValue() {
+               return jobTypeValue;
+           }
 
-            public void setFuelKindName(String fuelKindName) {
-                this.fuelKindName = fuelKindName;
-            }
+           public void setJobTypeValue(String jobTypeValue) {
+               this.jobTypeValue = jobTypeValue;
+           }
 
-            public String getUnitName() {
-                return unitName;
-            }
+           public long getDynamicId() {
+               return dynamicId;
+           }
 
-            public void setUnitName(String unitName) {
-                this.unitName = unitName;
-            }
+           public void setDynamicId(long dynamicId) {
+               this.dynamicId = dynamicId;
+           }
 
-            public String getFuelKind() {
-                return fuelKind;
-            }
+           public long getVoyagePlanId() {
+               return voyagePlanId;
+           }
 
-            public void setFuelKind(String fuelKind) {
-                this.fuelKind = fuelKind;
-            }
+           public void setVoyagePlanId(long voyagePlanId) {
+               this.voyagePlanId = voyagePlanId;
+           }
 
-            public String getUnit() {
-                return unit;
-            }
+           public int getCurrPortId() {
+               return currPortId;
+           }
 
-            public void setUnit(String unit) {
-                this.unit = unit;
-            }
+           public void setCurrPortId(int currPortId) {
+               this.currPortId = currPortId;
+           }
 
-            public double getRealStoreQty() {
-                return realStoreQty;
-            }
+           public String getPortName() {
+               return portName;
+           }
 
-            public void setRealStoreQty(double realStoreQty) {
-                this.realStoreQty = realStoreQty;
-            }
+           public void setPortName(String portName) {
+               this.portName = portName;
+           }
 
-            public double getRealyAmount() {
-                return realyAmount;
-            }
+           public int getDispNo() {
+               return dispNo;
+           }
 
-            public void setRealyAmount(long realyAmount) {
-                this.realyAmount = realyAmount;
-            }
+           public void setDispNo(int dispNo) {
+               this.dispNo = dispNo;
+           }
 
-            public double getTaxfreeRealyAmount() {
-                return taxfreeRealyAmount;
-            }
+           public String getJobType() {
+               return jobType;
+           }
 
-            public void setTaxfreeRealyAmount(long taxfreeRealyAmount) {
-                this.taxfreeRealyAmount = taxfreeRealyAmount;
-            }
+           public void setJobType(String jobType) {
+               this.jobType = jobType;
+           }
 
-            public double getAddFuelQty() {
-                return addFuelQty;
-            }
+           public String getVoyageStatus() {
+               return voyageStatus;
+           }
 
-            public void setAddFuelQty(double addFuelQty) {
-                this.addFuelQty = addFuelQty;
-            }
+           public void setVoyageStatus(String voyageStatus) {
+               this.voyageStatus = voyageStatus;
+           }
 
-            public double getAddAmount() {
-                return addAmount;
-            }
+           public String getVoyageStatusDesc() {
+               return voyageStatusDesc;
+           }
 
-            public void setAddAmount(long addAmount) {
-                this.addAmount = addAmount;
-            }
+           public void setVoyageStatusDesc(String voyageStatusDesc) {
+               this.voyageStatusDesc = voyageStatusDesc;
+           }
 
-            public double getTaxfreeAddAmount() {
-                return taxfreeAddAmount;
-            }
+           public String getReason() {
+               return reason;
+           }
 
-            public void setTaxfreeAddAmount(double taxfreeAddAmount) {
-                this.taxfreeAddAmount = taxfreeAddAmount;
-            }
+           public void setReason(String reason) {
+               this.reason = reason;
+           }
 
-            public double getConsumeQuantity() {
-                return consumeQuantity;
-            }
+           public String getLocation() {
+               return location;
+           }
 
-            public void setConsumeQuantity(double consumeQuantity) {
-                this.consumeQuantity = consumeQuantity;
-            }
-
-            public double getTaxfreeConsumeQuantity() {
-                return taxfreeConsumeQuantity;
-            }
-
-            public void setTaxfreeConsumeQuantity(double taxfreeConsumeQuantity) {
-                this.taxfreeConsumeQuantity = taxfreeConsumeQuantity;
-            }
-
-            public double getConsumeAmount() {
-                return consumeAmount;
-            }
-
-            public void setConsumeAmount(long consumeAmount) {
-                this.consumeAmount = consumeAmount;
-            }
-        }
+           public void setLocation(String location) {
+               this.location = location;
+           }
+       }
 
         public int getEndRow() {
             return endRow;
@@ -321,11 +316,11 @@ public class OilReportHistoryDetailVo {
             this.total = total;
         }
 
-        public List<OilData> getList() {
+        public List<ListBean> getList() {
             return list;
         }
 
-        public void setList(List<OilData> list) {
+        public void setList(List<ListBean> list) {
             this.list = list;
         }
 

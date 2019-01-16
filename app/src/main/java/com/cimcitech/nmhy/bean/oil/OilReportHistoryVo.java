@@ -64,8 +64,17 @@ public class OilReportHistoryVo {
             private String location;
             private double latitude;
             private double longitude;
-            private String voyageStatus;
+            private int voyageStatus;
+            private String statusName;
             private String reportTime;
+
+            public String getStatusName() {
+                return statusName;
+            }
+
+            public void setStatusName(String statusName) {
+                this.statusName = statusName;
+            }
 
             public long getDynamicinfoId() {
                 return dynamicinfoId;
@@ -107,11 +116,11 @@ public class OilReportHistoryVo {
                 this.longitude = longitude;
             }
 
-            public String getVoyageStatus() {
+            public int getVoyageStatus() {
                 return voyageStatus;
             }
 
-            public void setVoyageStatus(String voyageStatus) {
+            public void setVoyageStatus(int voyageStatus) {
                 this.voyageStatus = voyageStatus;
             }
 

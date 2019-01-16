@@ -136,15 +136,18 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
 
     public void initView(){
         if(isAdd){//新增
-            addWatcher(fuelKind_Tv);
-            addWatcher(unit_Tv);
-            addWatcher(estimateQty_Tv);
-            addWatcher(estimatePrice_Tv);
-            addWatcher(estimateAmount_Tv);
-
             titleName_Tv.setText(getResources().getString(R.string.add_oil_request_detail_label));
             showContent();
             commit_Bt.setVisibility(View.VISIBLE);
+
+            addWatcher(fuelKind_Tv);
+            addWatcher(unit_Tv);
+            addWatcher(taxId_Tv);
+            addWatcher(taxRate_Tv);
+            addWatcher(estimateQty_Tv);
+            addWatcher(estimatePrice_Tv);
+            addWatcher(estimateAmount_Tv);
+            fuelKind_Tv.setText("");//防止以上的addWatcher()未被触发
 
             //去掉estimateAmount_Tv右边的“更多”图片
             WhiteIcon wi = new WhiteIcon(mContext,estimateAmount_Tv);
@@ -188,6 +191,8 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
     public boolean isEmpty(){
         if(fuelKind_Tv.getText().toString().trim().length() != 0 &&
                 unit_Tv.getText().toString().trim().length() != 0 &&
+                taxId_Tv.getText().toString().trim().length() != 0 &&
+                taxRate_Tv.getText().toString().trim().length() != 0 &&
                 estimateQty_Tv.getText().toString().trim().length() != 0 &&
                 estimatePrice_Tv.getText().toString().trim().length() != 0 &&
                 estimateAmount_Tv.getText().toString().trim().length() != 0){

@@ -33,6 +33,12 @@ public class Config {
     public static final List<String> currencyList = new ArrayList<String>(Arrays.asList
             ("人民币","美元"));
 
+    //单位
+    public static final Map<String,Integer> unitMap = new LinkedHashMap<String,Integer>(){{
+        put("桶",2);
+        put("吨",8);
+    }};
+
     //燃油供应商
     public static final List<String> supplyList = new ArrayList<String>(Arrays.asList
             ("中石油","中石化","中海油"));
@@ -44,7 +50,7 @@ public class Config {
         put("RT03","自有");
     }};
 
-    //租用类型
+    //燃油类型
     public static final Map<String,String> fuelTypeMap = new LinkedHashMap<String,String>(){{
         put("FP01","重油");
         put("FP02","轻油");
@@ -69,7 +75,7 @@ public class Config {
     }};
 
     //智能
-    public static String IP = "http://192.168.1.120:8087/nmhy/";
+    public static String IP = "http://192.168.1.120:8081/nmhy/";
 
     //public static String IP = "http://10.33.88.206:8080/nmhy/";
 
@@ -105,7 +111,13 @@ public class Config {
     //新增 燃油申请 子表
     public static String add_oil_request_detail_url = IP + "fuelApplyDetail/addFuelApplyDetail";
 
+    //新增 燃油动态  主表+子表 一起添加
+    public static String add_oil_report_main_url = IP + "shipFualDynamicInfo/addShipFualDynamicInfos";
+
     //分页查询所有航次计划
     public static String query_voyage_plan_url = IP + "voyagePlan/queryAllVoyagePlan";
+
+    //分页查询指定的航次计划
+    public static String query_voyage_plan_detail_url = IP + "voyageDynamicInfo/queryAllVoyageDynamicInfo";
 
 }
