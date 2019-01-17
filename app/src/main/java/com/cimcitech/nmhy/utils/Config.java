@@ -75,9 +75,9 @@ public class Config {
     }};
 
     //智能
-    public static String IP = "http://192.168.1.120:8081/nmhy/";
+    //public static String IP = "http://192.168.1.120:8081/nmhy/";
 
-    //public static String IP = "http://10.33.88.206:8080/nmhy/";
+    public static String IP = "http://10.33.155.214:8081/nmhy/";
 
     //多式联运
     //public static String IP = "http://10.33.176.239:8087/nmhy/";

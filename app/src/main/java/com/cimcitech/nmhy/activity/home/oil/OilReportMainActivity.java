@@ -139,24 +139,6 @@ public class OilReportMainActivity extends MyBaseActivity {
     @Bind(R.id.content_cl)
     CoordinatorLayout contentCl;
 
-    //dialog
-//    @Bind(R.id.time_item_tv)
-//    TextView time_item_Tv;
-//    @Bind(R.id.status_item_tv)
-//    TextView status_item_Tv;
-//    @Bind(R.id.location_item_tv)
-//    TextView location_item_Tv;
-//    @Bind(R.id.longitude_item_tv)
-//    TextView longitude_item_Tv;
-//    @Bind(R.id.latitude_item_tv)
-//    TextView latitude_item_Tv;
-//    @Bind(R.id.oil1_item_tv)
-//    TextView oil1_item_Tv;
-//    @Bind(R.id.oil2_item_tv)
-//    TextView oil2_item_Tv;
-//    @Bind(R.id.oil3_item_tv)
-//    TextView oil3_item_Tv;
-
     private LinearLayoutManager manager;
     private OilReportAdapter adapter;
     private Context mContext = OilReportMainActivity.this;
@@ -264,7 +246,6 @@ public class OilReportMainActivity extends MyBaseActivity {
                 addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
                 initContent();
                 startLocationService();
-
             }else {//已报
                 contentSv.setVisibility(View.GONE);
                 contentCl.setVisibility(View.VISIBLE);

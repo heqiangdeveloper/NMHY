@@ -1,73 +1,38 @@
 package com.cimcitech.nmhy.activity.home.plan;
 
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.SimpleArrayMap;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bin.david.form.core.TableConfig;
 import com.bin.david.form.data.CellInfo;
 import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat;
-import com.bin.david.form.data.format.bg.IBackgroundFormat;
-import com.bin.david.form.data.format.bg.ICellBackgroundFormat;
-import com.bin.david.form.data.format.draw.ImageResDrawFormat;
 import com.bin.david.form.data.style.FontStyle;
-import com.bin.david.form.data.table.MapTableData;
 import com.bin.david.form.data.table.TableData;
 import com.bin.david.form.listener.OnColumnItemClickListener;
 import com.bin.david.form.utils.DensityUtils;
 import com.cimcitech.nmhy.R;
-import com.cimcitech.nmhy.adapter.plan.ShipPlanAdapter;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDetailReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDetailVo;
-import com.cimcitech.nmhy.bean.plan.ShipPlanReq;
-import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.bean.plan.ShipTableBean;
 import com.cimcitech.nmhy.utils.Config;
-import com.cimcitech.nmhy.utils.IconTreeItemHolder;
-import com.cimcitech.nmhy.utils.JsonHelper;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.google.gson.Gson;
-import com.google.gson.internal.bind.DateTypeAdapter;
 import com.roger.catloadinglibrary.CatLoadingView;
-import com.unnamed.b.atv.model.TreeNode;
-import com.unnamed.b.atv.view.AndroidTreeView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -237,8 +202,12 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
             tv.setText(portNameList.get(i));
         }
 
-        GradientDrawable mm= (GradientDrawable)portName1_Tv.getBackground();
-        mm.setColor(Color.RED);
+        GradientDrawable mm1 = (GradientDrawable)portName1_Tv.getBackground();
+        mm1.setColor(Color.RED);
+        GradientDrawable mm2 = (GradientDrawable)portName2_Tv.getBackground();
+        mm2.setColor(Color.GREEN);
+        GradientDrawable mm3 = (GradientDrawable)portName3_Tv.getBackground();
+        mm3.setColor(Color.GREEN);
 
         final List<ShipTableBean> codeList = new ArrayList<ShipTableBean>();
         ShipPlanDetailVo.DataBean.ListBean item = null;
@@ -297,9 +266,14 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
         final TableData<ShipTableBean> tableData = new TableData<ShipTableBean>("测试标题",codeList,
                 portName, jobTypeValue,voyageStatusDesc);
         table.getConfig().setShowTableTitle(false);
+        //设置是否显示顶部序号列
+        table.getConfig().setShowXSequence(false);
+        //设置是否显示左侧序号列
+        table.getConfig().setShowYSequence(false);
 
-        portName.setAutoMerge(true);
-        jobTypeValue.setAutoMerge(true);
+        //是否自动合并单元格
+        //portName.setAutoMerge(true);
+        //jobTypeValue.setAutoMerge(true);
 
         table.setTableData(tableData);
         FontStyle style = new FontStyle();
@@ -327,41 +301,6 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
             }
         });
         //table.setZoom(true,3,1);
-
-
-
-//        List<ShipTableBean> list = new ArrayList<>();
-//        Button button = new Button(this);
-//        button.setWidth(30);
-//        button.setHeight(15);
-//        button.setText("编辑");
-//        list.add(new ShipTableBean("上海洋山","空放","航次开始",false));
-//        list.add(new ShipTableBean("上海洋山2","空放2","航次开始2",false));
-//        list.add(new ShipTableBean("上海洋山3","空放3","航次开始3",true));
-//        list.add(new ShipTableBean("上海洋山4","空放4","航次开始4",false));
-//
-//        table.setData(list);
-//        table.getConfig().setContentStyle(new FontStyle(50, Color.BLUE));
-//
-//        int size1 = DensityUtils.dp2px(this,15); //指定图标大小
-//        Column<Boolean> checkColumn = new Column<>("勾选", "isCheck",new ImageResDrawFormat<Boolean>(size1,size1) {
-//            @Override
-//            protected Context getContext() {
-//                return mContext;
-//            }
-//
-//            @Override
-//            protected int getResourceID(Boolean isCheck, String value, int position) {
-//                if(isCheck){
-//                    return R.mipmap.check24;
-//                }
-//                return 0;
-//            }
-//        });
-//
-//        //Column groupColumn = new Column("组合",nameColumn,ageColumn);
-//        TableData<ShipTableBean> tableData = new TableData<ShipTableBean>("用户表",null,null,
-//                checkColumn);
     }
 
     public void showName(int position, boolean selectedState){
