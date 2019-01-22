@@ -112,14 +112,14 @@ public class OilReportMainDetailActivity extends MyBaseActivity {
     TextView oilUnit2Tv;
     @Bind(R.id.oilUnit3_tv)
     TextView oilUnit3Tv;
-    @Bind(R.id.oilAmount1_et)
-    EditText oilAmount1Et;
-    @Bind(R.id.oilAmount2_et)
-    EditText oilAmount2Et;
-    @Bind(R.id.oilAmount3_et)
-    EditText oilAmount3Et;
     @Bind(R.id.commit_bt)
     Button commitBt;
+    @Bind(R.id.oilAmount1_et)
+    EditText oilAmount1_Et;
+    @Bind(R.id.oilAmount2_et)
+    EditText oilAmount2_Et;
+    @Bind(R.id.oilAmount3_et)
+    EditText oilAmount3_Et;
 
     private LinearLayoutManager manager;
     private OilReportAdapter adapter;
@@ -138,7 +138,7 @@ public class OilReportMainDetailActivity extends MyBaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oil_report_main);
+        setContentView(R.layout.activity_oil_report_main2);
         ButterKnife.bind(this);
 
         bean = (OilReportHistoryVo.DataBean.ListBean)getIntent().getSerializableExtra("oilData");
@@ -177,29 +177,38 @@ public class OilReportMainDetailActivity extends MyBaseActivity {
 
         String fuelKind = "";
         String unitName = "";
+        double realStoreQty = 0;
+        double realyAmount = 0;
         double addFuelQty = 0;
+        double addAmount = 0;
+
+        OilReportHistoryDetailVo.DataBean.OilData item = null;
         for(int i = 0; i < data.size(); i++){
-            fuelKind = data.get(i).getFuelKindName();
-            unitName = data.get(i).getUnitName();
-            addFuelQty = data.get(i).getAddFuelQty();
+            item = data.get(i);
+            fuelKind = item.getFuelKindName();
+            unitName = item.getUnitName();
+            realStoreQty = item.getRealStoreQty();
+            realyAmount = item.getRealyAmount();
+            addFuelQty = item.getAddFuelQty();
+            addAmount = item.getAddAmount();
             switch (i){
                 case 0:
                     oilType1Tv.setText(fuelKind);
                     oilUnit1Tv.setText(unitName);
-                    oilAmount1Et.setText(addFuelQty + "");
-                    oilAmount1Et.setEnabled(false);
+                    oilAmount1_Et.setText(realStoreQty + "");
+                    oilAmount1_Et.setEnabled(false);
                     break;
                 case 1:
                     oilType2Tv.setText(fuelKind);
                     oilUnit2Tv.setText(unitName);
-                    oilAmount2Et.setText(addFuelQty + "");
-                    oilAmount2Et.setEnabled(false);
+                    oilAmount2_Et.setText(realStoreQty + "");
+                    oilAmount2_Et.setEnabled(false);
                     break;
                 case 2:
                     oilType3Tv.setText(fuelKind);
                     oilUnit3Tv.setText(unitName);
-                    oilAmount3Et.setText(addFuelQty + "");
-                    oilAmount3Et.setEnabled(false);
+                    oilAmount3_Et.setText(realStoreQty + "");
+                    oilAmount3_Et.setEnabled(false);
                     break;
             }
         }

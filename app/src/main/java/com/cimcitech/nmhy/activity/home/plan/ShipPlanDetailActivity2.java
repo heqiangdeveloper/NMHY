@@ -21,15 +21,9 @@ import com.bin.david.form.data.table.TableData;
 import com.bin.david.form.listener.OnColumnItemClickListener;
 import com.bin.david.form.utils.DensityUtils;
 import com.cimcitech.nmhy.R;
-import com.cimcitech.nmhy.bean.plan.ShipPlanDetailReq;
-import com.cimcitech.nmhy.bean.plan.ShipPlanDetailVo;
+import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.bean.plan.ShipTableBean;
-import com.cimcitech.nmhy.utils.Config;
-import com.cimcitech.nmhy.utils.ToastUtil;
-import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,10 +66,8 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
     Button commit_Bt;
 
     private Context mContext = ShipPlanDetailActivity2.this;
-    private List<ShipPlanDetailVo.DataBean.ListBean> data = new ArrayList<>();
-    private int pageNum = 1;
-    private ShipPlanDetailVo shipPlanDetailVo = null;
-    private long voyagePlanId = -1;
+    private ArrayList<ShipPlanVo.DataBean.VoyageDynamicInfosBean> data = null;
+
     private CatLoadingView mCatLoadingView = null;
 
     private SmartTable<ShipTableBean> table;
@@ -91,11 +83,11 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_plan_detail);
         ButterKnife.bind(this);
 
-        voyagePlanId = getIntent().getLongExtra("voyagePlanId",-1);
+        data = getIntent().getParcelableArrayListExtra("voyageDynamicInfosBean");
         initTitle();
         table = (SmartTable<ShipTableBean>)findViewById(R.id.table);
         hideView();
-        getData();
+        initData();
     }
 
     public void hideView(){
@@ -119,56 +111,15 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
                 break;
             case R.id.commit_bt:
                 Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
-                ShipPlanDetailVo.DataBean.ListBean item = data.get(2);
+                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(2);
                 i.putExtra("item",item);
                 startActivity(i);
                 break;
         }
     }
 
-    public void getData() {
-        mCatLoadingView = new CatLoadingView();
-        mCatLoadingView.show(getSupportFragmentManager(),"");
-        String json = new Gson().toJson(new ShipPlanDetailReq(pageNum,10,"",new ShipPlanDetailReq
-                .VoyageDynamicInfoBean(voyagePlanId)));
-        OkHttpUtils
-                .postString()
-                .url(Config.query_voyage_plan_detail_url)
-                .content(json)
-                .mediaType(MediaType.parse("application/json; charset=utf-8"))
-                .build()
-                .execute(
-                        new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                mCatLoadingView.dismiss();
-                                ToastUtil.showNetError();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                mCatLoadingView.dismiss();
-                                shipPlanDetailVo = new Gson().fromJson(response, ShipPlanDetailVo.class);
-                                if (shipPlanDetailVo != null) {
-                                    if (shipPlanDetailVo.isSuccess()) {
-                                        if (shipPlanDetailVo.getData().getList() != null && shipPlanDetailVo.getData().getList().size() > 0) {
-                                            for (int i = 0; i < shipPlanDetailVo.getData().getList().size(); i++) {
-                                                data.add(shipPlanDetailVo.getData().getList().get(i));
-                                            }
-                                            initData();
-                                        }
-                                    }
-                                } else {
-
-                                }
-                            }
-                        }
-                );
-    }
-
     public void initData(){
         showView();
-
         List<String> portNameList = new ArrayList<>();
         int portId0 = data.get(0).getCurrPortId();
         portNameList.add(data.get(0).getPortName());
@@ -210,7 +161,7 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
         mm3.setColor(Color.GREEN);
 
         final List<ShipTableBean> codeList = new ArrayList<ShipTableBean>();
-        ShipPlanDetailVo.DataBean.ListBean item = null;
+        ShipPlanVo.DataBean.VoyageDynamicInfosBean item = null;
         for(int i = 0; i < data.size();i++){
             item = data.get(i);
 //            codeList.add(new ShipTableBean(item.getPortName(),item.getJobTypeValue(),item
@@ -302,20 +253,4 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
         });
         //table.setZoom(true,3,1);
     }
-
-    public void showName(int position, boolean selectedState){
-        List<String> rotorIdList = portName.getDatas();
-        if(position >-1){
-            String rotorTemp = rotorIdList.get(position);
-            if(selectedState && !name_selected.contains(rotorTemp)){            //当前操作是选中，并且“所有选中的姓名的集合”中没有该记录，则添加进去
-                name_selected.add(rotorTemp);
-            }else if(!selectedState && name_selected.contains(rotorTemp)){     // 当前操作是取消选中，并且“所有选中姓名的集合”总含有该记录，则删除该记录
-                name_selected.remove(rotorTemp);
-            }
-        }
-        for(String s:name_selected){
-            System.out.print(s + " -- ");
-        }
-    }
-
 }

@@ -18,18 +18,18 @@ public class ShipTableBean implements Serializable{
 //        this.oprate = oprate;
 //    }
 
-    private ShipPlanDetailVo.DataBean.ListBean item;
+    private ShipPlanVo.DataBean.VoyageDynamicInfosBean item;
     private String operate;
-    public ShipTableBean(ShipPlanDetailVo.DataBean.ListBean item,String operate){
+    public ShipTableBean(ShipPlanVo.DataBean.VoyageDynamicInfosBean item,String operate){
         this.item = item;
         this.operate = operate;
     }
 
-    public ShipPlanDetailVo.DataBean.ListBean getItem() {
+    public ShipPlanVo.DataBean.VoyageDynamicInfosBean getItem() {
         return item;
     }
 
-    public void setItem(ShipPlanDetailVo.DataBean.ListBean item) {
+    public void setItem(ShipPlanVo.DataBean.VoyageDynamicInfosBean item) {
         this.item = item;
     }
 

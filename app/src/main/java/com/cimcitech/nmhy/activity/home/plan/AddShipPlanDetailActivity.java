@@ -19,12 +19,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -44,16 +46,25 @@ import com.cimcitech.nmhy.activity.main.ApkApplication;
 import com.cimcitech.nmhy.baidu.LocationService;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDetailReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDetailVo;
+import com.cimcitech.nmhy.bean.plan.ShipPlanDynamicReq;
+import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.bean.plan.ShipTableBean;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.utils.DateTool;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ToastUtil;
+import com.cimcitech.nmhy.widget.DateTimePickDialog;
 import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -123,8 +134,11 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     private List<ShipPlanDetailVo.DataBean.ListBean> data = new ArrayList<>();
     private int pageNum = 1;
     private ShipPlanDetailVo shipPlanDetailVo = null;
-    private ShipPlanDetailVo.DataBean.ListBean item = null;
+    private ShipPlanVo.DataBean.VoyageDynamicInfosBean item = null;
     private CatLoadingView mCatLoadingView = null;
+    private Calendar calendar;
+    private SimpleDateFormat sdf;
+    private String nowTimeStr = "";
 
     Handler handler = new Handler(){
         @Override
@@ -167,8 +181,9 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_ship_plan_detail);
         ButterKnife.bind(this);
 
-        item = (ShipPlanDetailVo.DataBean.ListBean)getIntent().getSerializableExtra("item");
+        item = (ShipPlanVo.DataBean.VoyageDynamicInfosBean)getIntent().getParcelableExtra("item");
         initTitle();
+        calendar = Calendar.getInstance();
         //getData();
     }
 
@@ -237,10 +252,58 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     }
 
     public void initContent(){
-
+        nowTimeStr = DateTool.getSystemDate();
+        estimatedTime_Tv.setText(nowTimeStr);
+        occurTime_Tv.setText(nowTimeStr);
+        reportTime_Tv.setText(nowTimeStr);
     }
 
-    @OnClick({R.id.back_iv,R.id.location_tv,R.id.commit_bt})
+    private void showSelectDateDialog2() {
+        int year = 0;
+        int month = 0;
+        int day = 0;
+        int hour= 0;
+        int minute = 0;
+
+        String str = occurTime_Tv.getText().toString();
+        String strDate = str.split(" ")[0];
+        String strTime = str.split(" ")[1];
+        year = Integer.parseInt(strDate.substring(0,4));//年
+        month = Integer.parseInt(strDate.substring(5,7)) - 1;//月
+        day = Integer.parseInt(strDate.substring(8,10));//日
+
+        hour = Integer.parseInt(strTime.split(":")[0]);//时
+        minute = Integer.parseInt(strTime.split(":")[1]);//分
+
+        new DateTimePickDialog(mContext,year,month,day,hour,minute)
+                .setOnDateTimeSetListener
+                        (new DateTimePickDialog.OnDateTimeSetListener()
+                        {//给定Calendar c,就能将日期和时间进行初始化
+
+                            @Override
+                            public void onDateTimeSet(DatePicker dp, TimePicker tp, int year,
+                                                      int monthOfYear, int dayOfMonth, int hourOfDay, int minute) {
+                                // 保存选择后时间
+
+                                calendar.set(Calendar.YEAR, year);
+                                calendar.set(Calendar.MONTH, monthOfYear);
+                                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calendar.set(Calendar.MINUTE, minute);
+                                calendar.set(Calendar.SECOND,0);
+
+                                sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String selectTimeStr = sdf.format(calendar.getTime());
+                                if(selectTimeStr.compareTo(nowTimeStr) <= 0){
+                                    occurTime_Tv.setText(selectTimeStr);
+                                }else {
+                                    ToastUtil.showToast("发生时间必须在报告时间之前！");
+                                }
+                            }
+                        });
+    }
+
+    @OnClick({R.id.back_iv,R.id.location_tv,R.id.commit_bt,R.id.occurTime_tv})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_iv:
@@ -252,18 +315,64 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.commit_bt:
+                commitData();
+                break;
+            case R.id.occurTime_tv:
+                showSelectDateDialog2();
                 break;
         }
     }
 
-    public void getData() {
+    public void commitData() {
         mCatLoadingView = new CatLoadingView();
         mCatLoadingView.show(getSupportFragmentManager(),"");
-        String json = new Gson().toJson(new ShipPlanDetailReq(pageNum,10,"",new ShipPlanDetailReq
-                .VoyageDynamicInfoBean(-1)));
+        long dynamicId = item.getDynamicId();
+        long voyagePlanId = item.getVoyagePlanId();
+        int currPortId = item.getCurrPortId();
+        String estimatedTime = estimatedTime_Tv.getText().toString().trim();
+        String jobType = item.getJobType();
+        String reportTime = reportTime_Tv.getText().toString().trim();
+        String occurTime = occurTime_Tv.getText().toString().trim();
+        final int reportId = 10678;
+        String voyageStatus = item.getVoyageStatus();
+        String voyageStatusDesc = item.getVoyageStatusDesc();
+        String reason =reason_Tv.getText().toString().trim();
+        String location = location_Tv.getText().toString().trim();
+        String longitudeStr = longitude_Tv.getText().toString().trim();
+        String latitudeStr = latitude_Tv.getText().toString().trim();
+        double longitude = Double.parseDouble(longitudeStr.length() == 0 ? "0": longitudeStr);
+        double latitude = Double.parseDouble(latitudeStr.length() == 0 ? "0": latitudeStr);
+        String speedStr = speed_Tv.getText().toString().trim();
+        double speed = Double.parseDouble(speedStr.length() == 0 ? "0": speedStr);
+        String weather = weather_Tv.getText().toString().trim();
+        String remark = remark_Tv.getText().toString().trim();
+        String fstatus = "";
+        String feedback = feedback_Tv.getText().toString().trim();
+
+        String json = new Gson().toJson(new ShipPlanDynamicReq(dynamicId,
+                voyagePlanId,
+                currPortId,
+                estimatedTime,
+                jobType,
+                reportTime,
+                occurTime,
+                reportId,
+                voyageStatus,
+                voyageStatusDesc,
+                reason,
+                location,
+                longitude,
+                latitude,
+                speed,
+                weather,
+                remark,
+                fstatus,
+                feedback,
+                reportId,
+                reportTime));
         OkHttpUtils
                 .postString()
-                .url(Config.query_voyage_plan_detail_url)
+                .url(Config.save_voyage_plan_dynamic_url)
                 .content(json)
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
@@ -278,18 +387,16 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 mCatLoadingView.dismiss();
-                                shipPlanDetailVo = new Gson().fromJson(response, ShipPlanDetailVo.class);
-                                if (shipPlanDetailVo != null) {
-                                    if (shipPlanDetailVo.isSuccess()) {
-                                        if (shipPlanDetailVo.getData().getList() != null && shipPlanDetailVo.getData().getList().size() > 0) {
-                                            for (int i = 0; i < shipPlanDetailVo.getData().getList().size(); i++) {
-                                                data.add(shipPlanDetailVo.getData().getList().get(i));
-                                            }
-                                            initData();
-                                        }
+                                try{
+                                    JSONObject jo = new JSONObject(response);
+                                    if(jo.getBoolean("success")){
+                                        ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
+                                        location_Tv.setText("");
+                                    }else{
+                                        ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
                                     }
-                                } else {
-
+                                }catch (JSONException e){
+                                    ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
                                 }
                             }
                         }

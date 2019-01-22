@@ -28,12 +28,12 @@ public class OilReportMainReq {
     public static class ShipFualDynamicInfosubsBean{
         private String fuelKind;
         private int unit;
-        private double addFuelQty;
+        private double realStoreQty;
 
-        public ShipFualDynamicInfosubsBean(String fuelKind, int unit, double addFuelQty) {
+        public ShipFualDynamicInfosubsBean(String fuelKind, int unit, double realStoreQty) {
             this.fuelKind = fuelKind;
             this.unit = unit;
-            this.addFuelQty = addFuelQty;
+            this.realStoreQty = realStoreQty;
         }
 
         public String getFuelKind() {
@@ -52,12 +52,12 @@ public class OilReportMainReq {
             this.unit = unit;
         }
 
-        public double getAddFuelQty() {
-            return addFuelQty;
+        public double getRealStoreQty() {
+            return realStoreQty;
         }
 
-        public void setAddFuelQty(double addFuelQty) {
-            this.addFuelQty = addFuelQty;
+        public void setRealStoreQty(double realStoreQty) {
+            this.realStoreQty = realStoreQty;
         }
     }
 }

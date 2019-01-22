@@ -6,29 +6,12 @@
     android:fitsSystemWindows="true">
     <include layout="@layout/activity_settings_title"/>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/recycler_view_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-    </android.support.design.widget.CoordinatorLayout>
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <!--more-->
     <LinearLayout

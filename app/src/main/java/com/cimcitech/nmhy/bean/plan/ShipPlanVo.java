@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,16 +12,16 @@ import java.util.List;
  */
 
 public class ShipPlanVo {
-    private DataBean data;
+    private List<DataBean> data;
     private int id;
     private String msg;
     private boolean success;
 
-    public DataBean getData() {
+    public List<DataBean> getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(List<DataBean> data) {
         this.data = data;
     }
 
@@ -49,85 +50,49 @@ public class ShipPlanVo {
     }
 
     public static class DataBean{
-        private int endRow;
-        private int firstPage;
-        private boolean hasNextPage;
-        private boolean hasPreviousPage;
-        private boolean isFirstPage;
-        private boolean isLastPage;
-        private int lastPage;
-        private int navigateFirstPage;
-        private int navigateLastPage;
-        private int navigatePages;
-        private int nextPage;
-        private int pageNum;
-        private int pageSize;
-        private int pages;
-        private int prePage;
-        private int size;
-        private int startRow;
-        private int total;
-        private List<ListBean> list;
-        private List<Integer> navigatepageNums;
+        private String bargeBatchNo;//船批号
+        private int bargeId;
+        private String voyageNo;
+        private int routeId;//线路id
+        private String routeName;//线路名
+        private ArrayList<VoyageDynamicInfosBean> voyageDynamicInfos;
 
-        public static class ListBean implements Parcelable{
-            private String actualSailingTime;
-            private String actualStopTime;
-            private String bargeBatchNo;
-            private int bargeId;
-            private int companyId;
-            private int contractId;
-            private String contractName;
-            private double distance;
-            private String estimatedSailingTime;
-            private String estimatedStopTime;
-            private String fstatus;
-            private int owerCompId;
-            private String owerCompName;
-            private String portTransportOrder;
-            private String rentType;
-            private int routeId;
-            private String routeName;
-            private ShipBean ship;
-            private String shipCompName;
-            private String voyageNo;
+        public static class VoyageDynamicInfosBean implements Parcelable{
+            private int currPortId;
+            private long dynamicId;
+            private String estimatedTime;
+            private String jobType;
+            private String jobTypeValue;
+            private String portName;
+            private String reportTime;
             private long voyagePlanId;
-            protected ListBean(Parcel in){
-                actualSailingTime = in.readString();
-                actualStopTime = in.readString();
-                bargeBatchNo = in.readString();
-                bargeId = in.readInt();
-                companyId = in.readInt();
+            private long voyageStatusId;
+            private String voyageStatus;
+            private String voyageStatusDesc;
 
-                contractId = in.readInt();
-                contractName = in.readString();
-                distance = in.readDouble();
-                estimatedSailingTime = in.readString();
-                estimatedStopTime = in.readString();
-
-                fstatus = in.readString();
-                owerCompId = in.readInt();
-                owerCompName = in.readString();
-                portTransportOrder = in.readString();
-                rentType = in.readString();
-
-                routeId = in.readInt();
-                routeName = in.readString();
-                //ship = in.readsh();
-                shipCompName = in.readString();
-                voyageNo = in.readString();
+            protected VoyageDynamicInfosBean(Parcel in){
+                currPortId = in.readInt();
+                dynamicId = in.readLong();
+                estimatedTime = in.readString();
+                jobType = in.readString();
+                jobTypeValue = in.readString();
+                portName = in.readString();
+                reportTime = in.readString();
                 voyagePlanId = in.readLong();
+                voyageStatusId = in.readLong();
+                voyageStatus = in.readString();
+                voyageStatusDesc = in.readString();
             }
 
-            public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
+            public static final Creator<VoyageDynamicInfosBean> CREATOR = new Creator<VoyageDynamicInfosBean>() {
                 @Override
-                public ListBean createFromParcel(Parcel source) {
-                    return new ListBean(source);
+                public VoyageDynamicInfosBean createFromParcel(Parcel source) {
+                    return new VoyageDynamicInfosBean(source);
                 }
 
                 @Override
-                public ListBean[] newArray(int size) {
-                    return new ListBean[size];
+                public VoyageDynamicInfosBean[] newArray(int size) {
+                    return new VoyageDynamicInfosBean[size];
                 }
             };
 
@@ -138,189 +103,89 @@ public class ShipPlanVo {
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
-                dest.writeString(actualSailingTime);
-                dest.writeString(actualStopTime);
-                dest.writeString(bargeBatchNo);
-                dest.writeInt(bargeId);
-                dest.writeInt(companyId);
-
-                dest.writeInt(contractId);
-                dest.writeString(contractName);
-                dest.writeDouble(distance);
-                dest.writeString(estimatedSailingTime);
-                dest.writeString(estimatedStopTime);
-
-                dest.writeString(fstatus);
-                dest.writeInt(owerCompId);
-                dest.writeString(owerCompName);
-                dest.writeString(portTransportOrder);
-                dest.writeString(rentType);
-
-                dest.writeInt(routeId);
-                dest.writeString(routeName);
-                dest.writeString(shipCompName);
-                dest.writeString(voyageNo);
+                dest.writeInt(currPortId);
+                dest.writeLong(dynamicId);
+                dest.writeString(estimatedTime);
+                dest.writeString(jobType);
+                dest.writeString(jobTypeValue);
+                dest.writeString(portName);
+                dest.writeString(reportTime);
                 dest.writeLong(voyagePlanId);
+                dest.writeLong(voyageStatusId);
+                dest.writeString(voyageStatus);
+                dest.writeString(voyageStatusDesc);
             }
 
-            public int getOwerCompId() {
-                return owerCompId;
+            public String getVoyageStatus() {
+                return voyageStatus;
             }
 
-            public void setOwerCompId(int owerCompId) {
-                this.owerCompId = owerCompId;
+            public void setVoyageStatus(String voyageStatus) {
+                this.voyageStatus = voyageStatus;
             }
 
-            public String getOwerCompName() {
-                return owerCompName;
+            public String getJobType() {
+                return jobType;
             }
 
-            public void setOwerCompName(String owerCompName) {
-                this.owerCompName = owerCompName;
+            public void setJobType(String jobType) {
+                this.jobType = jobType;
             }
 
-            public String getActualSailingTime() {
-                return actualSailingTime;
+            public long getDynamicId() {
+                return dynamicId;
             }
 
-            public void setActualSailingTime(String actualSailingTime) {
-                this.actualSailingTime = actualSailingTime;
+            public void setDynamicId(long dynamicId) {
+                this.dynamicId = dynamicId;
             }
 
-            public String getActualStopTime() {
-                return actualStopTime;
+            public String getVoyageStatusDesc() {
+                return voyageStatusDesc;
             }
 
-            public void setActualStopTime(String actualStopTime) {
-                this.actualStopTime = actualStopTime;
+            public void setVoyageStatusDesc(String voyageStatusDesc) {
+                this.voyageStatusDesc = voyageStatusDesc;
             }
 
-            public String getBargeBatchNo() {
-                return bargeBatchNo;
+            public int getCurrPortId() {
+                return currPortId;
             }
 
-            public void setBargeBatchNo(String bargeBatchNo) {
-                this.bargeBatchNo = bargeBatchNo;
+            public void setCurrPortId(int currPortId) {
+                this.currPortId = currPortId;
             }
 
-            public int getBargeId() {
-                return bargeId;
+            public String getEstimatedTime() {
+                return estimatedTime;
             }
 
-            public void setBargeId(int bargeId) {
-                this.bargeId = bargeId;
+            public void setEstimatedTime(String estimatedTime) {
+                this.estimatedTime = estimatedTime;
             }
 
-            public int getCompanyId() {
-                return companyId;
+            public String getJobTypeValue() {
+                return jobTypeValue;
             }
 
-            public void setCompanyId(int companyId) {
-                this.companyId = companyId;
+            public void setJobTypeValue(String jobTypeValue) {
+                this.jobTypeValue = jobTypeValue;
             }
 
-            public int getContractId() {
-                return contractId;
+            public String getPortName() {
+                return portName;
             }
 
-            public void setContractId(int contractId) {
-                this.contractId = contractId;
+            public void setPortName(String portName) {
+                this.portName = portName;
             }
 
-            public String getContractName() {
-                return contractName;
+            public String getReportTime() {
+                return reportTime;
             }
 
-            public void setContractName(String contractName) {
-                this.contractName = contractName;
-            }
-
-            public double getDistance() {
-                return distance;
-            }
-
-            public void setDistance(double distance) {
-                this.distance = distance;
-            }
-
-            public String getEstimatedSailingTime() {
-                return estimatedSailingTime;
-            }
-
-            public void setEstimatedSailingTime(String estimatedSailingTime) {
-                this.estimatedSailingTime = estimatedSailingTime;
-            }
-
-            public String getEstimatedStopTime() {
-                return estimatedStopTime;
-            }
-
-            public void setEstimatedStopTime(String estimatedStopTime) {
-                this.estimatedStopTime = estimatedStopTime;
-            }
-
-            public String getFstatus() {
-                return fstatus;
-            }
-
-            public void setFstatus(String fstatus) {
-                this.fstatus = fstatus;
-            }
-
-            public String getPortTransportOrder() {
-                return portTransportOrder;
-            }
-
-            public void setPortTransportOrder(String portTransportOrder) {
-                this.portTransportOrder = portTransportOrder;
-            }
-
-            public String getRentType() {
-                return rentType;
-            }
-
-            public void setRentType(String rentType) {
-                this.rentType = rentType;
-            }
-
-            public int getRouteId() {
-                return routeId;
-            }
-
-            public void setRouteId(int routeId) {
-                this.routeId = routeId;
-            }
-
-            public String getRouteName() {
-                return routeName;
-            }
-
-            public void setRouteName(String routeName) {
-                this.routeName = routeName;
-            }
-
-            public ShipBean getShip() {
-                return ship;
-            }
-
-            public void setShip(ShipBean ship) {
-                this.ship = ship;
-            }
-
-            public String getShipCompName() {
-                return shipCompName;
-            }
-
-            public void setShipCompName(String shipCompName) {
-                this.shipCompName = shipCompName;
-            }
-
-            public String getVoyageNo() {
-                return voyageNo;
-            }
-
-            public void setVoyageNo(String voyageNo) {
-                this.voyageNo = voyageNo;
+            public void setReportTime(String reportTime) {
+                this.reportTime = reportTime;
             }
 
             public long getVoyagePlanId() {
@@ -330,166 +195,62 @@ public class ShipPlanVo {
             public void setVoyagePlanId(long voyagePlanId) {
                 this.voyagePlanId = voyagePlanId;
             }
+
+            public long getVoyageStatusId() {
+                return voyageStatusId;
+            }
+
+            public void setVoyageStatusId(long voyageStatusId) {
+                this.voyageStatusId = voyageStatusId;
+            }
         }
 
-        public int getEndRow() {
-            return endRow;
+        public String getVoyageNo() {
+            return voyageNo;
         }
 
-        public void setEndRow(int endRow) {
-            this.endRow = endRow;
+        public void setVoyageNo(String voyageNo) {
+            this.voyageNo = voyageNo;
         }
 
-        public int getFirstPage() {
-            return firstPage;
+        public String getBargeBatchNo() {
+            return bargeBatchNo;
         }
 
-        public void setFirstPage(int firstPage) {
-            this.firstPage = firstPage;
+        public void setBargeBatchNo(String bargeBatchNo) {
+            this.bargeBatchNo = bargeBatchNo;
         }
 
-        public boolean isHasNextPage() {
-            return hasNextPage;
+        public int getBargeId() {
+            return bargeId;
         }
 
-        public void setHasNextPage(boolean hasNextPage) {
-            this.hasNextPage = hasNextPage;
+        public void setBargeId(int bargeId) {
+            this.bargeId = bargeId;
         }
 
-        public boolean isHasPreviousPage() {
-            return hasPreviousPage;
+        public int getRouteId() {
+            return routeId;
         }
 
-        public void setHasPreviousPage(boolean hasPreviousPage) {
-            this.hasPreviousPage = hasPreviousPage;
+        public void setRouteId(int routeId) {
+            this.routeId = routeId;
         }
 
-        public boolean isFirstPage() {
-            return isFirstPage;
+        public String getRouteName() {
+            return routeName;
         }
 
-        public void setFirstPage(boolean firstPage) {
-            isFirstPage = firstPage;
+        public void setRouteName(String routeName) {
+            this.routeName = routeName;
         }
 
-        public boolean isLastPage() {
-            return isLastPage;
+        public ArrayList<VoyageDynamicInfosBean> getVoyageDynamicInfos() {
+            return voyageDynamicInfos;
         }
 
-        public void setLastPage(boolean lastPage) {
-            isLastPage = lastPage;
-        }
-
-        public int getLastPage() {
-            return lastPage;
-        }
-
-        public void setLastPage(int lastPage) {
-            this.lastPage = lastPage;
-        }
-
-        public int getNavigateFirstPage() {
-            return navigateFirstPage;
-        }
-
-        public void setNavigateFirstPage(int navigateFirstPage) {
-            this.navigateFirstPage = navigateFirstPage;
-        }
-
-        public int getNavigateLastPage() {
-            return navigateLastPage;
-        }
-
-        public void setNavigateLastPage(int navigateLastPage) {
-            this.navigateLastPage = navigateLastPage;
-        }
-
-        public int getNavigatePages() {
-            return navigatePages;
-        }
-
-        public void setNavigatePages(int navigatePages) {
-            this.navigatePages = navigatePages;
-        }
-
-        public int getNextPage() {
-            return nextPage;
-        }
-
-        public void setNextPage(int nextPage) {
-            this.nextPage = nextPage;
-        }
-
-        public int getPageNum() {
-            return pageNum;
-        }
-
-        public void setPageNum(int pageNum) {
-            this.pageNum = pageNum;
-        }
-
-        public int getPageSize() {
-            return pageSize;
-        }
-
-        public void setPageSize(int pageSize) {
-            this.pageSize = pageSize;
-        }
-
-        public int getPages() {
-            return pages;
-        }
-
-        public void setPages(int pages) {
-            this.pages = pages;
-        }
-
-        public int getPrePage() {
-            return prePage;
-        }
-
-        public void setPrePage(int prePage) {
-            this.prePage = prePage;
-        }
-
-        public int getSize() {
-            return size;
-        }
-
-        public void setSize(int size) {
-            this.size = size;
-        }
-
-        public int getStartRow() {
-            return startRow;
-        }
-
-        public void setStartRow(int startRow) {
-            this.startRow = startRow;
-        }
-
-        public int getTotal() {
-            return total;
-        }
-
-        public void setTotal(int total) {
-            this.total = total;
-        }
-
-        public List<ListBean> getList() {
-            return list;
-        }
-
-        public void setList(List<ListBean> list) {
-            this.list = list;
-        }
-
-        public List<Integer> getNavigatepageNums() {
-            return navigatepageNums;
-        }
-
-        public void setNavigatepageNums(List<Integer> navigatepageNums) {
-            this.navigatepageNums = navigatepageNums;
+        public void setVoyageDynamicInfos(ArrayList<VoyageDynamicInfosBean> voyageDynamicInfos) {
+            this.voyageDynamicInfos = voyageDynamicInfos;
         }
     }
 }

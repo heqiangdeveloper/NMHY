@@ -125,11 +125,11 @@ public class OilReportMainActivity extends MyBaseActivity {
     @Bind(R.id.oilUnit3_tv)
     TextView oilUnit3Tv;
     @Bind(R.id.oilAmount1_et)
-    EditText oilAmount1Et;
+    EditText oilAmount1_Et;
     @Bind(R.id.oilAmount2_et)
-    EditText oilAmount2Et;
+    EditText oilAmount2_Et;
     @Bind(R.id.oilAmount3_et)
-    EditText oilAmount3Et;
+    EditText oilAmount3_Et;
 
     //已报
     @Bind(R.id.recyclerView)
@@ -205,7 +205,7 @@ public class OilReportMainActivity extends MyBaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oil_report_main);
+        setContentView(R.layout.activity_oil_report_main2);
         ButterKnife.bind(this);
 
 //        locationTv.setText("测试目的地");
@@ -243,7 +243,7 @@ public class OilReportMainActivity extends MyBaseActivity {
                 addWatcher(locationTv);
                 addWatcher(latitudeTv);
                 addWatcher(longitudeTv);
-                addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
+                addWatcher(oilAmount1_Et); addWatcher(oilAmount2_Et); addWatcher(oilAmount3_Et);
                 initContent();
                 startLocationService();
             }else {//已报
@@ -445,9 +445,9 @@ public class OilReportMainActivity extends MyBaseActivity {
                 locationTv.getText().toString().trim().length() != 0 &&
                 latitudeTv.getText().toString().trim().length() != 0 &&
                 longitudeTv.getText().toString().trim().length() != 0 &&
-                oilAmount1Et.getText().toString().trim().length() != 0 &&
-                oilAmount2Et.getText().toString().trim().length() != 0 &&
-                oilAmount3Et.getText().toString().trim().length() != 0){
+                oilAmount1_Et.getText().toString().trim().length() != 0 &&
+                oilAmount2_Et.getText().toString().trim().length() != 0 &&
+                oilAmount3_Et.getText().toString().trim().length() != 0){
             return false;
         }else{
             return true;
@@ -500,13 +500,13 @@ public class OilReportMainActivity extends MyBaseActivity {
                     String latitude = latitudeTv.getText().toString().trim();
                     String oilType1 = oilType1Tv.getText().toString().trim();
                     String oilUnit1 = oilUnit1Tv.getText().toString().trim();
-                    String oilAmount1 = oilAmount1Et.getText().toString().trim();
+                    String oilAmount1 = oilAmount1_Et.getText().toString().trim();
                     String oilType2 = oilType2Tv.getText().toString().trim();
                     String oilUnit2 = oilUnit2Tv.getText().toString().trim();
-                    String oilAmount2 = oilAmount2Et.getText().toString().trim();
+                    String oilAmount2 = oilAmount2_Et.getText().toString().trim();
                     String oilType3 = oilType3Tv.getText().toString().trim();
                     String oilUnit3 = oilUnit3Tv.getText().toString().trim();
-                    String oilAmount3 = oilAmount3Et.getText().toString().trim();
+                    String oilAmount3 = oilAmount3_Et.getText().toString().trim();
 
                     LayoutInflater inflater = LayoutInflater.from(mContext);
                     View view1 = inflater.inflate(R.layout.add_oil_dailog_content,null);
@@ -603,21 +603,25 @@ public class OilReportMainActivity extends MyBaseActivity {
         //构建子表数据
         String fuelKind1 = EnumUtil.findKeyByValueSS(Config.fuelTypeMap,oilType1Tv.getText().toString().trim());
         int unit1 =  EnumUtil.findValueByKeySI(Config.unitMap,oilUnit1Tv.getText().toString().trim());
-        double addFuelQty1 = Double.parseDouble(oilAmount1Et.getText().toString().trim());
+        //现有油量
+        double realStoreQty1 = Double.parseDouble(oilAmount1_Et.getText().toString().trim());
+
         String fuelKind2 = EnumUtil.findKeyByValueSS(Config.fuelTypeMap,oilType2Tv.getText().toString().trim());
         int unit2 =  EnumUtil.findValueByKeySI(Config.unitMap,oilUnit2Tv.getText().toString().trim());
-        double addFuelQty2 = Double.parseDouble(oilAmount2Et.getText().toString().trim());
+        double realStoreQty2 = Double.parseDouble(oilAmount2_Et.getText().toString().trim());
+
         String fuelKind3 = EnumUtil.findKeyByValueSS(Config.fuelTypeMap,oilType3Tv.getText().toString().trim());
         int unit3 =  EnumUtil.findValueByKeySI(Config.unitMap,oilUnit3Tv.getText().toString().trim());
-        double addFuelQty3 = Double.parseDouble(oilAmount3Et.getText().toString().trim());
+        double realStoreQty3 = Double.parseDouble(oilAmount3_Et.getText().toString().trim());
 
         List<OilReportMainReq.ShipFualDynamicInfosubsBean> list = new ArrayList<>();
         OilReportMainReq.ShipFualDynamicInfosubsBean bean1 = new OilReportMainReq
-                .ShipFualDynamicInfosubsBean(fuelKind1,unit1,addFuelQty1);
+                .ShipFualDynamicInfosubsBean(fuelKind1,unit1,realStoreQty1);
         OilReportMainReq.ShipFualDynamicInfosubsBean bean2 = new OilReportMainReq
-                .ShipFualDynamicInfosubsBean(fuelKind2,unit2,addFuelQty2);
+                .ShipFualDynamicInfosubsBean(fuelKind2,unit2,realStoreQty2);
         OilReportMainReq.ShipFualDynamicInfosubsBean bean3 = new OilReportMainReq
-                .ShipFualDynamicInfosubsBean(fuelKind3,unit3,addFuelQty3);
+                .ShipFualDynamicInfosubsBean(fuelKind3,unit3,realStoreQty3);
+
         list.add(bean1);
         list.add(bean2);
         list.add(bean3);
@@ -644,9 +648,9 @@ public class OilReportMainActivity extends MyBaseActivity {
                             JSONObject object = new JSONObject(response);
                             if(object.getBoolean("success")){
                                 ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
-                                oilAmount1Et.setText("");
-                                oilAmount2Et.setText("");
-                                oilAmount3Et.setText("");
+                                oilAmount1_Et.setText("");
+                                oilAmount2_Et.setText("");
+                                oilAmount3_Et.setText("");
                             }else{
                                 ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
                             }

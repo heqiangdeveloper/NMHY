@@ -75,9 +75,9 @@ public class Config {
     }};
 
     //智能
-    //public static String IP = "http://192.168.1.120:8081/nmhy/";
+    public static String IP = "http://192.168.1.120:8081/nmhy/";
 
-    public static String IP = "http://10.33.155.214:8081/nmhy/";
+    //public static String IP = "http://10.33.155.214:8081/nmhy/";
 
     //多式联运
     //public static String IP = "http://10.33.176.239:8087/nmhy/";
@@ -115,9 +115,12 @@ public class Config {
     public static String add_oil_report_main_url = IP + "shipFualDynamicInfo/addShipFualDynamicInfos";
 
     //分页查询所有航次计划
-    public static String query_voyage_plan_url = IP + "voyagePlan/queryAllVoyagePlan";
+    public static String query_voyage_plan_url = IP + "voyagePlan/queryByUserId";
 
     //分页查询指定的航次计划
     public static String query_voyage_plan_detail_url = IP + "voyageDynamicInfo/queryAllVoyageDynamicInfo";
+
+    //保存航次动态
+    public static String save_voyage_plan_dynamic_url = IP + "voyageDynamicInfo/saveVoyageDynamicInfo";
 
 }

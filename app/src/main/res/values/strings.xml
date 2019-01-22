@@ -81,10 +81,10 @@
     <string name="unit_value_bucket">桶</string>
     <string name="unit_label">计量单位</string>
     <string name="realStoreQty_label">现有油量</string>
-    <string name="realyAmount_label">现有金额(含税)</string>
+    <string name="realyAmount_label">现有金额</string>
     <string name="taxfreeRealyAmount_label">现有金额(不含税)</string>
     <string name="addFuelQty_label">本次加油量</string>
-    <string name="addAmount_label">本次加油金额(含税)</string>
+    <string name="addAmount_label">本次加油金额</string>
     <string name="taxfreeAddAmount_label">本次加油金额(不含税)</string>
     <string name="consumeQuantity_label">本航次累计消耗量</string>
     <string name="taxfreeConsumeQuantity_label">累计消耗金额(不含税)</string>
@@ -104,7 +104,8 @@
     <string name="rentType_label">租用类型</string>
     <string name="distance_label">线路距离</string>
     <string name="ask_if_exit">信息还未提交或保存，是否退出？</string>
-    <string name="add_oil_amount_hint_label">请输入加油量</string>
+    <string name="add_oil_amount_hint_label">请输入数据</string>
+    <string name="add_money_hint_label">请输入</string>
     <string name="add_oil_dialog_title">是否提交以下信息？</string>
 
     <string name="report_ship_plan_label">汇报详情</string>

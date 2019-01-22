@@ -22,13 +22,13 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<ShipPlanVo.DataBean.ListBean> data;
+    private List<ShipPlanVo.DataBean> data;
     private LayoutInflater inflater;
     private static final int TYPE_END = 2;
     private boolean isNotMoreData = false;
     private Context context;
 
-    public ShipPlanAdapter(Context context, List<ShipPlanVo.DataBean.ListBean> data) {
+    public ShipPlanAdapter(Context context, List<ShipPlanVo.DataBean> data) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.data = data;
@@ -97,16 +97,16 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 });
             }
-            final ShipPlanVo.DataBean.ListBean item = data.get(position);
+            final ShipPlanVo.DataBean item = data.get(position);
             String voyageNoStr = item.getVoyageNo() != null && !item.getVoyageNo()
                    .equals("") ? "航次号: " + item.getVoyageNo() : "航次号: " + "";
             ((ItemViewHolder) holder).voyageNo_Tv.setText(voyageNoStr);
             String routeNameStr = item.getRouteName() != null && !item.getRouteName().equals
                     ("") ? "线路名称: " + item.getRouteName() : "线路名称: " + "";
             ((ItemViewHolder) holder).routeName_Tv.setText(routeNameStr);
-            String portTransportOrderStr = item.getPortTransportOrder() != null && !item
-                    .getPortTransportOrder().equals("") ? "航次顺序: " + item.getPortTransportOrder() : "航次顺序: " + "";
-            ((ItemViewHolder) holder).portTransportOrder_Tv.setText(portTransportOrderStr);
+//            String portTransportOrderStr = item.getPortTransportOrder() != null && !item
+//                    .getPortTransportOrder().equals("") ? "航次顺序: " + item.getPortTransportOrder() : "航次顺序: " + "";
+//            ((ItemViewHolder) holder).portTransportOrder_Tv.setText(portTransportOrderStr);
         }
     }
 

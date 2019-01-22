@@ -1,7 +1,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -295,6 +294,7 @@
                             android:textSize="@dimen/text_size_14"
                             android:textColor="@color/white"
                             android:text="@string/unit_label" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -302,36 +302,6 @@
                             android:background="@color/colorPrimaryDark"
                             android:gravity="center"
                             android:text="@string/realStoreQty_label"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="@color/colorPrimaryDark"
-                            android:gravity="center"
-                            android:text="@string/realyAmount_label"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="@color/colorPrimaryDark"
-                            android:textSize="@dimen/text_size_14"
-                            android:textColor="@color/white"
-                            android:text="@string/addFuelQty_label" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="@color/colorPrimaryDark"
-                            android:gravity="center"
-                            android:text="@string/addAmount_label"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_14"/>
                     </TableRow>
@@ -354,58 +324,18 @@
                             android:background="#ffffffff"
                             android:textSize="@dimen/text_size_14"
                             android:text="" />
-
                         <EditText
-                            android:id="@+id/realStoreQty_et1"
+                            android:gravity="center"
+                            android:id="@+id/oilAmount1_et"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="0.5dp"
                             android:background="#ffffffff"
+                            android:inputType="numberDecimal"
+                            android:textSize="@dimen/text_size_14"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_oil_amount_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/realyAmount_et1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_money_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/addFuelQty_et1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_oil_amount_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/addAmount_et1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_money_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
+                            android:hint="@string/add_oil_amount_hint_label"/>
                     </TableRow>
                     <TableRow>
                         <TextView
@@ -426,56 +356,16 @@
                             android:background="#ffffffff"
                             android:textSize="@dimen/text_size_14"
                             android:text="" />
-
                         <EditText
-                            android:id="@+id/realStoreQty_et2"
+                            android:gravity="center"
+                            android:id="@+id/oilAmount2_et"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="0.5dp"
                             android:background="#ffffffff"
-                            android:gravity="center"
-                            android:hint="@string/add_oil_amount_hint_label"
                             android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/realyAmount_et2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_money_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/addFuelQty_et2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_oil_amount_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/addAmount_et2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_money_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
+                            android:textSize="@dimen/text_size_14"
+                            android:hint="@string/add_oil_amount_hint_label"/>
                     </TableRow>
                     <TableRow>
                         <TextView
@@ -496,56 +386,16 @@
                             android:background="#ffffffff"
                             android:textSize="@dimen/text_size_14"
                             android:text="" />
-
                         <EditText
-                            android:id="@+id/realStoreQty_et3"
+                            android:gravity="center"
+                            android:id="@+id/oilAmount3_et"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="0.5dp"
                             android:background="#ffffffff"
-                            android:gravity="center"
-                            android:hint="@string/add_oil_amount_hint_label"
                             android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/realyAmount_et3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_money_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/addFuelQty_et3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_oil_amount_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
-
-                        <EditText
-                            android:id="@+id/addAmount_et3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="0.5dp"
-                            android:background="#ffffffff"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center"
-                            android:hint="@string/add_money_hint_label"
-                            android:inputType="numberDecimal"
-                            android:textSize="@dimen/text_size_14"/>
+                            android:textSize="@dimen/text_size_14"
+                            android:hint="@string/add_oil_amount_hint_label"/>
                     </TableRow>
                     <!--防止第2列的最下面出现浅色-->
                     <TableRow>
