@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+    android:id="@+id/linearLayout"
+    android:background="@color/white"
+    android:layout_marginTop="@dimen/my_linear_margin_top"
+              android:paddingLeft="@dimen/table_margin_left"
+              android:paddingRight="@dimen/table_margin_left">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="航次开始"
+        android:textSize="@dimen/table_text_size" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="2019-02-28"
+        android:textSize="@dimen/table_text_size" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="汇报"
+        android:textSize="@dimen/table_text_size" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:text="报异常"
+        android:textSize="@dimen/table_text_size" />
+
+</LinearLayout>

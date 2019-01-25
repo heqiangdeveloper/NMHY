@@ -49,4 +49,10 @@
     <dimen name="port_name_line_width">30dp</dimen>
     <dimen name="port_name_line_height">2dp</dimen>
     <dimen name="port_name_line_margin">5dp</dimen>
+    <dimen name="table_text_size">16sp</dimen>
+    <dimen name="linear_table_margin_top">10dp</dimen>
+    <dimen name="table_margin_top">5dp</dimen>
+    <dimen name="table_margin_bottom">20dp</dimen>
+    <dimen name="table_margin_left">20dp</dimen>
+    <dimen name="my_linear_margin_top">2dp</dimen>
 </resources>

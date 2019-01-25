@@ -32,6 +32,7 @@
     <string name="item_oil_request_history_detail">燃油申请历史详情</string>
     <string name="item_ship">船舶动态</string>
     <string name="item_plan">航次计划</string>
+    <string name="item_search_goods">货物查询</string>
     <string name="network_error">网络连接错误，请检查网络!</string>
     <string name="type_light_oil">轻油（吨）</string>
     <string name="type_heavy_oil">重油（吨）</string>
@@ -98,7 +99,7 @@
     <string name="ship_plan_detail_title">航次计划详情</string>
     <string name="voyageNo_label">航次号</string>
     <string name="routeName_label">线路名称</string>
-    <string name="portTransportOrder_label">航次顺序</string>
+    <string name="fStatus_label">状态</string>
     <string name="owerCompName_label">公司名称</string>
     <string name="shipCompName_label">船公司名称</string>
     <string name="rentType_label">租用类型</string>
@@ -133,4 +134,12 @@
     <string name="ic_keyboard_arrow_left">&#xe0c6;</string>
     <string name="ic_keyboard_arrow_right">&#xe0c7;</string>
     <string name="ic_folder">&#xe09d;</string>
+
+    <string name="command_label">操作</string>
+    <string name="command_report_label">汇报</string>
+    <string name="command_look_label">查看</string>
+    <string name="exception_label">报异常</string>
+
+    <string name="add_voyage_plan_label">新增动态跟踪</string>
+    <string name="voyage_plan_detail_label">动态跟踪详情</string>
 </resources>

@@ -26,7 +26,9 @@ import com.cimcitech.nmhy.bean.plan.ShipTableBean;
 import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,17 +67,50 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
     @Bind(R.id.commit_bt)
     Button commit_Bt;
 
+    @Bind(R.id.sec1_ll)
+    LinearLayout sec1_Ll;
+    @Bind(R.id.port1_tv)
+    TextView port1_Tv;
+    @Bind(R.id.jobTypeValue1_tv)
+    TextView jobTypeValue1_Tv;
+    private SmartTable<ShipTableBean> table1;
+
+    @Bind(R.id.sec2_ll)
+    LinearLayout sec2_Ll;
+    @Bind(R.id.port2_tv)
+    TextView port2_Tv;
+    @Bind(R.id.jobTypeValue2_tv)
+    TextView jobTypeValue2_Tv;
+    private SmartTable<ShipTableBean> table2;
+
+    @Bind(R.id.sec3_ll)
+    LinearLayout sec3_Ll;
+    @Bind(R.id.port3_tv)
+    TextView port3_Tv;
+    @Bind(R.id.jobTypeValue3_tv)
+    TextView jobTypeValue3_Tv;
+    private SmartTable<ShipTableBean> table3;
+
+    @Bind(R.id.sec4_ll)
+    LinearLayout sec4_Ll;
+    @Bind(R.id.port4_tv)
+    TextView port4_Tv;
+    @Bind(R.id.jobTypeValue4_tv)
+    TextView jobTypeValue4_Tv;
+    private SmartTable<ShipTableBean> table4;
+
+
     private Context mContext = ShipPlanDetailActivity2.this;
     private ArrayList<ShipPlanVo.DataBean.VoyageDynamicInfosBean> data = null;
 
     private CatLoadingView mCatLoadingView = null;
 
-    private SmartTable<ShipTableBean> table;
+
     Column<String> portName;
     Column<String> jobTypeValue;
     Column<String> voyageStatusDesc;
+    Column<String> estimatedTime;
     Column<String> operate;
-    List<String> name_selected = new ArrayList<String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +120,10 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
 
         data = getIntent().getParcelableArrayListExtra("voyageDynamicInfosBean");
         initTitle();
-        table = (SmartTable<ShipTableBean>)findViewById(R.id.table);
+        table1 = (SmartTable<ShipTableBean>)findViewById(R.id.table1);
+        table2 = (SmartTable<ShipTableBean>)findViewById(R.id.table2);
+        table3 = (SmartTable<ShipTableBean>)findViewById(R.id.table3);
+        table4 = (SmartTable<ShipTableBean>)findViewById(R.id.table4);
         hideView();
         initData();
     }
@@ -97,30 +135,35 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
     public void showView(){
         port_Ll.setVisibility(View.VISIBLE);
     }
+
     public void initTitle(){
         titleName_Tv.setText(getResources().getString(R.string.ship_plan_detail_title));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.GONE);
+        commit_Bt.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.back_iv,R.id.commit_bt})
+    @OnClick({R.id.back_iv})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_iv:
                 finish();
                 break;
-            case R.id.commit_bt:
-                Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
-                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(2);
-                i.putExtra("item",item);
-                startActivity(i);
-                break;
+//            case R.id.commit_bt:
+//                Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
+//                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(2);
+//                i.putExtra("item",item);
+//                startActivity(i);
+//                break;
         }
     }
 
     public void initData(){
         showView();
+        //码头列表
         List<String> portNameList = new ArrayList<>();
+        //作业类型列表
+        List<String> jobTypeValueList = new ArrayList<>();
         int portId0 = data.get(0).getCurrPortId();
         portNameList.add(data.get(0).getPortName());
         int portIdi = -1;
@@ -129,114 +172,206 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
             portIdi = data.get(i).getCurrPortId();
             portNameStr = data.get(i).getPortName();
             if(portIdi != portId0 && !portNameList.contains(portNameStr)){
-                portNameList.add(portNameStr);
+                    portNameList.add(portNameStr);
             }
         }
-
         int sizen = portNameList.size();
         List<TextView> tvList = new ArrayList<>();
-
-        tvList.add(portName1_Tv);
-        tvList.add(portName2_Tv);
-        tvList.add(portName3_Tv);
-        if(sizen == 3){
-            line3_Tv.setVisibility(View.GONE);
-            portName4_Tv.setVisibility(View.GONE);
-        }else if(sizen == 4){
-            line3_Tv.setVisibility(View.VISIBLE);
-            portName4_Tv.setVisibility(View.VISIBLE);
-            tvList.add(portName4_Tv);
-        }
-
-        for(int i = 0; i < portNameList.size(); i++){
-            TextView tv = (TextView) tvList.get(i);
-            tv.setText(portNameList.get(i));
-        }
-
-        GradientDrawable mm1 = (GradientDrawable)portName1_Tv.getBackground();
-        mm1.setColor(Color.RED);
-        GradientDrawable mm2 = (GradientDrawable)portName2_Tv.getBackground();
-        mm2.setColor(Color.GREEN);
-        GradientDrawable mm3 = (GradientDrawable)portName3_Tv.getBackground();
-        mm3.setColor(Color.GREEN);
-
+        List<TextView> portNameTvList = new ArrayList<>();
+        List<TextView> jobTypeValueTvList = new ArrayList<>();
+        List<SmartTable<ShipTableBean>> tableList = new ArrayList<>();
         final List<ShipTableBean> codeList = new ArrayList<ShipTableBean>();
         ShipPlanVo.DataBean.VoyageDynamicInfosBean item = null;
         for(int i = 0; i < data.size();i++){
             item = data.get(i);
-//            codeList.add(new ShipTableBean(item.getPortName(),item.getJobTypeValue(),item
-//                    .getVoyageStatusDesc(),"汇报"));
             codeList.add(new ShipTableBean(item,"汇报"));
         }
-//        codeList.add(new ShipTableBean("上海洋山1","空放1","航次开始1",false));
 
+        if(sizen == 2){
+            tvList.add(portName1_Tv);
+            tvList.add(portName2_Tv);
+
+            //初始化明细表
+            sec1_Ll.setVisibility(View.VISIBLE);
+            sec2_Ll.setVisibility(View.VISIBLE);
+            sec3_Ll.setVisibility(View.GONE);
+            sec4_Ll.setVisibility(View.GONE);
+
+            //初始化港口
+            line2_Tv.setVisibility(View.GONE);
+            line3_Tv.setVisibility(View.GONE);
+            portName3_Tv.setVisibility(View.GONE);
+            portName4_Tv.setVisibility(View.GONE);
+
+            portNameTvList.add(port1_Tv);
+            portNameTvList.add(port2_Tv);
+            jobTypeValueTvList.add(jobTypeValue1_Tv);
+            jobTypeValueTvList.add(jobTypeValue2_Tv);
+
+            tableList.add(table1);
+            tableList.add(table2);
+        } else if(sizen == 3){
+            line3_Tv.setVisibility(View.GONE);
+            portName4_Tv.setVisibility(View.GONE);
+            //初始化明细表
+            sec1_Ll.setVisibility(View.VISIBLE);
+            sec2_Ll.setVisibility(View.VISIBLE);
+            sec3_Ll.setVisibility(View.VISIBLE);
+            sec4_Ll.setVisibility(View.GONE);
+
+            tvList.add(portName1_Tv);
+            tvList.add(portName2_Tv);
+            tvList.add(portName3_Tv);
+
+            portNameTvList.add(port1_Tv);
+            portNameTvList.add(port2_Tv);
+            portNameTvList.add(port3_Tv);
+            jobTypeValueTvList.add(jobTypeValue1_Tv);
+            jobTypeValueTvList.add(jobTypeValue2_Tv);
+            jobTypeValueTvList.add(jobTypeValue3_Tv);
+
+            tableList.add(table1);
+            tableList.add(table2);
+            tableList.add(table3);
+        }else if(sizen == 4){
+            line3_Tv.setVisibility(View.VISIBLE);
+            portName4_Tv.setVisibility(View.VISIBLE);
+
+            //初始化明细表
+            sec1_Ll.setVisibility(View.VISIBLE);
+            sec2_Ll.setVisibility(View.VISIBLE);
+            sec3_Ll.setVisibility(View.VISIBLE);
+            sec4_Ll.setVisibility(View.VISIBLE);
+
+            tvList.add(portName1_Tv);
+            tvList.add(portName2_Tv);
+            tvList.add(portName3_Tv);
+            tvList.add(portName4_Tv);
+
+            portNameTvList.add(port1_Tv);
+            portNameTvList.add(port2_Tv);
+            portNameTvList.add(port3_Tv);
+            portNameTvList.add(port4_Tv);
+            jobTypeValueTvList.add(jobTypeValue1_Tv);
+            jobTypeValueTvList.add(jobTypeValue2_Tv);
+            jobTypeValueTvList.add(jobTypeValue3_Tv);
+            jobTypeValueTvList.add(jobTypeValue4_Tv);
+
+            tableList.add(table1);
+            tableList.add(table2);
+            tableList.add(table3);
+            tableList.add(table4);
+        }
+        initTableData(portNameList,tableList,codeList,portNameTvList);
+        initPortName(portNameList,tvList,portNameTvList);
+        String portNameStr1 = "";
+        String portNameStr2 = "";
+        a:for(int q =0; q < portNameList.size(); q++){
+            portNameStr1 = portNameList.get(q);
+            b:for(int r =0; r < codeList.size(); r++){
+                if(codeList.get(r).getItem().getPortName().equals(portNameStr1)){
+                    jobTypeValueList.add(codeList.get(r).getItem().getJobTypeValue());
+                    break b;
+                }
+            }
+        }
+        initJobTypeValue(jobTypeValueTvList,jobTypeValueList);
+    }
+
+    public void initPortName(List<String> portNameList,List<TextView> tvList,List<TextView> portNameTvList){
+        TextView tv,portNameTv;
+        String str = getResources().getString(R.string.portName_label);
+        for(int k = 0; k < portNameList.size(); k++){
+            tv = (TextView) tvList.get(k);
+            portNameTv = portNameTvList.get(k);
+            tv.setText(portNameList.get(k));
+            portNameTv.setText(str + ": " + portNameList.get(k));
+        }
+
+        GradientDrawable mm1 = (GradientDrawable)portName1_Tv.getBackground();
+        mm1.setColor(Color.rgb(255,127,80));
+        GradientDrawable mm2 = (GradientDrawable)portName2_Tv.getBackground();
+        mm2.setColor(Color.rgb(34,139,34));
+        GradientDrawable mm3 = (GradientDrawable)portName3_Tv.getBackground();
+        mm3.setColor(Color.rgb(34,139,34));
+    }
+
+    public void initJobTypeValue(List<TextView> jobTypeValueTvList,List<String> jobTypeValueList){
+        TextView tv;
+        String str = getResources().getString(R.string.jobTypeValue_label);
+        for(int k = 0; k < jobTypeValueTvList.size(); k++){
+            tv = (TextView) jobTypeValueTvList.get(k);
+            tv.setText(str + ": " + jobTypeValueList.get(k));
+        }
+    }
+
+    public void initTableData(List<String> portNameList,List<SmartTable<ShipTableBean>>
+            tableList,List<ShipTableBean> codeList,List<TextView> portNameTvList){
+        List<ShipTableBean> codeListItem = new ArrayList<ShipTableBean>();
+        List<List<ShipTableBean>> codeListItems = new ArrayList<>();
+        String portName = "";
+        String portName2 = "";
+        int sizen = portNameList.size();
+        for(int i = 0 ; i < sizen; i++){
+            codeListItem.clear();
+            portName = portNameList.get(i);
+            for(int j = 0; j < codeList.size(); j++){
+                portName2 = codeList.get(j).getItem().getPortName();
+                if(portName2.equals(portName)){
+                    codeListItem.add(codeList.get(j));
+                }
+            }
+            if(codeListItem.size() != 0){
+                codeListItems.add(codeListItem);
+            }
+        }
+
+        //注意：初始化table是一个耗时操作
+        for(int m = 0; m < codeListItems.size(); m++){
+            //initTable(tableList.get(m),codeListItems.get(m));
+            initTable(tableList.get(m),codeListItems.get(m));
+        }
+    }
+    public void initTable(SmartTable<ShipTableBean> mTable,List<ShipTableBean> codeList){
         portName = new Column<>("码头名称", "item.portName");
         jobTypeValue = new Column<>("作业类型", "item.jobTypeValue");
         voyageStatusDesc = new Column<>("航次状态", "item.voyageStatusDesc");
-        int size = DensityUtils.dp2px(this,30);
-
-//        isClicked = new Column<>("勾选", "isClicked", new ImageResDrawFormat<Boolean>(size,size) {    //设置"操作"这一列以图标显示 true、false 的状态
-//            @Override
-//            protected Context getContext() {
-//                return mContext;
-//            }
-//            @Override
-//            protected int getResourceID(Boolean isCheck, String value, int position) {
-//                if(isCheck){
-//                    return R.mipmap.check24;      //将图标提前放入 app/res/mipmap 目录下
-//                }
-//                return R.mipmap.uncheck24;
-//            }
-//        });
-//        //isClicked.setComputeWidth(40);
-//        isClicked.setOnColumnItemClickListener(new OnColumnItemClickListener<Boolean>() {
-//            @Override
-//            public void onClick(Column<Boolean> column, String value, Boolean bool, int position) {
-//                if(isClicked.getDatas().get(position)){
-//                    showName(position, false);
-//                    isClicked.getDatas().set(position,false);
-//                }else{
-//                    showName(position, true);
-//                    isClicked.getDatas().set(position,true);
-//                }
-//                table.refreshDrawableState();
-//                table.invalidate();
-//            }
-//        });
-
+        estimatedTime = new Column<>("预计时间", "item.estimatedTime");
         operate = new Column<>("操作", "operate");
+
         operate.setOnColumnItemClickListener(new OnColumnItemClickListener<String>() {
             @Override
             public void onClick(Column<String> column, String value, String bool, int position) {
-                if(position == 2){
-
-                }
+                Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
+                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(2);
+                i.putExtra("item",item);
+                startActivity(i);
             }
         });
 
         final TableData<ShipTableBean> tableData = new TableData<ShipTableBean>("测试标题",codeList,
-                portName, jobTypeValue,voyageStatusDesc);
-        table.getConfig().setShowTableTitle(false);
+                voyageStatusDesc,estimatedTime,operate);
+        mTable.getConfig().setShowTableTitle(false);
         //设置是否显示顶部序号列
-        table.getConfig().setShowXSequence(false);
+        mTable.getConfig().setShowXSequence(false);
         //设置是否显示左侧序号列
-        table.getConfig().setShowYSequence(false);
+        mTable.getConfig().setShowYSequence(false);
 
         //是否自动合并单元格
         //portName.setAutoMerge(true);
         //jobTypeValue.setAutoMerge(true);
 
-        table.setTableData(tableData);
+        mTable.setTableData(tableData);
         FontStyle style = new FontStyle();
-        style.setTextSize(40);
-        style.setTextColor(Color.BLUE);
-        table.getConfig().setContentStyle(style);
+        style.setTextSize(50);
+        style.setTextColor(getResources().getColor(R.color.table_text_color));
+        //mTable.getConfig().setContentStyle(style);
         //table.getConfig().setMinTableWidth(1024);       //设置表格最小宽度
 
-        table.getConfig().setContentStyle(style);       //设置表格主题字体样式
-        table.getConfig().setColumnTitleStyle(style);   //设置表格标题字体样式
+        //mTable.getConfig().setContentStyle(style);       //设置表格主题字体样式
+        //mTable.getConfig().setColumnTitleStyle(style);   //设置表格标题字体样式
         //设置table行的背景色
-        table.getConfig().setContentCellBackgroundFormat(new BaseCellBackgroundFormat<CellInfo>() {     //设置隔行变色
+        mTable.getConfig().setContentCellBackgroundFormat(new BaseCellBackgroundFormat<CellInfo>() {     //设置隔行变色
             @Override
             public int getBackGroundColor(CellInfo cellInfo) {
 //                if(cellInfo.row%2 ==1) {
@@ -251,6 +386,7 @@ public class ShipPlanDetailActivity2 extends AppCompatActivity {
                 }
             }
         });
-        //table.setZoom(true,3,1);
+        mTable.setZoom(false);
+        mTable.notifyDataChanged();
     }
 }

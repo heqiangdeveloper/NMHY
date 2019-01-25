@@ -11,8 +11,7 @@
         android:layout_marginLeft="@dimen/oil_report_history_list_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/voyageNo_tv"
@@ -35,15 +34,15 @@
             android:textSize="@dimen/text_size_14"/>
 
         <TextView
-            android:layout_marginTop="5dp"
-            android:id="@+id/portTransportOrder_tv"
+            android:id="@+id/fStatus_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="航次顺序"
-            android:textColor="@color/black_33"
+            android:text="@string/fStatus_label"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_14"/>
     </LinearLayout>
     <View

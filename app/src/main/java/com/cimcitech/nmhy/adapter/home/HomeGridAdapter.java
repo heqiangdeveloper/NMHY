@@ -133,6 +133,8 @@ public class HomeGridAdapter extends BaseAdapter {
 //        TextLists.add(context.getResources().getString(R.string.item_ship));
         ImageLists.add(R.mipmap.plan);
         TextLists.add(context.getResources().getString(R.string.item_plan));
+        ImageLists.add(R.mipmap.search_good_64);
+        TextLists.add(context.getResources().getString(R.string.item_search_goods));
     }
 
     //意向跟踪

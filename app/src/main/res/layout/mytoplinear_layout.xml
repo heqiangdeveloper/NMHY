@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    android:id="@+id/linearLayout"
+    android:background="@color/white"
+              android:layout_marginTop="@dimen/linear_table_margin_top"
+              android:paddingLeft="@dimen/table_margin_left"
+              android:paddingRight="@dimen/table_margin_left">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:textColor="@color/black"
+        android:textSize="@dimen/table_text_size"/>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:textColor="@color/black"
+        android:textSize="@dimen/table_text_size" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="@string/voyageStatusDesc_label"
+            android:textSize="@dimen/table_text_size" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="@string/estimatedTime_label"
+            android:textSize="@dimen/table_text_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="@string/command_label"
+            android:textSize="@dimen/table_text_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="@string/exception_label"
+            android:textSize="@dimen/table_text_size" />
+    </LinearLayout>
+</LinearLayout>

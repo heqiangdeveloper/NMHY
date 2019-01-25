@@ -1,0 +1,70 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <include layout="@layout/activity_settings_title"/>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView
+            android:id="@+id/content_sv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/table_margin_bottom">
+
+                <LinearLayout
+                    android:id="@+id/port_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="@dimen/table_margin_left"
+                    android:paddingRight="@dimen/table_margin_left"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/detail_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/linear_table_margin_top"
+                    android:layout_marginBottom="20dp">
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+    <!--more-->
+    <LinearLayout
+        android:id="@+id/popup_menu_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_marginRight="10dp"
+        android:elevation="20dp"
+        android:visibility="gone"
+        android:translationZ="20dp"
+        android:background="@color/white"
+        android:layout_gravity="end|top">
+        <include layout="@layout/more_popup_menu"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

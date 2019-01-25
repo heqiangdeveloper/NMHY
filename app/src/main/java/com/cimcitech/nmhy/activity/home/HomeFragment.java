@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cimcitech.nmhy.R;
+import com.cimcitech.nmhy.activity.home.goods.SearchGoodsActivity;
 import com.cimcitech.nmhy.activity.home.oil.OilReportMainActivity;
 import com.cimcitech.nmhy.activity.home.oil.OilRequestHistoryActivity;
 import com.cimcitech.nmhy.activity.home.oil.OilReportHistoryActivity;
@@ -82,6 +83,9 @@ public class HomeFragment extends Fragment implements OnBannerListener {
                             break;
                         case 1://航次计划
                             startActivity(new Intent(mContext, ShipPlanActivity.class));
+                            break;
+                        case 2://货物查询
+                            startActivity(new Intent(mContext, SearchGoodsActivity.class));
                             break;
                     }
                 }

@@ -139,6 +139,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat sdf;
     private String nowTimeStr = "";
+    private boolean isAdd = false;
 
     Handler handler = new Handler(){
         @Override
@@ -181,14 +182,17 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_ship_plan_detail);
         ButterKnife.bind(this);
 
+        isAdd = getIntent().getBooleanExtra("isAdd",false);
         item = (ShipPlanVo.DataBean.VoyageDynamicInfosBean)getIntent().getParcelableExtra("item");
+
         initTitle();
         calendar = Calendar.getInstance();
         //getData();
     }
 
     public void initTitle(){
-        titleName_Tv.setText(getResources().getString(R.string.ship_plan_detail_title));
+        titleName_Tv.setText(isAdd?getResources().getString(R.string.add_voyage_plan_label) :
+                getResources().getString(R.string.voyage_plan_detail_label));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.GONE);
         if(!NetWorkUtil.isConn(mContext)){
@@ -204,10 +208,31 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
 //            addWatcher(latitudeTv);
 //            addWatcher(longitudeTv);
 //            addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
-            initData();
-            initContent();
-            startLocationService();
+            if(isAdd){//新增
+                initData();
+                initContent();
+                startLocationService();
+            }else {//查看
+                initDetailData();
+            }
         }
+    }
+
+    public void initDetailData(){
+        portName_Tv.setText(item.getPortName());
+        jobTypeValue_Tv.setText(item.getJobTypeValue());
+        voyageStatusDesc_Tv.setText(item.getPortName());
+        reason_Tv.setText(item.getReason());
+        estimatedTime_Tv.setText(item.getEstimatedTime());
+        occurTime_Tv.setText(item.getOccurTime());
+        reportTime_Tv.setText(item.getReportTime());
+        location_Tv.setText(item.getLocation());
+        longitude_Tv.setText(item.getLongitude() + "");
+        latitude_Tv.setText(item.getLatitude() + "");
+        speed_Tv.setText(item.getSpeed() + "");
+        weather_Tv.setText(item.getWeather());
+        feedback_Tv.setText(item.getFeedback());
+        remark_Tv.setText(item.getRemark());
     }
 
     public void addWatcher(TextView tv){
@@ -253,6 +278,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
 
     public void initContent(){
         nowTimeStr = DateTool.getSystemDate();
+        nowTimeStr = nowTimeStr.substring(0,10);
         estimatedTime_Tv.setText(nowTimeStr);
         occurTime_Tv.setText(nowTimeStr);
         reportTime_Tv.setText(nowTimeStr);
@@ -348,6 +374,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
         String remark = remark_Tv.getText().toString().trim();
         String fstatus = "";
         String feedback = feedback_Tv.getText().toString().trim();
+        long voyageStatusId = item.getVoyageStatusId();
 
         String json = new Gson().toJson(new ShipPlanDynamicReq(dynamicId,
                 voyagePlanId,
@@ -369,7 +396,8 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                 fstatus,
                 feedback,
                 reportId,
-                reportTime));
+                reportTime,
+                voyageStatusId));
         OkHttpUtils
                 .postString()
                 .url(Config.save_voyage_plan_dynamic_url)

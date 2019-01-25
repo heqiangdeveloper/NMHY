@@ -26,8 +26,14 @@ public class ShipPlanDynamicReq {
     private String feedback;
     private int feedUserId;
     private String feedTime;
+    private long voyageStatusId;
 
-    public ShipPlanDynamicReq(long dynamicId, long voyagePlanId, int currPortId, String estimatedTime, String jobType, String reportTime, String occurTime, int reportId, String voyageStatus, String voyageStatusDesc, String reason, String location, double longitude, double latitude, double speed, String weather, String remark, String fstatus, String feedback, int feedUserId, String feedTime) {
+    public ShipPlanDynamicReq(long dynamicId, long voyagePlanId, int currPortId, String
+            estimatedTime, String jobType, String reportTime, String occurTime, int reportId,
+                              String voyageStatus, String voyageStatusDesc, String reason, String
+                                      location, double longitude, double latitude, double speed,
+                              String weather, String remark, String fstatus, String feedback, int
+                                      feedUserId, String feedTime,long voyageStatusId) {
         this.dynamicId = dynamicId;
         this.voyagePlanId = voyagePlanId;
         this.currPortId = currPortId;
@@ -49,5 +55,6 @@ public class ShipPlanDynamicReq {
         this.feedback = feedback;
         this.feedUserId = feedUserId;
         this.feedTime = feedTime;
+        this.voyageStatusId = voyageStatusId;
     }
 }

@@ -26,7 +26,7 @@ public class Config {
     public static final String TEXT_TYPE_NUM = "num";//number
     public static final String TEXT_TYPE_STR = "str";//String
     //航次状态
-    public static final List<String> voyageStatusList = new ArrayList<String>(Arrays.asList
+    public static final List<String> fStatusList = new ArrayList<String>(Arrays.asList
             ("计划中-不确定","计划中-确定","计划执行中","执行结束"));
 
     //币种
@@ -75,12 +75,12 @@ public class Config {
     }};
 
     //智能
-    public static String IP = "http://192.168.1.120:8081/nmhy/";
+    //public static String IP = "http://192.168.137.1:8081/nmhy/";
 
     //public static String IP = "http://10.33.155.214:8081/nmhy/";
 
     //多式联运
-    //public static String IP = "http://10.33.176.239:8087/nmhy/";
+    public static String IP = "http://192.168.137.1:8081/nmhy/";
 
     //public static String IP = "http://192.168.1.159:8086/nmhy/";
 

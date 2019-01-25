@@ -11,6 +11,7 @@ import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryVo;
 import com.cimcitech.nmhy.bean.plan.ShipBean;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
+import com.cimcitech.nmhy.utils.Config;
 
 import java.util.List;
 
@@ -104,9 +105,13 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String routeNameStr = item.getRouteName() != null && !item.getRouteName().equals
                     ("") ? "线路名称: " + item.getRouteName() : "线路名称: " + "";
             ((ItemViewHolder) holder).routeName_Tv.setText(routeNameStr);
-//            String portTransportOrderStr = item.getPortTransportOrder() != null && !item
-//                    .getPortTransportOrder().equals("") ? "航次顺序: " + item.getPortTransportOrder() : "航次顺序: " + "";
-//            ((ItemViewHolder) holder).portTransportOrder_Tv.setText(portTransportOrderStr);
+            int fStatus = 0;
+            if(item.getFstatus() != null && !item.getFstatus().equals("")){
+                fStatus = Integer.parseInt(item.getFstatus());
+            }
+            String fStatusStr = Config.fStatusList.get(fStatus);
+            ((ItemViewHolder) holder).fStatus_Tv.setText(context.getResources().getString(R
+                    .string.fStatus_label)+ ": " + fStatusStr);
         }
     }
 
@@ -128,12 +133,12 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView voyageNo_Tv, routeName_Tv, portTransportOrder_Tv;
+        TextView voyageNo_Tv, routeName_Tv, fStatus_Tv;
         public ItemViewHolder(View view) {
             super(view);
             voyageNo_Tv = view.findViewById(R.id.voyageNo_tv);
             routeName_Tv = view.findViewById(R.id.routeName_tv);
-            portTransportOrder_Tv = view.findViewById(R.id.portTransportOrder_tv);
+            fStatus_Tv = view.findViewById(R.id.fStatus_tv);
         }
     }
 

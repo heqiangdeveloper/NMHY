@@ -136,7 +136,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                 ShipPlanVo.DataBean bean = data.get(position);
                 ArrayList<ShipPlanVo.DataBean.VoyageDynamicInfosBean> voyageDynamicInfosBean =
                         bean.getVoyageDynamicInfos();
-                Intent i = new Intent(mContext,ShipPlanDetailActivity2.class);
+                Intent i = new Intent(mContext,ShipPlanDetailActivity4.class);
                 i.putParcelableArrayListExtra("voyageDynamicInfosBean",voyageDynamicInfosBean);
                 startActivity(i);
             }

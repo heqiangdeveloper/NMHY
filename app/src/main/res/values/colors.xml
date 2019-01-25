@@ -6,7 +6,7 @@
     <color name="grey">#7C7C7C</color>
     <color name="black">#000</color>
     <color name="white">#fff</color>
-    <color name="red">#f00</color>
+    <color name="red">#FFCC99</color>
     <color name="transparent">#00000000</color>
     <color name="dialog_bg">#AFAFAF</color>
     <color name="message_item_devid_color">#F4F4F4</color>
@@ -14,5 +14,5 @@
     <color name="black_33">#666666</color>
     <color name="alpha30">#20000000</color>
     <color name="tableBackground">#d4d4d4</color>
-    <color name="blue">#00f</color>
+    <color name="table_text_color">#00f</color>
 </resources>
