@@ -71,7 +71,8 @@
     <string name="tax_label">税金</string>
     <string name="taxFreeAmount_label">实际金额（不含税)</string>
     <!--燃油上报-->
-    <string name="voyageStatus_label">航次状态</string>
+    <string name="voyagePlanStatus_label">航次状态</string>
+    <string name="voyageStatus_label">当前状态</string>
     <string name="longitude_label">经度</string>
     <string name="latitude_label">纬度</string>
     <string name="add_oil_data_label">待报燃油动态</string>
@@ -108,8 +109,11 @@
     <string name="add_oil_amount_hint_label">请输入数据</string>
     <string name="add_money_hint_label">请输入</string>
     <string name="add_oil_dialog_title">是否提交以下信息？</string>
+    <string name="port_sort_label">码头顺序</string>
+    <string name="dynamic_label">动态跟踪列表</string>
 
     <string name="report_ship_plan_label">汇报详情</string>
+    <string name="portName_label2">码头</string>
     <string name="portName_label">码头名称</string>
     <string name="jobTypeValue_label">作业类型</string>
     <string name="voyageStatusDesc_label">航次状态</string>
@@ -142,4 +146,10 @@
 
     <string name="add_voyage_plan_label">新增动态跟踪</string>
     <string name="voyage_plan_detail_label">动态跟踪详情</string>
+
+    <string name="actualSailingTime_label">实际起航时间</string>
+    <string name="estimatedSailingTime_label">预计起航时间</string>
+    <string name="actualStopTime_label">实际止航时间</string>
+    <string name="estimatedStopTime_label">预计止航时间</string>
+    <string name="portTransportOrder_label">航次顺序</string>
 </resources>

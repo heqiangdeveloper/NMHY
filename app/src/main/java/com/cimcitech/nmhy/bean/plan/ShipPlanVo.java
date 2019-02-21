@@ -51,6 +51,12 @@ public class ShipPlanVo {
 
     public static class DataBean{
         private String bargeBatchNo;//船批号
+        private String cShipName;
+        private String actualSailingTime;
+        private String actualStopTime;
+        private String estimatedStopTime;
+        private String estimatedSailingTime;
+        private String portTransportOrder;
         private int bargeId;
         private String voyageNo;
         private int routeId;//线路id
@@ -303,6 +309,54 @@ public class ShipPlanVo {
             public void setVoyageStatusId(long voyageStatusId) {
                 this.voyageStatusId = voyageStatusId;
             }
+        }
+
+        public String getcShipName() {
+            return cShipName;
+        }
+
+        public void setcShipName(String cShipName) {
+            this.cShipName = cShipName;
+        }
+
+        public String getActualSailingTime() {
+            return actualSailingTime;
+        }
+
+        public void setActualSailingTime(String actualSailingTime) {
+            this.actualSailingTime = actualSailingTime;
+        }
+
+        public String getActualStopTime() {
+            return actualStopTime;
+        }
+
+        public void setActualStopTime(String actualStopTime) {
+            this.actualStopTime = actualStopTime;
+        }
+
+        public String getEstimatedStopTime() {
+            return estimatedStopTime;
+        }
+
+        public void setEstimatedStopTime(String estimatedStopTime) {
+            this.estimatedStopTime = estimatedStopTime;
+        }
+
+        public String getEstimatedSailingTime() {
+            return estimatedSailingTime;
+        }
+
+        public void setEstimatedSailingTime(String estimatedSailingTime) {
+            this.estimatedSailingTime = estimatedSailingTime;
+        }
+
+        public String getPortTransportOrder() {
+            return portTransportOrder;
+        }
+
+        public void setPortTransportOrder(String portTransportOrder) {
+            this.portTransportOrder = portTransportOrder;
         }
 
         public String getFstatus() {

@@ -173,6 +173,7 @@ public class OilReportActivity extends MyBaseActivity {
         initTitle();
 
         initView();
+        getData();
     }
 
     public void initTitle(){
@@ -221,6 +222,40 @@ public class OilReportActivity extends MyBaseActivity {
             longitude_Tv.setText(oilData.getLongitude() + "");
             latitude_Tv.setText(oilData.getLatitude() + "");
         }
+    }
+
+    public void getData(){
+        int voyagePlanId = 101;
+        String json = "";
+        OkHttpUtils
+                .postString()
+                .url(Config.get_current_voyageStatus_url)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        ToastUtil.showNetError();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            if(object.getBoolean("success")){
+                                ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
+                                int dynamicinfoId = object.getInt("id");
+                                Intent i = new Intent(mContext,OilReportHistoryActivity.class);
+                                startActivity(i);
+                            }else{
+                                ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
+                            }
+                        }catch (JSONException e){
+
+                        }
+                    }
+                });
     }
 
     public void initContent(){

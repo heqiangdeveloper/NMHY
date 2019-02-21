@@ -2,6 +2,7 @@ package com.cimcitech.nmhy.adapter.plan;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,19 +100,57 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
             }
             final ShipPlanVo.DataBean item = data.get(position);
-            String voyageNoStr = item.getVoyageNo() != null && !item.getVoyageNo()
-                   .equals("") ? "航次号: " + item.getVoyageNo() : "航次号: " + "";
-            ((ItemViewHolder) holder).voyageNo_Tv.setText(voyageNoStr);
-            String routeNameStr = item.getRouteName() != null && !item.getRouteName().equals
-                    ("") ? "线路名称: " + item.getRouteName() : "线路名称: " + "";
-            ((ItemViewHolder) holder).routeName_Tv.setText(routeNameStr);
+            //船名
+            String shipNameStr =
+                    item.getcShipName() != null && !item.getcShipName().equals("") ?
+                    item.getcShipName() : "";
+            //航次号
+            String voyageNoStr =
+                    item.getVoyageNo() != null && !item.getVoyageNo().equals("") ?
+                    item.getVoyageNo() : "";
+            //航次顺序
+            String portTransportOrderStr =
+                    item.getPortTransportOrder() != null && !item.getPortTransportOrder().equals("") ?
+                    item.getPortTransportOrder() : "";
+            //预计起航时间
+            String estimatedSailingTimeStr =
+                    item.getEstimatedSailingTime() != null && !item.getEstimatedSailingTime().equals("") ?
+                    item.getEstimatedSailingTime() : "";
+            //预计止航时间
+            String  estimatedStopTimeStr=
+                    item.getEstimatedStopTime() != null && !item.getEstimatedStopTime().equals("") ?
+                    item.getEstimatedStopTime() : "";
+            //实际起航时间
+            String actualSailingTimeStr =
+                    item.getActualSailingTime() != null && !item.getActualSailingTime().equals("") ?
+                    item.getActualSailingTime() : "";
+            //实际止航时间
+            String actualStopTimeStr =
+                    item.getActualStopTime() != null && !item.getActualStopTime().equals("") ?
+                    item.getActualStopTime() : "";
+
+            ((ItemViewHolder) holder).ship_name_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.ship_name_label) + ": " +
+                    "<font color='#666666'>" + shipNameStr + "</font>"));
+            ((ItemViewHolder) holder).voyageNo_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.voyageNo_label) + ": " +
+                    "<font color='#666666'>" + voyageNoStr + "</font>"));
+            ((ItemViewHolder) holder).portTransportOrder_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.portTransportOrder_label) + ": " +
+                    "<font color='#666666'>" + portTransportOrderStr + "</font>"));
+            ((ItemViewHolder) holder).estimatedSailingTime_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.estimatedSailingTime_label) + ": " +
+                    "<font color='#666666'>" + estimatedSailingTimeStr + "</font>"));
+            ((ItemViewHolder) holder).estimatedStopTime_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.estimatedStopTime_label) + ": " +
+                    "<font color='#666666'>" + estimatedStopTimeStr + "</font>"));
+            ((ItemViewHolder) holder).actualSailingTime_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.actualSailingTime_label) + ": " +
+                    "<font color='#666666'>" + actualSailingTimeStr + "</font>"));
+            ((ItemViewHolder) holder).actualStopTime_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.actualStopTime_label) + ": " +
+                    "<font color='#666666'>" + actualStopTimeStr + "</font>"));
+
             int fStatus = 0;
             if(item.getFstatus() != null && !item.getFstatus().equals("")){
                 fStatus = Integer.parseInt(item.getFstatus());
             }
             String fStatusStr = Config.fStatusList.get(fStatus);
-            ((ItemViewHolder) holder).fStatus_Tv.setText(context.getResources().getString(R
-                    .string.fStatus_label)+ ": " + fStatusStr);
+            ((ItemViewHolder) holder).fStatus_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.fStatus_label) + ": " +
+                    "<font color='#666666'>" + fStatusStr + "</font>"));
         }
     }
 
@@ -133,11 +172,17 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView voyageNo_Tv, routeName_Tv, fStatus_Tv;
+        TextView ship_name_Tv,voyageNo_Tv, portTransportOrder_Tv,estimatedSailingTime_Tv,
+                estimatedStopTime_Tv,actualSailingTime_Tv,actualStopTime_Tv, fStatus_Tv;
         public ItemViewHolder(View view) {
             super(view);
+            ship_name_Tv = view.findViewById(R.id.ship_name_tv);
             voyageNo_Tv = view.findViewById(R.id.voyageNo_tv);
-            routeName_Tv = view.findViewById(R.id.routeName_tv);
+            portTransportOrder_Tv = view.findViewById(R.id.portTransportOrder_tv);
+            estimatedSailingTime_Tv = view.findViewById(R.id.estimatedSailingTime_tv);
+            estimatedStopTime_Tv = view.findViewById(R.id.estimatedStopTime_tv);
+            actualSailingTime_Tv = view.findViewById(R.id.actualSailingTime_tv);
+            actualStopTime_Tv = view.findViewById(R.id.actualStopTime_tv);
             fStatus_Tv = view.findViewById(R.id.fStatus_tv);
         }
     }

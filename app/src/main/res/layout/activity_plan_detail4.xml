@@ -28,14 +28,39 @@
                 android:layout_marginBottom="@dimen/table_margin_bottom">
 
                 <LinearLayout
-                    android:id="@+id/port_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="@dimen/table_margin_left"
                     android:paddingRight="@dimen/table_margin_left"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+                    <TextView
+                        android:visibility="gone"
+                        android:text="@string/port_sort_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_size_20"
+                        android:layout_marginTop="@dimen/linear_table_margin_top"
+                        android:layout_marginBottom="@dimen/linear_table_margin_top"
+                        android:textColor="@color/colorPrimary"/>
+                    <LinearLayout
+                        android:id="@+id/port_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
+                    </LinearLayout>
+
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/table_margin_bottom"
+                        android:text="@string/dynamic_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/colorPrimary"/>
                 </LinearLayout>
 
                 <LinearLayout

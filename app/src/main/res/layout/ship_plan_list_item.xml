@@ -12,26 +12,80 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+        <TextView
+            android:id="@+id/ship_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/ship_name_label"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"/>
         <TextView
             android:id="@+id/voyageNo_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="航次号"
+            android:textColor="@color/black"
             android:layout_marginTop="5dp"
-            android:textColor="@color/black_33"
-            android:textSize="@dimen/text_size_14"/>
+            android:textSize="@dimen/text_size_16"/>
 
         <TextView
-            android:id="@+id/routeName_tv"
+            android:id="@+id/portTransportOrder_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="线路名称"
+            android:text="航次顺序"
+            android:textColor="@color/black"
             android:layout_marginTop="5dp"
-            android:textColor="@color/black_33"
-            android:textSize="@dimen/text_size_14"/>
+            android:textSize="@dimen/text_size_16"/>
+        <TextView
+            android:id="@+id/estimatedSailingTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/estimatedSailingTime_label"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"/>
+        <TextView
+            android:id="@+id/estimatedStopTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/estimatedStopTime_label"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"/>
+        <TextView
+            android:id="@+id/actualSailingTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/actualSailingTime_label"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"/>
+        <TextView
+            android:id="@+id/actualStopTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/actualStopTime_label"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"/>
 
         <TextView
             android:id="@+id/fStatus_tv"
@@ -43,7 +97,7 @@
             android:maxLines="2"
             android:text="@string/fStatus_label"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14"/>
+            android:textSize="@dimen/text_size_16"/>
     </LinearLayout>
     <View
         android:layout_marginTop="15dp"

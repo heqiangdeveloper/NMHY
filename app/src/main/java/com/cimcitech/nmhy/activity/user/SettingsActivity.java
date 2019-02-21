@@ -141,7 +141,8 @@ public class SettingsActivity extends AppCompatActivity {
     public void ModifyUserInfoPreference(){
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("accountId",-1);
-        editor.putString("accountNo","");
+        //editor.putString("accountNo","");
+        editor.putString("password","");
         editor.putString("accountType","");
         editor.putString("userName","");
         editor.putString("token","");

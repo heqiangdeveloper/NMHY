@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.bean.login.LoginVo;
+import com.cimcitech.nmhy.utils.Base64Utils;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.widget.MyBaseActivity;
 import com.google.gson.Gson;
@@ -75,8 +76,31 @@ public class LoginActivity extends MyBaseActivity {
         }
     }
     public void initView(){
-        user_Et.setText("17620465672");
-        password_Et.setText("12345678");
+        int accountId = sp.getInt("accountId",0);
+        String accountNo = sp.getString("accountNo","");
+        String password = sp.getString("password", "");
+        String accountType = sp.getString("accountType","");
+        String userName = sp.getString("userName","");
+        String token = sp.getString("token","");
+
+        //如果是已登录过的，直接跳过登录界面
+        if(accountNo.length() != 0 && password.length() != 0 && accountType.length() != 0 &&
+                userName.length() != 0 && token.length() != 0 && accountId != 0){
+            saveConfigs(accountId,accountNo,accountType,userName,token);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }else{
+            if (accountNo.length() != 0) {
+                user_Et.setText(accountNo);
+            }else{
+                user_Et.setText("");
+            }
+            password_Et.setText("");
+            if(user_Et.getText().toString().trim().length() != 0){
+                user_Et.setSelection(user_Et.getText().toString().trim().length());
+            }
+        }
     }
 
     public void addWatcher(TextView tv){
@@ -149,8 +173,12 @@ public class LoginActivity extends MyBaseActivity {
                             String userName = loginVo.getData().getUserName();
                             String token = loginVo.getData().getToken();
 
+                            String password = Base64Utils.encodeString(password_Et.getText().toString().trim());
                             //保存用户信息
-                            saveUserInfo(accountId,accountNo,accountType,userName,token);
+                            saveUserInfo(accountId,accountNo,password,
+                                    accountType,
+                                    userName,
+                                    token);
                             saveConfigs(accountId,accountNo,accountType,userName,token);
 
                             Intent i = new Intent(LoginActivity.this,MainActivity.class);
@@ -163,17 +191,19 @@ public class LoginActivity extends MyBaseActivity {
                 });
     }
 
-    public void saveUserInfo(int accountId,String accountNo,String accountType,String userName,String token){
+    public void saveUserInfo(int accountId,String accountNo,String password,String accountType,
+                             String userName, String token){
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("accountId",accountId);
         editor.putString("accountNo",accountNo);
+        editor.putString("password",password);
         editor.putString("accountType",accountType);
         editor.putString("userName",userName);
         editor.putString("token",token);
         editor.commit();
     }
 
-    public void saveConfigs(int accountId,String accountNo,String accountType,String userName,String token){
+    public void saveConfigs(int accountId,String accountNo,String accountType, String userName,String token){
         Config.accountId = accountId;
         Config.accountNo = accountNo;
         Config.accountType = accountType;

@@ -9,16 +9,16 @@ import java.util.List;
 public class OilReportMainReq {
     private long bargeId;
     private long voyagePlanId;
-    private int voyageStatus;
+    private int voyageStatusId;
     private String location;
     private double longitude;
     private double latitude;
     private List<ShipFualDynamicInfosubsBean> ShipFualDynamicInfosubs;
 
-    public OilReportMainReq(long bargeId, long voyagePlanId, int voyageStatus, String location, double longitude, double latitude, List<ShipFualDynamicInfosubsBean> shipFualDynamicInfosubs) {
+    public OilReportMainReq(long bargeId, long voyagePlanId, int voyageStatusId, String location, double longitude, double latitude, List<ShipFualDynamicInfosubsBean> shipFualDynamicInfosubs) {
         this.bargeId = bargeId;
         this.voyagePlanId = voyagePlanId;
-        this.voyageStatus = voyageStatus;
+        this.voyageStatusId = voyageStatusId;
         this.location = location;
         this.longitude = longitude;
         this.latitude = latitude;

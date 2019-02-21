@@ -9,6 +9,12 @@
               android:paddingLeft="@dimen/table_margin_left"
               android:paddingRight="@dimen/table_margin_left">
 
+    <View
+        android:id="@+id/devide_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="5dp"/>
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
@@ -24,6 +30,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/table_text_size" />
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -36,6 +43,7 @@
             android:text="@string/voyageStatusDesc_label"
             android:textSize="@dimen/table_text_size" />
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,6 +53,7 @@
             android:textSize="@dimen/table_text_size" />
 
         <TextView
+            android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -54,6 +63,7 @@
             android:textSize="@dimen/table_text_size" />
 
         <TextView
+            android:id="@+id/textView6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"

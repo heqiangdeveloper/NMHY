@@ -80,9 +80,9 @@ public class Config {
     //public static String IP = "http://10.33.155.214:8081/nmhy/";
 
     //多式联运
-    public static String IP = "http://192.168.137.1:8081/nmhy/";
+    //public static String IP = "http://10.33.178.91:8081/nmhy/";
 
-    //public static String IP = "http://192.168.1.159:8086/nmhy/";
+    public static String IP = "http://192.168.137.1:8081/nmhy/";
 
     //登录
     public static String login_url = IP + "user/login";
@@ -112,7 +112,7 @@ public class Config {
     public static String add_oil_request_detail_url = IP + "fuelApplyDetail/addFuelApplyDetail";
 
     //新增 燃油动态  主表+子表 一起添加
-    public static String add_oil_report_main_url = IP + "shipFualDynamicInfo/addShipFualDynamicInfos";
+    public static String add_oil_report_main_url = IP + "shipFualDynamicInfo/updateShipFualDynamicInfos";
 
     //分页查询所有航次计划
     public static String query_voyage_plan_url = IP + "voyagePlan/queryByUserId";
@@ -122,5 +122,11 @@ public class Config {
 
     //保存航次动态
     public static String save_voyage_plan_dynamic_url = IP + "voyageDynamicInfo/saveVoyageDynamicInfo";
+
+    //获取当前的航次状态
+    public static String get_current_voyageStatus_url = IP + "voyageDynamicInfo/queryNextvoyageStatusId";
+
+    //获取当前的船名和航次号id
+    public static String get_bargeName_voyagePlanId_url = IP + "voyagePlan/queryVoyagePlanByFualDynamic";
 
 }

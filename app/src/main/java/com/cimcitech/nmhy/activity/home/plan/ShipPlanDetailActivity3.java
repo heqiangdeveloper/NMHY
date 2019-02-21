@@ -175,7 +175,7 @@ public class ShipPlanDetailActivity3 extends AppCompatActivity {
                 for(int k = 0; k < data.size(); k++){
                     if(currentPortName.equals(data.get(k).getPortName())){
                         mll = new MyLinearLayout(this);
-                        mll.setText(data.get(k).getVoyageStatusDesc(),"2019-02-26","汇报","报异常");
+                        //mll.setText(data.get(k).getVoyageStatusDesc(),"2019-02-26","汇报","报异常");
                         detail_Ll.addView(mll);
                     }
                 }
@@ -210,33 +210,34 @@ public class ShipPlanDetailActivity3 extends AppCompatActivity {
                             commandStr = getResources().getString(R.string.command_report_label);
                         }
 
-                        mll.setText(currentItem.getVoyageStatusDesc(),currentItem.getEstimatedTime(),commandStr, "报异常");
+                       // mll.setText(currentItem.getVoyageStatusDesc(),currentItem
+                        //        .getEstimatedTime(),commandStr, "报异常");
                         detail_Ll.addView(mll);
-                        final TextView commandTv = mll.findCommandTv();
-                        TextView exceptionTv = mll.findExceptionTv();
+//                        final TextView commandTv = mll.findCommandTv();
+//                        TextView exceptionTv = mll.findExceptionTv();
                         final int position = k;
-                        commandTv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(position);
-                                Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
-                                //汇报
-                                if(commandTv.getText().toString().trim().equals(getResources()
-                                        .getString(R.string.command_report_label))){
-                                    i.putExtra("isAdd",true);
-                                }else{//查看
-                                    i.putExtra("isAdd",false);
-                                }
-                                i.putExtra("item",item);
-                                startActivity(i);
-                            }
-                        });
-                        exceptionTv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ToastUtil.showToast("Clicked!");
-                            }
-                        });
+//                        commandTv.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(position);
+//                                Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
+//                                //汇报
+//                                if(commandTv.getText().toString().trim().equals(getResources()
+//                                        .getString(R.string.command_report_label))){
+//                                    i.putExtra("isAdd",true);
+//                                }else{//查看
+//                                    i.putExtra("isAdd",false);
+//                                }
+//                                i.putExtra("item",item);
+//                                startActivity(i);
+//                            }
+//                        });
+//                        exceptionTv.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                ToastUtil.showToast("Clicked!");
+//                            }
+//                        });
                     }
                 }
             }
@@ -251,7 +252,8 @@ public class ShipPlanDetailActivity3 extends AppCompatActivity {
             MyLinearLayout mll = null;
             for(int i = 0; i < sizen; i++){
                 mll = new MyLinearLayout(this);
-                mll.setText(portNameList.get(i),portNameList.get(i),portNameList.get(i),portNameList.get(i));
+                //mll.setText(portNameList.get(i),portNameList.get(i),portNameList.get(i),
+                //        portNameList.get(i));
                 detail_Ll.addView(mll);
             }
         }

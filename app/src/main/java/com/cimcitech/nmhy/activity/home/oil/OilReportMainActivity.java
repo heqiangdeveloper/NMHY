@@ -5,20 +5,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,15 +25,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +41,13 @@ import com.cimcitech.nmhy.activity.main.ApkApplication;
 import com.cimcitech.nmhy.adapter.oil.OilReportAdapter;
 import com.cimcitech.nmhy.adapter.oil.OilReportHistoryAdapter;
 import com.cimcitech.nmhy.baidu.LocationService;
-import com.cimcitech.nmhy.bean.login.LoginVo;
+import com.cimcitech.nmhy.bean.oil.BargeNameAndVoyagePlanIdReq;
+import com.cimcitech.nmhy.bean.oil.BargeNameAndVoyagePlanIdVo;
 import com.cimcitech.nmhy.bean.oil.OilReportData;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryReq;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryVo;
 import com.cimcitech.nmhy.bean.oil.OilReportMainReq;
+import com.cimcitech.nmhy.bean.oil.VoyageStatusVo;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DateTool;
 import com.cimcitech.nmhy.utils.EnumUtil;
@@ -70,7 +65,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -99,6 +93,10 @@ public class OilReportMainActivity extends MyBaseActivity {
 
     @Bind(R.id.time_tv)
     TextView timeTv;
+    @Bind(R.id.bargeName_tv)
+    TextView bargeName_Tv;
+    @Bind(R.id.portTransportOrder_tv)
+    TextView portTransportOrder_Tv;
     @Bind(R.id.voyageStatus_tv)
     TextView voyageStatusTv;
     @Bind(R.id.location_tv)
@@ -166,6 +164,9 @@ public class OilReportMainActivity extends MyBaseActivity {
     private int pageNum = 1;
     private boolean isLoading;
     private OilReportHistoryVo oilReportHistoryVo = null;
+    private BargeNameAndVoyagePlanIdVo bargeNameAndVoyagePlanIdVo = null;
+    private VoyageStatusVo voyageStatusVo = null;
+    private int voyagePlanId = -1;
 
     Handler handler = new Handler(){
         @Override
@@ -174,15 +175,15 @@ public class OilReportMainActivity extends MyBaseActivity {
             switch (msg.what){
                 case STARTTOLOCATING:
                     isFinishlocating = false;
-                    dialog = new ProgressDialog(mContext);
-                    dialog.setMessage("定位中…");
-                    dialog.setCancelable(true);
-                    dialog.show();
+//                    dialog = new ProgressDialog(mContext);
+//                    dialog.setMessage("定位中…");
+//                    dialog.setCancelable(true);
+//                    dialog.show();
                     break;
                 case LOCATESUCCESS:
                     isFinishlocating = true;
-                    if(dialog.isShowing())
-                        dialog.dismiss();
+//                    if(dialog.isShowing())
+//                    dialog.dismiss();
                     if(locSb != null && locSb.toString().length() != 0 && !locSb.toString().contains("null")){
                         locationTv.setText(locSb.toString());
                         longitudeTv.setText(longitude + "");
@@ -190,12 +191,12 @@ public class OilReportMainActivity extends MyBaseActivity {
                     }
                     break;
                 case LOCATEFAIL:
-                    isFinishlocating = true;
-//                    locationTv.setText("测试地1");
-//                    longitudeTv.setText(0 + "");
-//                    latitudeTv.setText(0 + "");
-                    if(dialog.isShowing())
-                        dialog.dismiss();
+                   isFinishlocating = true;
+                   locationTv.setText("测试地1");
+                    longitudeTv.setText(113.21 + "");
+                    latitudeTv.setText(20.03 + "");
+//                    if(dialog.isShowing())
+//                        dialog.dismiss();
                     Toast.makeText(mContext,"定位失败！请检查网络或GPS",Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -245,6 +246,8 @@ public class OilReportMainActivity extends MyBaseActivity {
                 addWatcher(longitudeTv);
                 addWatcher(oilAmount1_Et); addWatcher(oilAmount2_Et); addWatcher(oilAmount3_Et);
                 initContent();
+                //获取船名和航次id
+                getBargeNameAndVoyagePlanId();
                 startLocationService();
             }else {//已报
                 contentSv.setVisibility(View.GONE);
@@ -253,6 +256,80 @@ public class OilReportMainActivity extends MyBaseActivity {
                 initViewData();
                 updateData();
             }
+        }
+    }
+
+    public void getBargeNameAndVoyagePlanId(){
+        mCatLoadingView = new CatLoadingView();
+        mCatLoadingView.show(getSupportFragmentManager(),"");
+        //查询正在航行中的航次计划，对应的fstatus = 2
+        int fstatus = 2;
+        String json = new Gson().toJson(new BargeNameAndVoyagePlanIdReq(fstatus,Config.accountId));
+        OkHttpUtils
+                .postString()
+                .url(Config.get_bargeName_voyagePlanId_url)
+                .content(json)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute(
+                        new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                mCatLoadingView.dismiss();
+                                ToastUtil.showNetError();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Log.d(TAG,"response is: " + response);
+                                bargeNameAndVoyagePlanIdVo = new Gson().fromJson(response, BargeNameAndVoyagePlanIdVo.class);
+                                if(bargeNameAndVoyagePlanIdVo != null && bargeNameAndVoyagePlanIdVo.isSuccess()){
+                                    if (bargeNameAndVoyagePlanIdVo.getData() != null && bargeNameAndVoyagePlanIdVo.getData().size() > 0) {
+                                        BargeNameAndVoyagePlanIdVo.DataBean item = bargeNameAndVoyagePlanIdVo.getData().get(0);
+                                        voyagePlanId = item.getVoyagePlanId();
+                                        bargeName_Tv.setText(item.getcShipName());
+                                        portTransportOrder_Tv.setText(item.getPortTransportOrder());
+                                        //获取当前的航次状态
+                                        getVoyageStatus();
+                                    }else{
+                                        mCatLoadingView.dismiss();
+                                    }
+                                }else{
+                                    mCatLoadingView.dismiss();
+                                }
+                            }
+                        }
+                );
+    }
+
+    public void getVoyageStatus(){
+        if(voyagePlanId != -1){
+            String json = "{\"voyagePlanId\":" + voyagePlanId + "}";
+            OkHttpUtils
+                    .postString()
+                    .url(Config.get_current_voyageStatus_url)
+                    .content(json)
+                    .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                    .build()
+                    .execute(
+                            new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                    mCatLoadingView.dismiss();
+                                    ToastUtil.showNetError();
+                                }
+
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    mCatLoadingView.dismiss();
+                                    Log.d(TAG,"response is: " + response);
+                                    voyageStatusVo = new Gson().fromJson(response,VoyageStatusVo.class);
+                                    if(voyageStatusVo != null && voyageStatusVo.isSuccess()){
+                                        voyageStatusTv.setText(voyageStatusVo.getData().getVoyageStatusDesc());
+                                    }
+                                }
+                            }
+                    );
         }
     }
 
@@ -466,14 +543,14 @@ public class OilReportMainActivity extends MyBaseActivity {
                 popup_menu_Ll.setVisibility(View.VISIBLE);
                 break;
             case R.id.voyageStatus_tv:
-                String title = getResources().getString(R.string.choice_label) +
+                /*String title = getResources().getString(R.string.choice_label) +
                         getResources().getString(R.string.voyageStatus_label);
                 List<String> voyageStatusNameList = new ArrayList<String>();
                 for(String key : Config.voyageStatusMap.keySet()){
                     voyageStatusNameList.add(key);
                 }
                 ShowListValueWindow window1 = new ShowListValueWindow(mContext,title, voyageStatusNameList, voyageStatusTv);
-                window1.show();
+                window1.show();*/
                 break;
             case R.id.location_tv:
                 if(locationTv.getText().toString().trim().length() == 0){
@@ -538,9 +615,9 @@ public class OilReportMainActivity extends MyBaseActivity {
                     longitude_item_Tv.setText(getResources().getString(R.string.longitude_label) + ": " + longitude);
                     latitude_item_Tv.setText(getResources().getString(R.string.latitude_label) + ": " + latitude);
 
-                    oil1_item_Tv.setText(oilType1 + ": " + oilAmount1 + oilUnit1);
-                    oil2_item_Tv.setText(oilType2 + ": " + oilAmount2 + oilUnit2);
-                    oil3_item_Tv.setText(oilType3 + ": " + oilAmount3 + oilUnit3);
+                    oil1_item_Tv.setText(oilType1 + ": " + oilAmount1);
+                    oil2_item_Tv.setText(oilType2 + ": " + oilAmount2);
+                    oil3_item_Tv.setText(oilType3 + ": " + oilAmount3);
 
                     cancelTv.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -594,8 +671,9 @@ public class OilReportMainActivity extends MyBaseActivity {
         mCatLoadingView.show(getSupportFragmentManager(),"");
 
         long bargeId = 5;
-        long voyagePlanId = 101;
-        int voyageStatus = EnumUtil.findValueByKeySI(Config.voyageStatusMap,voyageStatusTv.getText().toString().trim());
+        long voyagePlanId = 1901;
+
+        int voyageStatusId = EnumUtil.findValueByKeySI(Config.voyageStatusMap,voyageStatusTv.getText().toString().trim());
         String location = locationTv.getText().toString().trim();
         double longitude = Double.parseDouble(longitudeTv.getText().toString().trim());
         double latitude = Double.parseDouble(latitudeTv.getText().toString().trim());
@@ -626,7 +704,7 @@ public class OilReportMainActivity extends MyBaseActivity {
         list.add(bean2);
         list.add(bean3);
 
-        String json = new Gson().toJson(new OilReportMainReq(bargeId,voyagePlanId,voyageStatus,
+        String json = new Gson().toJson(new OilReportMainReq(bargeId,voyagePlanId,voyageStatusId,
                 location,longitude,latitude,list));
         OkHttpUtils
                 .postString()

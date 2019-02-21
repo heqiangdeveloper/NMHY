@@ -24,11 +24,16 @@ import com.cimcitech.nmhy.bean.plan.ShipBean;
 import com.cimcitech.nmhy.bean.plan.ShipPlanReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.utils.EventBusMessage;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +71,20 @@ public class ShipPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan);
         ButterKnife.bind(this);
+        //注册EventBus订阅者
+        EventBus.getDefault().register(this);
         initTitle();
 
         getData();
+    }
 
+    //订阅者 方法
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        if(event.getMessage().equals("addShipPlanSuc")){
+            Log.d("addShipPlanlog","shipPlanActivity receive addShipPlanSuc...");
+            finish();
+        }
     }
 
     public void initTitle(){
@@ -93,7 +108,7 @@ public class ShipPlanActivity extends AppCompatActivity {
         OkHttpUtils
                 .post()
                 .url(Config.query_voyage_plan_url)
-                .addParams("userId",10678 + "")
+                .addParams("userId",Config.accountId + "")
                 .build()
                 .execute(
                         new StringCallback() {
@@ -110,18 +125,20 @@ public class ShipPlanActivity extends AppCompatActivity {
                                 if (shipPlanVo != null) {
                                     if (shipPlanVo.isSuccess()) {
                                         if (shipPlanVo.getData() != null && shipPlanVo.getData().size() > 0) {
+                                            data.clear();
                                             for (int i = 0; i < shipPlanVo.getData().size(); i++) {
                                                 data.add(shipPlanVo.getData().get(i));
                                             }
                                             initAdapter();
                                         }
-                                        adapter.setNotMoreData(true);
-                                        adapter.notifyDataSetChanged();
-                                        adapter.notifyItemRemoved(adapter.getItemCount());
+                                        if(adapter != null){
+                                            adapter.setNotMoreData(true);
+                                            adapter.notifyDataSetChanged();
+                                            adapter.notifyItemRemoved(adapter.getItemCount());
+                                        }
                                     }
                                 }
                             }
-
                         });
     }
 
@@ -138,6 +155,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                         bean.getVoyageDynamicInfos();
                 Intent i = new Intent(mContext,ShipPlanDetailActivity4.class);
                 i.putParcelableArrayListExtra("voyageDynamicInfosBean",voyageDynamicInfosBean);
+                i.putExtra("fstatus",bean.getFstatus());
                 startActivity(i);
             }
 
@@ -146,5 +164,12 @@ public class ShipPlanActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //注销订阅者
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -39,7 +39,7 @@
     <dimen name="my_info_popup_line_height">1dp</dimen>
     <dimen name="my_info_popup_title_margin">20dp</dimen>
     <dimen name="oil_report_history_list_margin">14sp</dimen>
-    <dimen name="main_text_size">14sp</dimen>
+    <dimen name="main_text_size">18sp</dimen>
     <dimen name="add_oil_table_title_height">30dp</dimen>
     <dimen name="add_oil_table_item_height">30dp</dimen>
     <dimen name="add_oil_spinner_height">30dp</dimen>
@@ -49,7 +49,7 @@
     <dimen name="port_name_line_width">30dp</dimen>
     <dimen name="port_name_line_height">2dp</dimen>
     <dimen name="port_name_line_margin">5dp</dimen>
-    <dimen name="table_text_size">16sp</dimen>
+    <dimen name="table_text_size">14sp</dimen>
     <dimen name="linear_table_margin_top">10dp</dimen>
     <dimen name="table_margin_top">5dp</dimen>
     <dimen name="table_margin_bottom">20dp</dimen>

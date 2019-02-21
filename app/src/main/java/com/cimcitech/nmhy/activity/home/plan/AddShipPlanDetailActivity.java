@@ -1,8 +1,10 @@
 package com.cimcitech.nmhy.activity.home.plan;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.tv.TvTrackInfo;
@@ -51,6 +53,7 @@ import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.bean.plan.ShipTableBean;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DateTool;
+import com.cimcitech.nmhy.utils.EventBusMessage;
 import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.cimcitech.nmhy.widget.DateTimePickDialog;
@@ -59,6 +62,7 @@ import com.roger.catloadinglibrary.CatLoadingView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -209,10 +213,12 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
 //            addWatcher(longitudeTv);
 //            addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
             if(isAdd){//新增
+                commitBt.setVisibility(View.VISIBLE);
                 initData();
                 initContent();
                 startLocationService();
             }else {//查看
+                commitBt.setVisibility(View.GONE);
                 initDetailData();
             }
         }
@@ -278,7 +284,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
 
     public void initContent(){
         nowTimeStr = DateTool.getSystemDate();
-        nowTimeStr = nowTimeStr.substring(0,10);
+        //nowTimeStr = nowTimeStr.substring(0,10);
         estimatedTime_Tv.setText(nowTimeStr);
         occurTime_Tv.setText(nowTimeStr);
         reportTime_Tv.setText(nowTimeStr);
@@ -341,7 +347,25 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.commit_bt:
-                commitData();
+                new AlertDialog.Builder(mContext)
+                        //.setTitle("提示")
+                        .setMessage(mContext.getResources().getString(R.string.add_oil_dialog_title))
+                        .setCancelable(true)
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                commitData();
+                            }
+                        })
+                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create().show();
+
                 break;
             case R.id.occurTime_tv:
                 showSelectDateDialog2();
@@ -418,8 +442,12 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                                 try{
                                     JSONObject jo = new JSONObject(response);
                                     if(jo.getBoolean("success")){
+                                        // 发布事件
+                                        EventBus.getDefault().post(new EventBusMessage("addShipPlanSuc"));
+
                                         ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
                                         location_Tv.setText("");
+                                        finish();
                                     }else{
                                         ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
                                     }
