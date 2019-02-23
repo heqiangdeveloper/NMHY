@@ -25,10 +25,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="@dimen/table_margin_bottom">
+                android:layout_marginBottom="@dimen/table_margin_top">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="@dimen/table_margin_left"
@@ -48,30 +48,55 @@
                         android:id="@+id/port_ll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:orientation="horizontal">
 
                     </LinearLayout>
 
+                    <Button
+                        android:layout_marginLeft="@dimen/voyage_button_margin_horizontal"
+                        android:layout_marginRight="@dimen/voyage_button_margin_horizontal"
+                        android:id="@+id/start_voyage_bt"
+                        android:layout_marginTop="@dimen/voyage_button_margin_vertical"
+                        android:layout_marginBottom="@dimen/voyage_button_margin_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_voyage_label"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_voyage_button_off"/>
+
                     <TextView
                         android:visibility="gone"
-                        android:layout_marginTop="@dimen/table_margin_bottom"
+                        android:layout_marginTop="@dimen/table_margin_top"
                         android:text="@string/dynamic_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textSize="@dimen/text_size_18"
                         android:textColor="@color/colorPrimary"/>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/detail_ll"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/linear_table_margin_top"
-                    android:layout_marginBottom="20dp">
+                    <LinearLayout
+                        android:id="@+id/detail_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/linear_table_margin_top"
+                        android:layout_marginBottom="@dimen/linear_table_margin_top">
 
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_marginLeft="@dimen/voyage_button_margin_horizontal"
+                        android:layout_marginRight="@dimen/voyage_button_margin_horizontal"
+                        android:id="@+id/end_voyage_bt"
+                        android:layout_marginTop="@dimen/voyage_button_margin_vertical"
+                        android:layout_marginBottom="@dimen/voyage_button_margin_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/end_voyage_label"
+                        android:textColor="@color/white"
+                        android:background="@drawable/shape_voyage_button_off"/>
                 </LinearLayout>
 
             </LinearLayout>

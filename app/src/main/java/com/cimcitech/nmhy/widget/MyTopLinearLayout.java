@@ -15,7 +15,7 @@ import com.cimcitech.nmhy.R;
 
 public class MyTopLinearLayout extends LinearLayout {
     private View divide_line_view;
-    private TextView  tv1,tv2,tv4,tv5,tv6;
+    private TextView  tv1,tv2,tv4,tv5;
     private LinearLayout ll;
     public MyTopLinearLayout(Context context) {
         super(context);
@@ -26,7 +26,6 @@ public class MyTopLinearLayout extends LinearLayout {
         tv2 = (TextView)findViewById(R.id.textView2);
         tv4 = (TextView)findViewById(R.id.textView4);
         tv5 = (TextView)findViewById(R.id.textView5);
-        tv6 = (TextView)findViewById(R.id.textView6);
         divide_line_view = findViewById(R.id.devide_line);
     }
 
@@ -46,10 +45,8 @@ public class MyTopLinearLayout extends LinearLayout {
     public void isCommandAndExceptionTvVisible(boolean b){
         if(b){
             tv5.setVisibility(View.VISIBLE);
-            tv6.setVisibility(View.VISIBLE);
         }else{
             tv5.setVisibility(View.GONE);
-            tv6.setVisibility(View.GONE);
         }
     }
 

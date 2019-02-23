@@ -26,7 +26,7 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener, Tim
     private Calendar c;
     private OnDateTimeSetListener mListener;
 
-    public DateTimePickDialog(Context context, int year , int month , int day, int hour , int min) {
+    public DateTimePickDialog(Context context, String title,int year , int month , int day, int hour , int min) {
         this.mContext = context;
         this.c = c;
         /*year = c.get(Calendar.YEAR);
@@ -39,10 +39,10 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener, Tim
         this.dayOfMonth = day;
         this.hourOfDay = hour;
         this.minute = min;
-        init();
+        init(title);
     }
 
-    private void init() {
+    private void init(String title) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.comm_datetime, null);
         dp = (DatePicker) view.findViewById(R.id.datepicker);
         tp = (TimePicker) view.findViewById(R.id.timepicker);
@@ -51,7 +51,7 @@ public class DateTimePickDialog implements DatePicker.OnDateChangedListener, Tim
         tp.setCurrentMinute(minute);
         tp.setOnTimeChangedListener(this);
         AlertDialog.Builder b = new AlertDialog.Builder(mContext);
-        b.setTitle("请选择时间");
+        b.setTitle(title);
         b.setView(view);
         //点击确定，回调数据
         b.setPositiveButton("确定", new DialogInterface.OnClickListener() {

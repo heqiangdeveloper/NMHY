@@ -14,17 +14,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.home.oil.OilReportActivity;
 import com.cimcitech.nmhy.adapter.plan.ShipPlanAdapter;
 import com.cimcitech.nmhy.bean.oil.OilReportHistoryVo;
+import com.cimcitech.nmhy.bean.plan.ChangeVoyagePlanReq;
 import com.cimcitech.nmhy.bean.plan.ShipBean;
 import com.cimcitech.nmhy.bean.plan.ShipPlanReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.EventBusMessage;
+import com.cimcitech.nmhy.utils.NetWorkUtil;
 import com.cimcitech.nmhy.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.roger.catloadinglibrary.CatLoadingView;
@@ -54,28 +57,38 @@ public class ShipPlanActivity extends AppCompatActivity {
     TextView more_Tv;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.content_cl)
+    CoordinatorLayout content_Cl;
     @Bind(R.id.popup_menu_layout)
     LinearLayout popup_menu_Layout;
+    @Bind(R.id.empty_rl)
+    RelativeLayout empty_Rl;
 
     private static final String TAG = "shipPlanlog";
     private ShipPlanAdapter adapter = null;
     private Context mContext = ShipPlanActivity.this;
     private List<ShipPlanVo.DataBean> data = new ArrayList<>();
     private Handler handler = new Handler();
-    private int pageNum = 1;
     private ShipPlanVo shipPlanVo = null;
     private CatLoadingView mCatLoadingView = null;
+    private boolean isLoading;
+    //是否有已经开始的航次计划
+    private boolean isHasPlanStart = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plan);
+        setContentView(R.layout.activity_plan2);
         ButterKnife.bind(this);
         //注册EventBus订阅者
         EventBus.getDefault().register(this);
         initTitle();
 
-        getData();
+        initViewData();
+        updateData();
+        //getData();
     }
 
     //订阅者 方法
@@ -83,6 +96,9 @@ public class ShipPlanActivity extends AppCompatActivity {
     public void onMessageEvent(EventBusMessage event) {
         if(event.getMessage().equals("addShipPlanSuc")){
             Log.d("addShipPlanlog","shipPlanActivity receive addShipPlanSuc...");
+            getData();
+        }else if(event.getMessage().equals("refreshShipPlan")){
+            Log.d("refreshShipPlanlog","shipPlanActivity receive addShipPlanSuc...");
             finish();
         }
     }
@@ -91,6 +107,131 @@ public class ShipPlanActivity extends AppCompatActivity {
         titleName_Tv.setText(getResources().getString(R.string.item_plan));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.GONE);
+    }
+
+    public void initViewData() {
+        if(!NetWorkUtil.isConn(mContext)){//没有网络
+            empty_Rl.setVisibility(View.VISIBLE);
+            content_Cl.setVisibility(View.GONE);
+        }else{//有网络
+            empty_Rl.setVisibility(View.GONE);
+            content_Cl.setVisibility(View.VISIBLE);
+            adapter = new ShipPlanAdapter(mContext, data);
+            swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+            });
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //下拉刷新
+                            adapter.notifyDataSetChanged();
+                            data.clear(); //清除数据
+                            isLoading = false;
+                            getData();
+                        }
+                    }, 1000);
+                }
+            });
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0)
+                            ? 0 : recyclerView.getChildAt(0).getTop();
+                    if (topRowVerticalPosition > 0) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    } else {
+                        boolean isRefreshing = swipeRefreshLayout.isRefreshing();
+                        if (isRefreshing) {
+                            return;
+                        }
+
+                        if (!isLoading) {
+                            isLoading = true;
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //上拉加载
+                                    getData();
+                                    isLoading = false;
+                                }
+                            }, 1000);
+                        }
+                    }
+                }
+            });
+            //给List添加点击事件
+            adapter.setOnItemClickListener(new ShipPlanAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    for(int k = 0; k < data.size(); k++){
+                        if(data.get(k).getFstatus().equals(Config.fStatusList.get(2))){
+                            isHasPlanStart = true;
+                            break;
+                        }
+                    }
+                    ShipPlanVo.DataBean bean = data.get(position);
+                    ArrayList<ShipPlanVo.DataBean.VoyageDynamicInfosBean> voyageDynamicInfosBean =
+                            bean.getVoyageDynamicInfos();
+                    ChangeVoyagePlanReq req = new ChangeVoyagePlanReq(
+                            bean.getVoyagePlanId(),
+                            bean.getBargeBatchNo(),
+                            bean.getcShipName(),
+                            bean.getActualSailingTime(),
+                            bean.getActualStopTime(),
+                            bean.getEstimatedStopTime(),
+                            bean.getEstimatedSailingTime(),
+                            bean.getPortTransportOrder(),
+                            bean.getBargeId(),
+                            bean.getVoyageNo(),
+                            bean.getRouteId(),
+                            bean.getRouteName(),
+                            bean.getFstatus()
+                    );
+                    Intent i = new Intent(mContext,ShipPlanDetailActivity4.class);
+                    //每个节点的航次状态数据
+                    i.putParcelableArrayListExtra("voyageDynamicInfosBean",voyageDynamicInfosBean);
+                    i.putExtra("req",req);//更改本航次状态所需要的数据
+                    i.putExtra("fstatus",bean.getFstatus());//本航次的航次状态
+                    i.putExtra("isHasPlanStart",isHasPlanStart);//是否有已经开始的航次计划
+                    startActivity(i);
+                }
+
+                @Override
+                public void onItemLongClickListener(View view, int position) {
+                    //长按
+                }
+            });
+        }
+    }
+
+    //刷新数据
+    private void updateData() {
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
+        //清除数据
+        if(adapter != null) adapter.notifyDataSetChanged();
+        this.data.clear();
+        getData(); //获取数据
     }
 
     @OnClick({R.id.back_iv})
@@ -103,8 +244,8 @@ public class ShipPlanActivity extends AppCompatActivity {
     }
 
     public void getData() {
-        mCatLoadingView = new CatLoadingView();
-        mCatLoadingView.show(getSupportFragmentManager(),"");
+        //mCatLoadingView = new CatLoadingView();
+        //mCatLoadingView.show(getSupportFragmentManager(),"");
         OkHttpUtils
                 .post()
                 .url(Config.query_voyage_plan_url)
@@ -114,13 +255,14 @@ public class ShipPlanActivity extends AppCompatActivity {
                         new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
-                                mCatLoadingView.dismiss();
+                                //mCatLoadingView.dismiss();
+                                swipeRefreshLayout.setRefreshing(false);
                                 ToastUtil.showNetError();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
-                                mCatLoadingView.dismiss();
+                                swipeRefreshLayout.setRefreshing(false);
                                 shipPlanVo = new Gson().fromJson(response, ShipPlanVo.class);
                                 if (shipPlanVo != null) {
                                     if (shipPlanVo.isSuccess()) {
@@ -129,13 +271,19 @@ public class ShipPlanActivity extends AppCompatActivity {
                                             for (int i = 0; i < shipPlanVo.getData().size(); i++) {
                                                 data.add(shipPlanVo.getData().get(i));
                                             }
-                                            initAdapter();
+                                            //initAdapter();
+                                        }else{
+                                            empty_Rl.setVisibility(View.VISIBLE);
+                                            content_Cl.setVisibility(View.GONE);
                                         }
                                         if(adapter != null){
                                             adapter.setNotMoreData(true);
                                             adapter.notifyDataSetChanged();
                                             adapter.notifyItemRemoved(adapter.getItemCount());
                                         }
+                                    }else{
+                                        empty_Rl.setVisibility(View.VISIBLE);
+                                        content_Cl.setVisibility(View.GONE);
                                     }
                                 }
                             }
@@ -150,12 +298,36 @@ public class ShipPlanActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new ShipPlanAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position) {
+                for(int k = 0; k < data.size(); k++){
+                    if(data.get(k).getFstatus().equals(Config.fStatusList.get(2))){
+                        isHasPlanStart = true;
+                        break;
+                    }
+                }
                 ShipPlanVo.DataBean bean = data.get(position);
                 ArrayList<ShipPlanVo.DataBean.VoyageDynamicInfosBean> voyageDynamicInfosBean =
                         bean.getVoyageDynamicInfos();
+                ChangeVoyagePlanReq req = new ChangeVoyagePlanReq(
+                        bean.getVoyagePlanId(),
+                        bean.getBargeBatchNo(),
+                        bean.getcShipName(),
+                        bean.getActualSailingTime(),
+                        bean.getActualStopTime(),
+                        bean.getEstimatedStopTime(),
+                        bean.getEstimatedSailingTime(),
+                        bean.getPortTransportOrder(),
+                        bean.getBargeId(),
+                        bean.getVoyageNo(),
+                        bean.getRouteId(),
+                        bean.getRouteName(),
+                        bean.getFstatus()
+                );
                 Intent i = new Intent(mContext,ShipPlanDetailActivity4.class);
+                //每个节点的航次状态数据
                 i.putParcelableArrayListExtra("voyageDynamicInfosBean",voyageDynamicInfosBean);
-                i.putExtra("fstatus",bean.getFstatus());
+                i.putExtra("req",req);//更改本航次状态所需要的数据
+                i.putExtra("fstatus",bean.getFstatus());//本航次的航次状态
+                i.putExtra("isHasPlanStart",isHasPlanStart);//是否有已经开始的航次计划
                 startActivity(i);
             }
 

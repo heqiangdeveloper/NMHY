@@ -18,7 +18,7 @@ import com.cimcitech.nmhy.R;
 
 public class MyLinearLayout extends LinearLayout {
     private TextView  tv1,tv2;
-    private ImageView command_Iv,exception_Iv;
+    private ImageView command_Iv;
     private LinearLayout ll;
     public MyLinearLayout(Context context) {
         super(context);
@@ -28,15 +28,10 @@ public class MyLinearLayout extends LinearLayout {
         tv1 = (TextView)findViewById(R.id.textView1);
         tv2 = (TextView)findViewById(R.id.textView2);
         command_Iv = (ImageView) findViewById(R.id.command_iv);
-        exception_Iv = (ImageView)findViewById(R.id.exception_iv);
     }
 
     public ImageView findCommandImageView(){
-        return null;
-    }
-
-    public ImageView findExceptionImageView(){
-        return null;
+        return command_Iv;
     }
 
     public void setText(String str1,String str2){
@@ -48,10 +43,6 @@ public class MyLinearLayout extends LinearLayout {
         command_Iv.setImageDrawable(drawable);
     }
 
-    public void setExceptionImageViewSrc(Drawable  drawable){
-        exception_Iv.setImageDrawable(drawable);
-    }
-
     public void setBackground(int color){
         ll.setBackgroundColor(color);
     }
@@ -60,17 +51,8 @@ public class MyLinearLayout extends LinearLayout {
         command_Iv.setVisibility(b?View.VISIBLE:View.INVISIBLE);
     }
 
-    public void isExceptionImageVisible(boolean b){
-        exception_Iv.setVisibility(b?View.VISIBLE:View.INVISIBLE);
-    }
-
-    public void isCommandAndExceptionTvVisible(boolean b){
-//        if(b){
-//            tv3.setVisibility(View.VISIBLE);
-//            tv4.setVisibility(View.VISIBLE);
-//        }else{
-//            tv3.setVisibility(View.GONE);
-//            tv4.setVisibility(View.GONE);
-//        }
+    //设置当前的操作状态： 0 查看，1 汇报
+    public void setImageTag(int flag){
+        command_Iv.setTag(flag);
     }
 }

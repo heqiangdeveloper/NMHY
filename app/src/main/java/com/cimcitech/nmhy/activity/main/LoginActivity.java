@@ -93,6 +93,7 @@ public class LoginActivity extends MyBaseActivity {
         }else{
             if (accountNo.length() != 0) {
                 user_Et.setText(accountNo);
+                password_Et.setText(Base64Utils.decodeString(password));
             }else{
                 user_Et.setText("");
             }

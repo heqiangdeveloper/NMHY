@@ -28,7 +28,7 @@
         android:textSize="@dimen/table_text_size" />
 
     <ImageView
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/command_iv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,13 +36,13 @@
         android:gravity="center"
         android:src="@mipmap/eye32"/>
 
-    <ImageView
-        android:visibility="invisible"
-        android:id="@+id/exception_iv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.7"
-        android:gravity="center"
-        android:src="@mipmap/error32"/>
+    <!--<ImageView-->
+        <!--android:visibility="invisible"-->
+        <!--android:id="@+id/exception_iv"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.7"-->
+        <!--android:gravity="center"-->
+        <!--android:src="@mipmap/error32"/>-->
 
 </LinearLayout>

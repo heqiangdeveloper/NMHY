@@ -6,8 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.media.tv.TvTrackInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +22,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -34,23 +31,12 @@ import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
-import com.bin.david.form.core.SmartTable;
-import com.bin.david.form.data.CellInfo;
-import com.bin.david.form.data.column.Column;
-import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat;
-import com.bin.david.form.data.style.FontStyle;
-import com.bin.david.form.data.table.TableData;
-import com.bin.david.form.listener.OnColumnItemClickListener;
-import com.bin.david.form.utils.DensityUtils;
 import com.cimcitech.nmhy.R;
-import com.cimcitech.nmhy.activity.home.oil.OilReportMainActivity;
 import com.cimcitech.nmhy.activity.main.ApkApplication;
 import com.cimcitech.nmhy.baidu.LocationService;
-import com.cimcitech.nmhy.bean.plan.ShipPlanDetailReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDetailVo;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDynamicReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
-import com.cimcitech.nmhy.bean.plan.ShipTableBean;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DateTool;
 import com.cimcitech.nmhy.utils.EventBusMessage;
@@ -78,7 +64,7 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 
-public class AddShipPlanDetailActivity extends AppCompatActivity {
+public class StartVoyagePlanActivity extends AppCompatActivity {
     @Bind(R.id.titleName_tv)
     TextView titleName_Tv;
     @Bind(R.id.back_iv)
@@ -134,7 +120,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     private static final int requestLocTime = 7000;
     private boolean isFinishlocating = false;
     private final int LOCATION_REQUESTCODE = 1;
-    private Context mContext = AddShipPlanDetailActivity.this;
+    private Context mContext = StartVoyagePlanActivity.this;
     private List<ShipPlanDetailVo.DataBean.ListBean> data = new ArrayList<>();
     private int pageNum = 1;
     private ShipPlanDetailVo shipPlanDetailVo = null;
@@ -183,7 +169,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_ship_plan_detail);
+        setContentView(R.layout.activity_start_voyage_plan);
         ButterKnife.bind(this);
 
         isAdd = getIntent().getBooleanExtra("isAdd",false);
@@ -227,7 +213,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     public void initDetailData(){
         portName_Tv.setText(item.getPortName());
         jobTypeValue_Tv.setText(item.getJobTypeValue());
-        voyageStatusDesc_Tv.setText(item.getVoyageStatusDesc());
+        voyageStatusDesc_Tv.setText(item.getPortName());
         reason_Et.setText(item.getReason());
         estimatedTime_Tv.setText(item.getEstimatedTime());
         occurTime_Tv.setText(item.getOccurTime());
@@ -250,7 +236,6 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
         longitude_Tv.setHint("");
 
         //设置编辑框 为不可编辑状态
-        occurTime_Tv.setEnabled(false);
         reason_Et.setEnabled(false);reason_Et.setHint("");
         speed_Et.setEnabled(false);speed_Et.setHint("");
         weather_Et.setEnabled(false);weather_Et.setHint("");
@@ -499,7 +484,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
         }
         if(!permissionList.isEmpty()){
             String [] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(AddShipPlanDetailActivity.this,permissions, LOCATION_REQUESTCODE);
+            ActivityCompat.requestPermissions(StartVoyagePlanActivity.this,permissions, LOCATION_REQUESTCODE);
         }else {
             getLocation();
         }

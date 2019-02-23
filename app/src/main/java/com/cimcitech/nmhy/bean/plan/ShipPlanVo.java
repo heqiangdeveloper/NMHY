@@ -59,10 +59,23 @@ public class ShipPlanVo {
         private String portTransportOrder;
         private int bargeId;
         private String voyageNo;
+        private long voyagePlanId;
         private int routeId;//线路id
         private String routeName;//线路名
         private String fstatus;//本航次计划的状态
         private ArrayList<VoyageDynamicInfosBean> voyageDynamicInfos;
+
+        public long getVoyagePlanId() {
+            return voyagePlanId;
+        }
+
+        public void setVoyagePlanId(long voyagePlanId) {
+            this.voyagePlanId = voyagePlanId;
+        }
+
+        public DataBean(long voyagePlanId) {
+            this.voyagePlanId = voyagePlanId;
+        }
 
         public static class VoyageDynamicInfosBean implements Parcelable{
             private int currPortId;

@@ -27,6 +27,10 @@ public class Config {
     public static final String TEXT_TYPE_STR = "str";//String
     //航次状态
     public static final List<String> fStatusList = new ArrayList<String>(Arrays.asList
+            ("0","1","2","3"));
+
+    //航次状态
+    public static final List<String> fStatusStrList = new ArrayList<String>(Arrays.asList
             ("计划中-不确定","计划中-确定","计划执行中","执行结束"));
 
     //币种
@@ -128,5 +132,8 @@ public class Config {
 
     //获取当前的船名和航次号id
     public static String get_bargeName_voyagePlanId_url = IP + "voyagePlan/queryVoyagePlanByFualDynamic";
+
+    //更改航次计划的状态
+    public static String change_voyagePlan_url = IP + "voyagePlan/saveVoyagePlan";
 
 }

@@ -148,7 +148,7 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(item.getFstatus() != null && !item.getFstatus().equals("")){
                 fStatus = Integer.parseInt(item.getFstatus());
             }
-            String fStatusStr = Config.fStatusList.get(fStatus);
+            String fStatusStr = Config.fStatusStrList.get(fStatus);
             ((ItemViewHolder) holder).fStatus_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.fStatus_label) + ": " +
                     "<font color='#666666'>" + fStatusStr + "</font>"));
         }

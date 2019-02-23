@@ -96,4 +96,9 @@ dependencies {
     compile 'com.github.bmelnychuk:atv:1.2.+'
     compile 'com.github.johnkil.print:print:1.2.2'
     compile 'com.github.huangyanbin:SmartTable:2.0'
+
+    //时间选择器
+    compile 'cn.qqtheme.framework:WheelPicker:1.4.5'
+    compile 'cn.qqtheme.framework:FilePicker:1.4.5'
+    compile 'cn.qqtheme.framework:ColorPicker:1.4.5'
 }

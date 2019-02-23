@@ -434,18 +434,18 @@ public class OilReportMainActivity extends MyBaseActivity {
         timeTv.setText(DateTool.getSystemDate());
 
         //初始化 品种
-        List<String> fuelTypeList = new ArrayList<>();
-        for(String key : Config.fuelTypeMap.keySet()){
-            fuelTypeList.add(Config.fuelTypeMap.get(key));
-        }
-        oilType1Tv.setText(fuelTypeList.get(0));
-        oilType2Tv.setText(fuelTypeList.get(1));
-        oilType3Tv.setText(fuelTypeList.get(2));
+//        List<String> fuelTypeList = new ArrayList<>();
+//        for(String key : Config.fuelTypeMap.keySet()){
+//            fuelTypeList.add(Config.fuelTypeMap.get(key));
+//        }
+//        oilType1Tv.setText(fuelTypeList.get(0));
+//        oilType2Tv.setText(fuelTypeList.get(1));
+//        oilType3Tv.setText(fuelTypeList.get(2));
 
         //初始化 单位
-        oilUnit1Tv.setText("吨");
-        oilUnit2Tv.setText("吨");
-        oilUnit3Tv.setText("吨");
+//        oilUnit1Tv.setText("吨");
+//        oilUnit2Tv.setText("吨");
+//        oilUnit3Tv.setText("吨");
     }
 
     public void initLocation(){
