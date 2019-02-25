@@ -149,8 +149,17 @@ public class ShipPlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 fStatus = Integer.parseInt(item.getFstatus());
             }
             String fStatusStr = Config.fStatusStrList.get(fStatus);
-            ((ItemViewHolder) holder).fStatus_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.fStatus_label) + ": " +
-                    "<font color='#666666'>" + fStatusStr + "</font>"));
+            if(fStatus == 2){//航行中
+                ((ItemViewHolder) holder).fStatus_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.fStatus_label) + ": " +
+                        "<font color='#228B22'>" + fStatusStr + "</font>"));
+            }else if(fStatus == 3){//航次结束
+                ((ItemViewHolder) holder).fStatus_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.fStatus_label) + ": " +
+                        "<font color='#E96E53'>" + fStatusStr + "</font>"));
+            }else{//计划中-确定 和 计划中-不确定
+                ((ItemViewHolder) holder).fStatus_Tv.setText(Html.fromHtml(context.getResources().getString(R.string.fStatus_label) + ": " +
+                        "<font color='#79C4EC'>" + fStatusStr + "</font>"));
+            }
+
         }
     }
 

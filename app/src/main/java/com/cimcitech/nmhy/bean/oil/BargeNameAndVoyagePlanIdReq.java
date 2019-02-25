@@ -5,10 +5,10 @@ package com.cimcitech.nmhy.bean.oil;
  */
 
 public class BargeNameAndVoyagePlanIdReq {
-    private int fstatus;
+    private String fstatus;
     private int userId;
 
-    public BargeNameAndVoyagePlanIdReq(int fstatus, int userId) {
+    public BargeNameAndVoyagePlanIdReq(String fstatus, int userId) {
         this.fstatus = fstatus;
         this.userId = userId;
     }

@@ -102,7 +102,9 @@
     <string name="taxfreeConsumeQuantity_label">累计消耗金额(不含税)</string>
     <string name="consumeAmount_label">累计消耗金额(含税)</string>
 
-    <string name="no_data_warn">无数据或网络异常</string>
+    <string name="no_data_warn">无数据</string>
+    <string name="error_data_warn">数据异常</string>
+    <string name="no_network_warn">网络异常</string>
     <string name="commit_success_msg">提交成功</string>
     <string name="end_voyage_plan_success_msg">本航次已结束</string>
     <string name="commit_fail_msg">提交失败</string>

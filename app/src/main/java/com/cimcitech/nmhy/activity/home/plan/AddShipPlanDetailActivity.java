@@ -103,6 +103,8 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
     ScrollView contentSv;
     @Bind(R.id.empty_rl)
     RelativeLayout empty_Rl;
+    @Bind(R.id.warn_tv)
+    TextView warn_Tv;
     @Bind(R.id.commit_bt)
     Button commitBt;
 
@@ -187,6 +189,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
         more_Tv.setVisibility(View.GONE);
         if(!NetWorkUtil.isConn(mContext)){
             empty_Rl.setVisibility(View.VISIBLE);
+            warn_Tv.setText(getResources().getString(R.string.no_network_warn));
             contentSv.setVisibility(View.GONE);
         }else{
             empty_Rl.setVisibility(View.GONE);

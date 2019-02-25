@@ -86,6 +86,8 @@ public class OilReportMainActivity extends MyBaseActivity {
     ScrollView contentSv;
     @Bind(R.id.empty_rl)
     RelativeLayout empty_Rl;
+    @Bind(R.id.warn_tv)
+    TextView warn_Tv;
     @Bind(R.id.item_current_tv)
     TextView itemCurrentTv;
     @Bind(R.id.item_history_tv)
@@ -231,6 +233,7 @@ public class OilReportMainActivity extends MyBaseActivity {
     public void initView(){
         if(!NetWorkUtil.isConn(mContext)){
             empty_Rl.setVisibility(View.VISIBLE);
+            warn_Tv.setText(getResources().getString(R.string.no_network_warn));
             contentSv.setVisibility(View.GONE);
             contentCl.setVisibility(View.GONE);
         }else{
@@ -263,7 +266,7 @@ public class OilReportMainActivity extends MyBaseActivity {
         mCatLoadingView = new CatLoadingView();
         mCatLoadingView.show(getSupportFragmentManager(),"");
         //查询正在航行中的航次计划，对应的fstatus = 2
-        int fstatus = 2;
+        String fstatus = "2";
         String json = new Gson().toJson(new BargeNameAndVoyagePlanIdReq(fstatus,Config.accountId));
         OkHttpUtils
                 .postString()

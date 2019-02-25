@@ -65,6 +65,8 @@ public class ShipPlanActivity extends AppCompatActivity {
     LinearLayout popup_menu_Layout;
     @Bind(R.id.empty_rl)
     RelativeLayout empty_Rl;
+    @Bind(R.id.warn_tv)
+    TextView warn_Tv;
 
     private static final String TAG = "shipPlanlog";
     private ShipPlanAdapter adapter = null;
@@ -88,7 +90,6 @@ public class ShipPlanActivity extends AppCompatActivity {
 
         initViewData();
         updateData();
-        //getData();
     }
 
     //订阅者 方法
@@ -112,6 +113,7 @@ public class ShipPlanActivity extends AppCompatActivity {
     public void initViewData() {
         if(!NetWorkUtil.isConn(mContext)){//没有网络
             empty_Rl.setVisibility(View.VISIBLE);
+            warn_Tv.setText(getResources().getString(R.string.no_network_warn));
             content_Cl.setVisibility(View.GONE);
         }else{//有网络
             empty_Rl.setVisibility(View.GONE);
@@ -276,6 +278,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                                             //initAdapter();
                                         }else{
                                             empty_Rl.setVisibility(View.VISIBLE);
+                                            warn_Tv.setText(getResources().getString(R.string.no_data_warn));
                                             content_Cl.setVisibility(View.GONE);
                                         }
                                         if(adapter != null){
@@ -285,6 +288,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                                         }
                                     }else{
                                         empty_Rl.setVisibility(View.VISIBLE);
+                                        warn_Tv.setText(getResources().getString(R.string.no_data_warn));
                                         content_Cl.setVisibility(View.GONE);
                                     }
                                 }

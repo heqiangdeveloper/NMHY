@@ -70,6 +70,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     Button end_voyage_Bt;
     @Bind(R.id.empty_rl)
     RelativeLayout empty_Rl;
+    @Bind(R.id.warn_tv)
+    TextView warn_Tv;
     @Bind(R.id.content_cl)
     CoordinatorLayout content_Cl;
 
@@ -161,6 +163,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 finish();
                 break;
             case R.id.start_voyage_bt:
+                //开始航次时，一次性提交动态数据 和 燃油数据，
+                //提交成功后，自动将动态数据填在 航次开始 这个动态中
                 if(fstatus.equals(Config.fStatusList.get(2)) || fstatus.equals(Config.fStatusList.get(3))){
                     ToastUtil.showToast(getResources().getString(R.string.start_voyage_button_warning));
                 }else if(!isHasPlanStart){//没有已经开始的航次，就可以开始本航次
@@ -177,7 +181,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 }
                 break;
             case R.id.end_voyage_bt:
-                //倒数第2个航次是否填写完
+                //倒数第2个航次是否填写完，填完了：点击结束航次按钮来结束航次
+                //未填完，则 航次结束按钮 不可点击
                 String lastReportTime = data.get(data.size()-2).getReportTime();
                 if(fstatus.equals(Config.fStatusList.get(3))){
                     ToastUtil.showToast(getResources().getString(R.string.end_voyage_button_warning));
@@ -246,27 +251,40 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     public void initData(){
         if(data == null || data.size() == 0){
             empty_Rl.setVisibility(View.VISIBLE);
+            warn_Tv.setText(getResources().getString(R.string.no_data_warn));
             content_Cl.setVisibility(View.GONE);
         }else{
-            empty_Rl.setVisibility(View.GONE);
-            content_Cl.setVisibility(View.VISIBLE);
-            setButtonBackground();
-            showView();
+
             //码头列表
             List<String> portNameList = new ArrayList<>();
             //作业类型列表
             List<String> jobTypeValueList = new ArrayList<>();
             final int portId0 = data.get(0).getCurrPortId();
             portNameList.add(data.get(0).getPortName());
+
             int portIdi = -1;
             String portNameStr = "";
             for(int i=0;i<data.size();i++){
                 portIdi = data.get(i).getCurrPortId();
                 portNameStr = data.get(i).getPortName();
+                //如果返回的数据中，有为空的港口名称，则显示异常页面
+                if(portNameStr == null || portNameStr.length() == 0){
+                    empty_Rl.setVisibility(View.VISIBLE);
+                    warn_Tv.setText(getResources().getString(R.string.error_data_warn));
+                    content_Cl.setVisibility(View.GONE);
+                    return;
+                }
                 if(portIdi != portId0 && !portNameList.contains(portNameStr)){
                     portNameList.add(portNameStr);
                 }
             }
+
+            //如果返回的数据中，没有为空的港口名称，则显示正常页面
+            empty_Rl.setVisibility(View.GONE);
+            content_Cl.setVisibility(View.VISIBLE);
+            setButtonBackground();
+            showView();
+
             int sizen = portNameList.size();
             List<TextView> tvList = new ArrayList<>();
             List<TextView> portNameTvList = new ArrayList<>();

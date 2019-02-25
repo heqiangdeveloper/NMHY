@@ -106,6 +106,8 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
     ScrollView contentSv;
     @Bind(R.id.empty_rl)
     RelativeLayout empty_Rl;
+    @Bind(R.id.warn_tv)
+    TextView warn_Tv;
     @Bind(R.id.commit_bt)
     Button commitBt;
 
@@ -201,6 +203,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
         more_Tv.setVisibility(View.GONE);
         if(!NetWorkUtil.isConn(mContext)){
             empty_Rl.setVisibility(View.VISIBLE);
+            warn_Tv.setText(getResources().getString(R.string.no_network_warn));
             contentSv.setVisibility(View.GONE);
         }else{
             empty_Rl.setVisibility(View.GONE);
@@ -363,7 +366,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
                             //.setTitle("提示")
                             .setMessage(mContext.getResources().getString(R.string.add_oil_dialog_title))
                             .setCancelable(true)
-                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getResources().getString(R.string.sure_label), new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -371,7 +374,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
                                     commitData();
                                 }
                             })
-                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getResources().getString(R.string.cancel_label), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();

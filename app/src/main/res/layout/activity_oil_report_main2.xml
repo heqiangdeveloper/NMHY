@@ -24,6 +24,7 @@
                 android:src="@mipmap/ic_empty"
                 android:layout_centerInParent="true"/>
             <TextView
+                android:id="@+id/warn_tv"
                 android:text="@string/no_data_warn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

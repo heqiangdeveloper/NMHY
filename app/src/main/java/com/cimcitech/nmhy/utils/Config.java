@@ -90,7 +90,9 @@ public class Config {
     //多式联运
     //public static String IP = "http://10.33.178.91:8081/nmhy/";
 
-    public static String IP = "http://192.168.137.1:8081/nmhy/";
+    //public static String IP = "http://192.168.137.1:8081/nmhy/";
+
+    public static String IP = "http://192.168.1.193:8081/nmhy/";
 
     //登录
     public static String login_url = IP + "user/login";
