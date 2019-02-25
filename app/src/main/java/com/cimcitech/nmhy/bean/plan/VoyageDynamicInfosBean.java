@@ -1,12 +1,10 @@
 package com.cimcitech.nmhy.bean.plan;
 
-import java.util.List;
-
 /**
- * Created by qianghe on 2019/1/22.
+ * Created by qianghe on 2019/2/25.
  */
 
-public class ShipPlanDynamicReq {
+public class VoyageDynamicInfosBean {
     private long dynamicId;
     private long voyagePlanId;
     private int currPortId;
@@ -30,7 +28,7 @@ public class ShipPlanDynamicReq {
     private String feedTime;
     private long voyageStatusId;
 
-    public ShipPlanDynamicReq(long dynamicId, long voyagePlanId, int currPortId, String estimatedTime, String jobType, String reportTime, String occurTime, int reportId, String voyageStatus, String voyageStatusDesc, String reason, String location, double longitude, double latitude, double speed, String weather, String remark, String fstatus, String feedback, int feedUserId, String feedTime, long voyageStatusId) {
+    public VoyageDynamicInfosBean(long dynamicId, long voyagePlanId, int currPortId, String estimatedTime, String jobType, String reportTime, String occurTime, int reportId, String voyageStatus, String voyageStatusDesc, String reason, String location, double longitude, double latitude, double speed, String weather, String remark, String fstatus, String feedback, int feedUserId, String feedTime, long voyageStatusId) {
         this.dynamicId = dynamicId;
         this.voyagePlanId = voyagePlanId;
         this.currPortId = currPortId;
@@ -54,4 +52,5 @@ public class ShipPlanDynamicReq {
         this.feedTime = feedTime;
         this.voyageStatusId = voyageStatusId;
     }
+
 }

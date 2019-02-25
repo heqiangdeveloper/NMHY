@@ -3,22 +3,21 @@ package com.cimcitech.nmhy.activity.home.plan;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.bin.david.form.core.SmartTable;
-import com.bin.david.form.data.column.Column;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.bean.plan.ChangeVoyagePlanReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
@@ -45,7 +44,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -70,6 +68,10 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     Button start_voyage_Bt;
     @Bind(R.id.end_voyage_bt)
     Button end_voyage_Bt;
+    @Bind(R.id.empty_rl)
+    RelativeLayout empty_Rl;
+    @Bind(R.id.content_cl)
+    CoordinatorLayout content_Cl;
 
     @Bind(R.id.detail_ll)
     LinearLayout detail_Ll;
@@ -83,6 +85,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     private CatLoadingView mCatLoadingView;
     final String nowStr = DateTool.getSystemDate();
     private boolean isHasPlanStart = false;
+    private int bargeId;
+    private int contractId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,7 +102,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
         fstatus = getIntent().getStringExtra("fstatus");
         req = (ChangeVoyagePlanReq)getIntent().getSerializableExtra("req");
         isHasPlanStart = getIntent().getBooleanExtra("isHasPlanStart",false);
-        setButtonBackground();
+        bargeId = req.getBargeId();
+        contractId = req.getContractId();
 
         initTitle();
         hideView();
@@ -160,9 +165,11 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                     ToastUtil.showToast(getResources().getString(R.string.start_voyage_button_warning));
                 }else if(!isHasPlanStart){//没有已经开始的航次，就可以开始本航次
                     ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(0);
-                    Intent i = new Intent(mContext,StartVoyagePlanActivity.class);
-                    i.putExtra("isAdd",true);
+                    Intent i = new Intent(mContext,StartOrEndVoyagePlanActivity.class);
+                    i.putExtra("isStart",true);
                     i.putExtra("item",item);
+                    i.putExtra("bargeId",bargeId);
+                    i.putExtra("contractId",contractId);
                     startActivity(i);
                     //showSelectDateDialog2();
                 }else{
@@ -170,7 +177,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 }
                 break;
             case R.id.end_voyage_bt:
-                String lastReportTime = data.get(data.size()-1).getReportTime();
+                //倒数第2个航次是否填写完
+                String lastReportTime = data.get(data.size()-2).getReportTime();
                 if(fstatus.equals(Config.fStatusList.get(3))){
                     ToastUtil.showToast(getResources().getString(R.string.end_voyage_button_warning));
                 }else if(fstatus.equals(Config.fStatusList.get(2)) && (lastReportTime == null ||
@@ -178,7 +186,13 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                     ToastUtil.showToast(getResources().getString(R.string.end_voyage_button_warning2));
                 }else if(fstatus.equals(Config.fStatusList.get(2)) && (lastReportTime != null &&
                         lastReportTime.length() != 0)){
-                    endVoyage(nowStr);
+                    //endVoyage(nowStr);
+                    ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(data.size() - 1);
+                    Intent i = new Intent(mContext,StartOrEndVoyagePlanActivity.class);
+                    i.putExtra("isStart",false);
+                    i.putExtra("item",item);
+                    i.putExtra("bargeId",bargeId);
+                    startActivity(i);
                 }else{
                     ToastUtil.showToast(getResources().getString(R.string.end_voyage_button_warning3));
                 }
@@ -221,7 +235,7 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                                 sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String selectTimeStr = sdf.format(calendar.getTime());
                                 if(selectTimeStr.compareTo(nowStr) >= 0){
-                                    startVoyage(selectTimeStr);
+                                    //startVoyage(selectTimeStr);
                                 }else {
                                     ToastUtil.showToast("开始航行时间必须在当前时间之后！");
                                 }
@@ -230,112 +244,119 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     }
 
     public void initData(){
-        showView();
-        //码头列表
-        List<String> portNameList = new ArrayList<>();
-        //作业类型列表
-        List<String> jobTypeValueList = new ArrayList<>();
-        final int portId0 = data.get(0).getCurrPortId();
-        portNameList.add(data.get(0).getPortName());
-        int portIdi = -1;
-        String portNameStr = "";
-        for(int i=0;i<data.size();i++){
-            portIdi = data.get(i).getCurrPortId();
-            portNameStr = data.get(i).getPortName();
-            if(portIdi != portId0 && !portNameList.contains(portNameStr)){
+        if(data == null || data.size() == 0){
+            empty_Rl.setVisibility(View.VISIBLE);
+            content_Cl.setVisibility(View.GONE);
+        }else{
+            empty_Rl.setVisibility(View.GONE);
+            content_Cl.setVisibility(View.VISIBLE);
+            setButtonBackground();
+            showView();
+            //码头列表
+            List<String> portNameList = new ArrayList<>();
+            //作业类型列表
+            List<String> jobTypeValueList = new ArrayList<>();
+            final int portId0 = data.get(0).getCurrPortId();
+            portNameList.add(data.get(0).getPortName());
+            int portIdi = -1;
+            String portNameStr = "";
+            for(int i=0;i<data.size();i++){
+                portIdi = data.get(i).getCurrPortId();
+                portNameStr = data.get(i).getPortName();
+                if(portIdi != portId0 && !portNameList.contains(portNameStr)){
                     portNameList.add(portNameStr);
-            }
-        }
-        int sizen = portNameList.size();
-        List<TextView> tvList = new ArrayList<>();
-        List<TextView> portNameTvList = new ArrayList<>();
-        List<TextView> jobTypeValueTvList = new ArrayList<>();
-        ShipPlanVo.DataBean.VoyageDynamicInfosBean item = null;
-
-        List<ShipPlanVo.DataBean.VoyageDynamicInfosBean> itemList = new ArrayList<>();
-
-        String portNameStr1 = "";
-        String portNameStr2 = "";
-        a:for(int q =0; q < portNameList.size(); q++){
-            portNameStr1 = portNameList.get(q);
-            b:for(int r =0; r < data.size(); r++){
-                if(data.get(r).getPortName().equals(portNameStr1)){
-                    jobTypeValueList.add(data.get(r).getJobTypeValue());
-                    break b;
                 }
             }
-        }
+            int sizen = portNameList.size();
+            List<TextView> tvList = new ArrayList<>();
+            List<TextView> portNameTvList = new ArrayList<>();
+            List<TextView> jobTypeValueTvList = new ArrayList<>();
+            ShipPlanVo.DataBean.VoyageDynamicInfosBean item = null;
 
-        //表内容部分
-        MyLinearLayout mll = null;
-        //码头名称，作业类型，表头部分
-        MyTopLinearLayout mtll = null;
-        //最顶部港口顺序部分
-        MyPortLinearLayout mpll = null;
-        String mPortNameStr = "";
-        String mJobTypeStr = "";
-        String currentPortName = "";
-        String commandStr = "";
-        String exceptionStr = "";
-        ShipPlanVo.DataBean.VoyageDynamicInfosBean currentItem = null;
-        //data.get(0).setReportTime("2019-02-24 12:23:59");
-        //data.get(3).setEstimatedTime("2019-08-21");
-        //data.get(7).setEstimatedTime("2019-02-03");
+            List<ShipPlanVo.DataBean.VoyageDynamicInfosBean> itemList = new ArrayList<>();
 
-        //获取当前可以汇报的行号cPosition： 指的是在data中的位置
-        int currentPosition = 0;
-        for(int w = 0 ; w < data.size(); w++){
-            if(data.get(w).getReportTime() == null || data.get(w).getReportTime().length() == 0){
-                currentPosition = w;
-                break;
-            }
-        }
-        final int cPosition = currentPosition;
-
-        //获取当前可以汇报的行号cPosition 在portNameList中的位置curPositionInPortNameList
-        int curPositionInPortNameList = 0;
-        for(int x =0; x < portNameList.size(); x++){
-            if(portNameList.get(x).equals(data.get(cPosition).getPortName())){
-                curPositionInPortNameList = x;
-            }
-        }
-
-        //已离港 ，设置顶部的的港口名文本背景色为disableColor
-        //正在该港口下，设置顶部的的港口名文本背景色为 currentColor
-        //待驶入的港口，设置顶部的的港口名文本背景色为 enableColor
-        int disableColor = Color.rgb(255,127,80);//浅红
-        int currentColor = Color.rgb(34,139,34);//浅绿
-        int enableColor = Color.rgb(120,196,236);//浅蓝
-        for(int i = 0; i < sizen; i++){
-            currentPortName = portNameList.get(i);
-            mpll = new MyPortLinearLayout(this);
-            mpll.setText(currentPortName);
-            if(sizen >= 2 && i == sizen-1) {
-                mpll.setLineVisibility(false);
-            }else {
-                mpll.setLineVisibility(true);
-            }
-            if(i < curPositionInPortNameList){
-                mpll.setTextBackgroundColor(disableColor);
-            }else if(i == curPositionInPortNameList){
-                mpll.setTextBackgroundColor(currentColor);
-            }else {
-                mpll.setTextBackgroundColor(enableColor);
+            String portNameStr1 = "";
+            String portNameStr2 = "";
+            a:for(int q =0; q < portNameList.size(); q++){
+                portNameStr1 = portNameList.get(q);
+                b:for(int r =0; r < data.size(); r++){
+                    if(data.get(r).getPortName().equals(portNameStr1)){
+                        jobTypeValueList.add(data.get(r).getJobTypeValue());
+                        break b;
+                    }
+                }
             }
 
-            //添加顶部的港口名称
-            port_Ll.addView(mpll);
+            //表内容部分
+            MyLinearLayout mll = null;
+            //码头名称，作业类型，表头部分
+            MyTopLinearLayout mtll = null;
+            //最顶部港口顺序部分
+            MyPortLinearLayout mpll = null;
+            String mPortNameStr = "";
+            String mJobTypeStr = "";
+            String currentPortName = "";
+            String commandStr = "";
+            String exceptionStr = "";
+            ShipPlanVo.DataBean.VoyageDynamicInfosBean currentItem = null;
+            //data.get(0).setReportTime("2019-02-24 12:23:59");
+            //data.get(3).setEstimatedTime("2019-08-21");
+            //data.get(7).setEstimatedTime("2019-02-03");
 
-            mtll = new MyTopLinearLayout(this);
-            mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " +
-                    "<font color='#666666'>" + currentPortName + "</font>";
-            mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " +
-                    "<font color='#666666'>" + jobTypeValueList.get(i) + "</font>";
-
-            mtll.setText(mPortNameStr,mJobTypeStr);
-            if(i == 0){
-                mtll.isDividelineVisible(false);
+            //获取当前可以汇报的行号cPosition： 指的是在data中的位置
+            int currentPosition = 0;
+            for(int w = 0 ; w < data.size(); w++){
+                if(data.get(w).getReportTime() == null || data.get(w).getReportTime().length() == 0){
+                    currentPosition = w;
+                    break;
+                }
             }
+            final int cPosition = currentPosition;
+
+            //获取当前可以汇报的行号cPosition 在portNameList中的位置curPositionInPortNameList
+            int curPositionInPortNameList = 0;
+            for(int x =0; x < portNameList.size(); x++){
+                if(portNameList.get(x).equals(data.get(cPosition).getPortName())){
+                    curPositionInPortNameList = x;
+                }
+            }
+
+            //已离港 ，设置顶部的的港口名文本背景色为disableColor
+            //正在该港口下，设置顶部的的港口名文本背景色为 currentColor
+            //待驶入的港口，设置顶部的的港口名文本背景色为 enableColor
+            int disableColor = Color.rgb(255,127,80);//浅红
+            int currentColor = Color.rgb(34,139,34);//浅绿
+            int enableColor = Color.rgb(120,196,236);//浅蓝
+            for(int i = 0; i < sizen; i++){
+                currentPortName = portNameList.get(i);
+                mpll = new MyPortLinearLayout(this);
+                mpll.setText(currentPortName);
+                if(sizen >= 2 && i == sizen-1) {
+                    mpll.setLineVisibility(false);
+                }else {
+                    mpll.setLineVisibility(true);
+                }
+                if(i < curPositionInPortNameList){
+                    mpll.setTextBackgroundColor(disableColor);
+                }else if(i == curPositionInPortNameList){
+                    mpll.setTextBackgroundColor(currentColor);
+                }else {
+                    mpll.setTextBackgroundColor(enableColor);
+                }
+
+                //添加顶部的港口名称
+                port_Ll.addView(mpll);
+
+                mtll = new MyTopLinearLayout(this);
+                mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " +
+                        "<font color='#666666'>" + currentPortName + "</font>";
+                mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " +
+                        "<font color='#666666'>" + jobTypeValueList.get(i) + "</font>";
+
+                mtll.setText(mPortNameStr,mJobTypeStr);
+                if(i == 0){
+                    mtll.isDividelineVisible(false);
+                }
 //            if(fstatusStr.equals("2")){//计划正在执行中
 //                mtll.isCommandAndExceptionTvVisible(true);
 //                mtll.setTimeLabel(getResources().getString(R.string.reportTime_label));
@@ -343,62 +364,65 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
 //                mtll.isCommandAndExceptionTvVisible(false);
 //                mtll.setTimeLabel(getResources().getString(R.string.estimatedTime_label));
 //            }
-            //添加每个码头明细的头部
-            detail_Ll.addView(mtll);
+                //添加每个码头明细的头部
+                detail_Ll.addView(mtll);
 
-            ImageView exceptionIv;  //exceptionIv.setTag("ss");
-            for(int k = 0; k < data.size(); k++){
-                currentItem = data.get(k);
-                if(currentPortName.equals(currentItem.getPortName())){
-                    mll = new MyLinearLayout(this);
-                    //报告时间不为0，只能查看
-                    if(fstatus.equals(Config.fStatusList.get(2)) &&
-                            currentItem.getReportTime() != null && currentItem.getReportTime().length() != 0){
-                        mll.setCommandImageViewSrc(getResources().getDrawable(R.mipmap.eye32));
-                        mll.setImageTag(0);
-                    }else if(fstatus.equals(Config.fStatusList.get(2)) && (k == cPosition)){
-                        mll.setCommandImageViewSrc(getResources().getDrawable(R.mipmap.write32));
-                        mll.setImageTag(1);
-                    }
-                    else{//否则操作按钮不显示，在下面再处理 当前航次状态可以汇报的逻辑
-                        mll.isCommandImageVisible(false);
-                        mll.setImageTag(-1);
-                    }
+                ImageView exceptionIv;  //exceptionIv.setTag("ss");
+                for(int k = 0; k < data.size(); k++){
+                    currentItem = data.get(k);
+                    if(currentPortName.equals(currentItem.getPortName())){
+                        mll = new MyLinearLayout(this);
+                        //报告时间不为0，只能查看
+                        if(fstatus.equals(Config.fStatusList.get(2)) &&
+                                currentItem.getReportTime() != null && currentItem.getReportTime()
+                                .length() != 0 && k < (data.size() -1)){
+                            mll.setCommandImageViewSrc(getResources().getDrawable(R.mipmap.eye32));
+                            mll.setImageTag(0);
+                        }else if(fstatus.equals(Config.fStatusList.get(2)) && (k == cPosition) && k <
+                                (data.size() -1)){//最后一个状态不允许填，必须点击结束按钮
+                            mll.setCommandImageViewSrc(getResources().getDrawable(R.mipmap.write32));
+                            mll.setImageTag(1);
+                        }
+                        else{//否则操作按钮不显示，在下面再处理 当前航次状态可以汇报的逻辑
+                            mll.isCommandImageVisible(false);
+                            mll.setImageTag(-1);
+                        }
 
-                    //时间精确至 时分秒
-                    String time = currentItem.getReportTime();
+                        //时间精确至 时分秒
+                        String time = currentItem.getReportTime();
 //                    if(time != null && time.length() != 0){
 //                        time = time.substring(0,10);
 //                    }
-                    mll.setText(currentItem.getVoyageStatusDesc(),time);
+                        mll.setText(currentItem.getVoyageStatusDesc(),time);
 
-                    final ImageView commandIv = mll.findCommandImageView();
+                        final ImageView commandIv = mll.findCommandImageView();
 
-                    final int position = k;
-                    commandIv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //当前航次状态之前的，已经汇报过的，只能查看记录
-                            ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(position);
-                            Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
-                            switch ((int)commandIv.getTag()){
-                                case 0:
-                                    i.putExtra("isAdd",false);
-                                    i.putExtra("item",item);
-                                    startActivity(i);
-                                    break;
-                                case 1:
-                                    i.putExtra("isAdd",true);
-                                    i.putExtra("item",item);
-                                    startActivity(i);
-                                    break;
-                                case -1:
-                                    break;
+                        final int position = k;
+                        commandIv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //当前航次状态之前的，已经汇报过的，只能查看记录
+                                ShipPlanVo.DataBean.VoyageDynamicInfosBean item = data.get(position);
+                                Intent i = new Intent(mContext,AddShipPlanDetailActivity.class);
+                                switch ((int)commandIv.getTag()){
+                                    case 0:
+                                        i.putExtra("isAdd",false);
+                                        i.putExtra("item",item);
+                                        startActivity(i);
+                                        break;
+                                    case 1:
+                                        i.putExtra("isAdd",true);
+                                        i.putExtra("item",item);
+                                        startActivity(i);
+                                        break;
+                                    case -1:
+                                        break;
+                                }
                             }
-                        }
-                    });
-                    //添加每个港口的具体明细数据
-                    detail_Ll.addView(mll);
+                        });
+                        //添加每个港口的具体明细数据
+                        detail_Ll.addView(mll);
+                    }
                 }
             }
         }

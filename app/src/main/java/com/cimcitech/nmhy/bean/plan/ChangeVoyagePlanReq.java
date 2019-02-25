@@ -15,6 +15,7 @@ public class ChangeVoyagePlanReq implements Serializable{
     private String estimatedSailingTime;
     private String portTransportOrder;
     private int bargeId;
+    private int contractId;
     private String voyageNo;
     private long voyagePlanId;
     private int routeId;//线路id
@@ -22,7 +23,9 @@ public class ChangeVoyagePlanReq implements Serializable{
     private String fstatus;//本航次计划的状态
 
     public ChangeVoyagePlanReq(long voyagePlanId,String bargeBatchNo, String cShipName, String
-            actualSailingTime, String actualStopTime, String estimatedStopTime, String estimatedSailingTime, String portTransportOrder, int bargeId, String voyageNo, int routeId, String routeName, String fstatus) {
+            actualSailingTime, String actualStopTime, String estimatedStopTime, String estimatedSailingTime, String portTransportOrder,
+                               int bargeId,int contractId, String voyageNo, int routeId, String
+                                       routeName, String fstatus) {
         this.voyagePlanId = voyagePlanId;
         this.bargeBatchNo = bargeBatchNo;
         this.cShipName = cShipName;
@@ -32,6 +35,7 @@ public class ChangeVoyagePlanReq implements Serializable{
         this.estimatedSailingTime = estimatedSailingTime;
         this.portTransportOrder = portTransportOrder;
         this.bargeId = bargeId;
+        this.contractId = contractId;
         this.voyageNo = voyageNo;
         this.routeId = routeId;
         this.routeName = routeName;
@@ -52,5 +56,21 @@ public class ChangeVoyagePlanReq implements Serializable{
 
     public void setActualStopTime(String actualStopTime) {
         this.actualStopTime = actualStopTime;
+    }
+
+    public int getBargeId() {
+        return bargeId;
+    }
+
+    public void setBargeId(int bargeId) {
+        this.bargeId = bargeId;
+    }
+
+    public int getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(int contractId) {
+        this.contractId = contractId;
     }
 }

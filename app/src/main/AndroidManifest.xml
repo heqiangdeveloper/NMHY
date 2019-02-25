@@ -123,7 +123,7 @@
                   android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.home.plan.StartVoyagePlanActivity"
+        <activity android:name=".activity.home.plan.StartOrEndVoyagePlanActivity"
                   android:windowSoftInputMode="adjustPan"
                   android:launchMode="singleTask"
                   android:screenOrientation="portrait">

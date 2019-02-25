@@ -58,6 +58,7 @@ public class ShipPlanVo {
         private String estimatedSailingTime;
         private String portTransportOrder;
         private int bargeId;
+        private int contractId;
         private String voyageNo;
         private long voyagePlanId;
         private int routeId;//线路id
@@ -402,6 +403,14 @@ public class ShipPlanVo {
 
         public void setBargeId(int bargeId) {
             this.bargeId = bargeId;
+        }
+
+        public int getContractId() {
+            return contractId;
+        }
+
+        public void setContractId(int contractId) {
+            this.contractId = contractId;
         }
 
         public int getRouteId() {

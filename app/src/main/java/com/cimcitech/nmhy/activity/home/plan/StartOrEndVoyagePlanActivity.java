@@ -34,9 +34,12 @@ import com.baidu.location.Poi;
 import com.cimcitech.nmhy.R;
 import com.cimcitech.nmhy.activity.main.ApkApplication;
 import com.cimcitech.nmhy.baidu.LocationService;
+import com.cimcitech.nmhy.bean.plan.EndShipPlanDynamicReq;
+import com.cimcitech.nmhy.bean.plan.ShipFualDynamicInfosubBean;
 import com.cimcitech.nmhy.bean.plan.ShipPlanDetailVo;
-import com.cimcitech.nmhy.bean.plan.ShipPlanDynamicReq;
+import com.cimcitech.nmhy.bean.plan.StartShipPlanDynamicReq;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
+import com.cimcitech.nmhy.bean.plan.VoyageDynamicInfosBean;
 import com.cimcitech.nmhy.utils.Config;
 import com.cimcitech.nmhy.utils.DateTool;
 import com.cimcitech.nmhy.utils.EventBusMessage;
@@ -64,7 +67,7 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 
-public class StartVoyagePlanActivity extends AppCompatActivity {
+public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
     @Bind(R.id.titleName_tv)
     TextView titleName_Tv;
     @Bind(R.id.back_iv)
@@ -106,6 +109,13 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
     @Bind(R.id.commit_bt)
     Button commitBt;
 
+    @Bind(R.id.oilAmount1_et)
+    EditText oilAmount1_et;
+    @Bind(R.id.oilAmount2_et)
+    EditText oilAmount2_et;
+    @Bind(R.id.oilAmount3_et)
+    EditText oilAmount3_et;
+
     private LocationService locationService;
     private ArrayList<Poi> pois = new ArrayList<>(); //获取到的定位位置的对象
     private ProgressDialog dialog = null;
@@ -120,7 +130,7 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
     private static final int requestLocTime = 7000;
     private boolean isFinishlocating = false;
     private final int LOCATION_REQUESTCODE = 1;
-    private Context mContext = StartVoyagePlanActivity.this;
+    private Context mContext = StartOrEndVoyagePlanActivity.this;
     private List<ShipPlanDetailVo.DataBean.ListBean> data = new ArrayList<>();
     private int pageNum = 1;
     private ShipPlanDetailVo shipPlanDetailVo = null;
@@ -129,7 +139,9 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat sdf;
     private String nowTimeStr = "";
-    private boolean isAdd = false;
+    private boolean isStart = false;
+    private int bargeId = -1;
+    private int contractId = -1;
 
     Handler handler = new Handler(){
         @Override
@@ -172,8 +184,10 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_voyage_plan);
         ButterKnife.bind(this);
 
-        isAdd = getIntent().getBooleanExtra("isAdd",false);
+        isStart = getIntent().getBooleanExtra("isStart",false);
         item = (ShipPlanVo.DataBean.VoyageDynamicInfosBean)getIntent().getParcelableExtra("item");
+        bargeId = getIntent().getIntExtra("bargeId",-1);
+        contractId = getIntent().getIntExtra("contractId",-1);
 
         initTitle();
         calendar = Calendar.getInstance();
@@ -181,8 +195,8 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
     }
 
     public void initTitle(){
-        titleName_Tv.setText(isAdd?getResources().getString(R.string.add_voyage_plan_label) :
-                getResources().getString(R.string.voyage_plan_detail_label));
+        titleName_Tv.setText(isStart?getResources().getString(R.string.start_voyage_plan_label) :
+                getResources().getString(R.string.end_voyage_plan_label));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.GONE);
         if(!NetWorkUtil.isConn(mContext)){
@@ -198,15 +212,15 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
 //            addWatcher(latitudeTv);
 //            addWatcher(longitudeTv);
 //            addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
-            if(isAdd){//新增
-                commitBt.setVisibility(View.VISIBLE);
-                initData();
-                initContent();
-                startLocationService();
-            }else {//查看
-                commitBt.setVisibility(View.GONE);
-                initDetailData();
-            }
+            addWatcher(oilAmount1_et);
+            addWatcher(oilAmount2_et);
+            addWatcher(oilAmount3_et);
+
+            commitBt.setVisibility(View.VISIBLE);
+            oilAmount1_et.setText("");oilAmount2_et.setText("");oilAmount3_et.setText("");
+            initData();
+            initContent();
+            startLocationService();
         }
     }
 
@@ -243,8 +257,8 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
         remark_Et.setEnabled(false);remark_Et.setHint("");
     }
 
-    public void addWatcher(TextView tv){
-        tv.addTextChangedListener(new TextWatcher() {
+    public void addWatcher(EditText et){
+        et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -269,19 +283,13 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
     }
 
     public boolean isEmpty(){
-//        if(timeTv.getText().toString().trim().length() != 0 &&
-//                voyageStatusTv.getText().toString().trim().length() != 0 &&
-//                locationTv.getText().toString().trim().length() != 0 &&
-//                latitudeTv.getText().toString().trim().length() != 0 &&
-//                longitudeTv.getText().toString().trim().length() != 0 &&
-//                oilAmount1Et.getText().toString().trim().length() != 0 &&
-//                oilAmount2Et.getText().toString().trim().length() != 0 &&
-//                oilAmount3Et.getText().toString().trim().length() != 0){
-//            return false;
-//        }else{
-//            return true;
-//        }
-        return true;
+        if(oilAmount1_et.getText().toString().trim().length() != 0 &&
+                oilAmount2_et.getText().toString().trim().length() != 0 &&
+                oilAmount3_et.getText().toString().trim().length() != 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public void initContent(){
@@ -345,30 +353,31 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.location_tv:
-                if(isAdd && location_Tv.getText().toString().trim().length() == 0){
+                if(location_Tv.getText().toString().trim().length() == 0){
                     getLocation();
                 }
                 break;
             case R.id.commit_bt:
-                new AlertDialog.Builder(mContext)
-                        //.setTitle("提示")
-                        .setMessage(mContext.getResources().getString(R.string.add_oil_dialog_title))
-                        .setCancelable(true)
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                if(commitBt.isClickable()){
+                    new AlertDialog.Builder(mContext)
+                            //.setTitle("提示")
+                            .setMessage(mContext.getResources().getString(R.string.add_oil_dialog_title))
+                            .setCancelable(true)
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                commitData();
-                            }
-                        })
-                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create().show();
-
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    commitData();
+                                }
+                            })
+                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).create().show();
+                }
                 break;
             case R.id.occurTime_tv:
                 showSelectDateDialog2();
@@ -403,7 +412,7 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
         String feedback = feedback_Et.getText().toString().trim();
         long voyageStatusId = item.getVoyageStatusId();
 
-        String json = new Gson().toJson(new ShipPlanDynamicReq(dynamicId,
+        VoyageDynamicInfosBean voyageDynamicInfos= new VoyageDynamicInfosBean(dynamicId,
                 voyagePlanId,
                 currPortId,
                 estimatedTime,
@@ -424,10 +433,32 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
                 feedback,
                 reportId,
                 reportTime,
-                voyageStatusId));
+                voyageStatusId);
+        List<ShipFualDynamicInfosubBean> list = new ArrayList<>();
+        list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(0),
+                Double.parseDouble(oilAmount1_et.getText().toString().trim())));
+        list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(1),
+                Double.parseDouble(oilAmount2_et.getText().toString().trim())));
+        list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(2),
+                Double.parseDouble(oilAmount3_et.getText().toString().trim())));
+
+        String json = "";
+        String url = "";
+        if(isStart){//起航
+            String actualSailingTime = occurTime_Tv.getText().toString().trim();
+            json = new Gson().toJson(new StartShipPlanDynamicReq(voyagePlanId,bargeId,
+                    actualSailingTime,contractId,list,voyageDynamicInfos));
+            url = Config.start_voyage_plan_url;
+        }else{//止航
+            String actualStopTime = occurTime_Tv.getText().toString().trim();
+            json = new Gson().toJson(new EndShipPlanDynamicReq(voyagePlanId,bargeId,
+                    actualStopTime,list,voyageDynamicInfos));
+            url = Config.end_voyage_plan_url;
+        }
+
         OkHttpUtils
                 .postString()
-                .url(Config.save_voyage_plan_dynamic_url)
+                .url(url)
                 .content(json)
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
@@ -447,8 +478,12 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
                                     if(jo.getBoolean("success")){
                                         // 发布事件
                                         EventBus.getDefault().post(new EventBusMessage("addShipPlanSuc"));
+                                        if(jo.getString("msg").length() != 0){
+                                            ToastUtil.showToast(jo.getString("msg"));
+                                        }else{
+                                            ToastUtil.showToast(getResources().getString(R.string.end_voyage_plan_success_msg));
+                                        }
 
-                                        ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));
                                         location_Tv.setText("");
                                         finish();
                                     }else{
@@ -484,7 +519,7 @@ public class StartVoyagePlanActivity extends AppCompatActivity {
         }
         if(!permissionList.isEmpty()){
             String [] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(StartVoyagePlanActivity.this,permissions, LOCATION_REQUESTCODE);
+            ActivityCompat.requestPermissions(StartOrEndVoyagePlanActivity.this,permissions, LOCATION_REQUESTCODE);
         }else {
             getLocation();
         }

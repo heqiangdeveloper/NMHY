@@ -6,102 +6,126 @@
     android:fitsSystemWindows="true">
     <include layout="@layout/activity_settings_title"/>
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <ScrollView
-            android:id="@+id/content_sv"
+        <RelativeLayout
+            android:id="@+id/empty_rl"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/empty_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_empty"
+                android:layout_centerInParent="true"/>
+            <TextView
+                android:text="@string/no_data_warn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/empty_iv"/>
+        </RelativeLayout>
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/content_cl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal">
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:visibility="visible">
 
-            <LinearLayout
+            <ScrollView
+                android:id="@+id/content_sv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginBottom="@dimen/table_margin_top">
+                android:gravity="center_horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingLeft="@dimen/table_margin_left"
-                    android:paddingRight="@dimen/table_margin_left"
-                    android:orientation="vertical">
-                    <TextView
-                        android:visibility="gone"
-                        android:text="@string/port_sort_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/text_size_20"
-                        android:layout_marginTop="@dimen/linear_table_margin_top"
-                        android:layout_marginBottom="@dimen/linear_table_margin_top"
-                        android:textColor="@color/colorPrimary"/>
-                    <LinearLayout
-                        android:id="@+id/port_ll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                    </LinearLayout>
-
-                    <Button
-                        android:layout_marginLeft="@dimen/voyage_button_margin_horizontal"
-                        android:layout_marginRight="@dimen/voyage_button_margin_horizontal"
-                        android:id="@+id/start_voyage_bt"
-                        android:layout_marginTop="@dimen/voyage_button_margin_vertical"
-                        android:layout_marginBottom="@dimen/voyage_button_margin_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/start_voyage_label"
-                        android:textColor="@color/white"
-                        android:background="@drawable/shape_voyage_button_off"/>
-
-                    <TextView
-                        android:visibility="gone"
-                        android:layout_marginTop="@dimen/table_margin_top"
-                        android:text="@string/dynamic_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/text_size_18"
-                        android:textColor="@color/colorPrimary"/>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/table_margin_top">
 
                     <LinearLayout
-                        android:id="@+id/detail_ll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/linear_table_margin_top"
-                        android:layout_marginBottom="@dimen/linear_table_margin_top">
+                        android:layout_gravity="center"
+                        android:paddingLeft="@dimen/table_margin_left"
+                        android:paddingRight="@dimen/table_margin_left"
+                        android:orientation="vertical">
+                        <TextView
+                            android:visibility="gone"
+                            android:text="@string/port_sort_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textSize="@dimen/text_size_20"
+                            android:layout_marginTop="@dimen/linear_table_margin_top"
+                            android:layout_marginBottom="@dimen/linear_table_margin_top"
+                            android:textColor="@color/colorPrimary"/>
+                        <LinearLayout
+                            android:id="@+id/port_ll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal">
 
+                        </LinearLayout>
+
+                        <Button
+                            android:layout_marginLeft="@dimen/voyage_button_margin_horizontal"
+                            android:layout_marginRight="@dimen/voyage_button_margin_horizontal"
+                            android:id="@+id/start_voyage_bt"
+                            android:layout_marginTop="@dimen/voyage_button_margin_vertical"
+                            android:layout_marginBottom="@dimen/voyage_button_margin_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start_voyage_label"
+                            android:textColor="@color/white"
+                            android:background="@drawable/shape_voyage_button_off"/>
+
+                        <TextView
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/table_margin_top"
+                            android:text="@string/dynamic_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textSize="@dimen/text_size_18"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <LinearLayout
+                            android:id="@+id/detail_ll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/linear_table_margin_top"
+                            android:layout_marginBottom="@dimen/linear_table_margin_top">
+
+                        </LinearLayout>
+
+                        <Button
+                            android:layout_marginLeft="@dimen/voyage_button_margin_horizontal"
+                            android:layout_marginRight="@dimen/voyage_button_margin_horizontal"
+                            android:id="@+id/end_voyage_bt"
+                            android:layout_marginTop="@dimen/voyage_button_margin_vertical"
+                            android:layout_marginBottom="@dimen/voyage_button_margin_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/end_voyage_label"
+                            android:textColor="@color/white"
+                            android:background="@drawable/shape_voyage_button_off"/>
                     </LinearLayout>
 
-                    <Button
-                        android:layout_marginLeft="@dimen/voyage_button_margin_horizontal"
-                        android:layout_marginRight="@dimen/voyage_button_margin_horizontal"
-                        android:id="@+id/end_voyage_bt"
-                        android:layout_marginTop="@dimen/voyage_button_margin_vertical"
-                        android:layout_marginBottom="@dimen/voyage_button_margin_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/end_voyage_label"
-                        android:textColor="@color/white"
-                        android:background="@drawable/shape_voyage_button_off"/>
                 </LinearLayout>
+            </ScrollView>
+        </android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
 
-            </LinearLayout>
-        </ScrollView>
-    </android.support.design.widget.CoordinatorLayout>
     <!--more-->
     <LinearLayout
         android:id="@+id/popup_menu_layout"

@@ -24,7 +24,7 @@
     <string name="query_oil_request_detail_label">查看燃油申请明细</string>
 
     <string name="add_oil_request_detail_label">新增燃油申请明细</string>
-    <string name="add_oil_report_detail_label2">燃油动态明细</string>
+    <string name="add_oil_report_detail_label2">燃油动态明细（必填）</string>
     <string name="add_oil_report_detail_label">新增燃油动态明细</string>
     <string name="item_oil_report_history">燃油动态</string>
     <string name="item_oil_report_history_detail">燃油上报历史详情</string>
@@ -102,8 +102,9 @@
     <string name="taxfreeConsumeQuantity_label">累计消耗金额(不含税)</string>
     <string name="consumeAmount_label">累计消耗金额(含税)</string>
 
-    <string name="no_data_warn">暂无数据或网络异常</string>
+    <string name="no_data_warn">无数据或网络异常</string>
     <string name="commit_success_msg">提交成功</string>
+    <string name="end_voyage_plan_success_msg">本航次已结束</string>
     <string name="commit_fail_msg">提交失败</string>
 
     <!--航次计划-->
@@ -157,6 +158,9 @@
 
     <string name="add_voyage_plan_label">新增动态跟踪</string>
     <string name="voyage_plan_detail_label">动态跟踪详情</string>
+
+    <string name="start_voyage_plan_label">开始航次计划</string>
+    <string name="end_voyage_plan_label">结束航次计划</string>
 
     <string name="actualSailingTime_label">实际起航时间</string>
     <string name="estimatedSailingTime_label">预计起航时间</string>

@@ -29,6 +29,10 @@ public class Config {
     public static final List<String> fStatusList = new ArrayList<String>(Arrays.asList
             ("0","1","2","3"));
 
+    //燃油种类
+    public static final List<Integer> fuelTypeList = new ArrayList<Integer>(Arrays.asList
+            (30,31,32));
+
     //航次状态
     public static final List<String> fStatusStrList = new ArrayList<String>(Arrays.asList
             ("计划中-不确定","计划中-确定","计划执行中","执行结束"));
@@ -126,6 +130,12 @@ public class Config {
 
     //保存航次动态
     public static String save_voyage_plan_dynamic_url = IP + "voyageDynamicInfo/saveVoyageDynamicInfo";
+
+    //起航
+    public static String start_voyage_plan_url = IP + "voyagePlan/startVoyagePlan";
+
+    //止航
+    public static String end_voyage_plan_url = IP + "voyagePlan/endVoyagePlan";
 
     //获取当前的航次状态
     public static String get_current_voyageStatus_url = IP + "voyageDynamicInfo/queryNextvoyageStatusId";

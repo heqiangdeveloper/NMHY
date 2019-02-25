@@ -179,8 +179,9 @@ public class ShipPlanActivity extends AppCompatActivity {
             adapter.setOnItemClickListener(new ShipPlanAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
+                    String statusStr = Config.fStatusList.get(2);
                     for(int k = 0; k < data.size(); k++){
-                        if(data.get(k).getFstatus().equals(Config.fStatusList.get(2))){
+                        if(data.get(k).getFstatus().equals(statusStr)){
                             isHasPlanStart = true;
                             break;
                         }
@@ -198,6 +199,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                             bean.getEstimatedSailingTime(),
                             bean.getPortTransportOrder(),
                             bean.getBargeId(),
+                            bean.getContractId(),
                             bean.getVoyageNo(),
                             bean.getRouteId(),
                             bean.getRouteName(),
@@ -317,6 +319,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                         bean.getEstimatedSailingTime(),
                         bean.getPortTransportOrder(),
                         bean.getBargeId(),
+                        bean.getContractId(),
                         bean.getVoyageNo(),
                         bean.getRouteId(),
                         bean.getRouteName(),
