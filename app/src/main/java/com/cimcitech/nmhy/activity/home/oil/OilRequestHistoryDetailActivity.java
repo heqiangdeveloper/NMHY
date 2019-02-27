@@ -260,17 +260,17 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
     }
 
     public void initData(OilRequestHistoryDetailVo.DataBean.OilData oilData){
-        if(oilData != null){
-            String fuelKindStr = oilData.getFuelKind();
-            if(fuelKindStr.startsWith("FP") && fuelKindStr.length() == 4){
-                fuelKindStr = EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelKindStr);
-            }
-            fuelKind_Tv.setText(fuelKindStr);
-            unit_Tv.setText(oilData.getUnit());
-            estimateAmount_Tv.setText(oilData.getEstimateAmount() + "");
-            estimatePrice_Tv.setText(oilData.getEstimatePrice() + "");
-            estimateQty_Tv.setText(oilData.getEstimateQty() + "");
-        }
+//        if(oilData != null){
+//            String fuelKindStr = oilData.getFuelKind();
+//            if(fuelKindStr.startsWith("FP") && fuelKindStr.length() == 4){
+//                fuelKindStr = EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelKindStr);
+//            }
+//            fuelKind_Tv.setText(fuelKindStr);
+//            unit_Tv.setText(oilData.getUnit());
+//            estimateAmount_Tv.setText(oilData.getEstimateAmount() + "");
+//            estimatePrice_Tv.setText(oilData.getEstimatePrice() + "");
+//            estimateQty_Tv.setText(oilData.getEstimateQty() + "");
+//        }
     }
 
     @OnClick({R.id.back_iv,R.id.fuelKind_tv,R.id.taxId_tv,R.id.taxRate_tv,R.id.unit_tv,R.id.estimateQty_tv,
@@ -302,22 +302,22 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
                 }
                 break;
             case R.id.fuelKind_tv:
-                String fuelKindTitle = mContext.getResources().getString(R.string.choice_label) +
-                        mContext.getResources().getString(R.string.fuelKind_label);
-                List<String> contentList = new ArrayList<>();
-                if(isAdd){//新增
-                    for(String key : Config.fuelTypeMap.keySet()){
-                        contentList.add(Config.fuelTypeMap.get(key));
-                    }
-                    ShowListValueWindow window = new ShowListValueWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
-                    window.show();
-                }else{//查看
-                    for(int i = 0; i < data.size(); i++){
-                        String fuelTypeStr = data.get(i).getFuelKind();
-                        contentList.add(EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelTypeStr));
-                    }
-                    ShowWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
-                }
+//                String fuelKindTitle = mContext.getResources().getString(R.string.choice_label) +
+//                        mContext.getResources().getString(R.string.fuelKind_label);
+//                List<String> contentList = new ArrayList<>();
+//                if(isAdd){//新增
+//                    for(String key : Config.fuelTypeMap.keySet()){
+//                        contentList.add(Config.fuelTypeMap.get(key));
+//                    }
+//                    ShowListValueWindow window = new ShowListValueWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
+//                    window.show();
+//                }else{//查看
+//                    for(int i = 0; i < data.size(); i++){
+//                        String fuelTypeStr = data.get(i).getFuelKind();
+//                        contentList.add(EnumUtil.findValueByKeySS(Config.fuelTypeMap,fuelTypeStr));
+//                    }
+//                    ShowWindow(mContext,fuelKindTitle, contentList, fuelKind_Tv);
+//                }
                 break;
             case R.id.taxId_tv:
                 startEditActivity(Config.TEXT_TYPE_STR,getResources().getString(R.string.taxId_label),
@@ -351,7 +351,7 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
     }
 
     private void commitData(){
-        mCatLoadingView = new CatLoadingView();
+        /*mCatLoadingView = new CatLoadingView();
         mCatLoadingView.show(getSupportFragmentManager(),"");
 
         String fuelKindStr = EnumUtil.findKeyByValueSS(Config.fuelTypeMap,fuelKind_Tv.getText().toString().trim());
@@ -394,7 +394,7 @@ public class OilRequestHistoryDetailActivity extends MyBaseActivity {
 
                         }
                     }
-                });
+                });*/
     }
 
     public void startEditActivity(String type,String title,String content,int requestCode){

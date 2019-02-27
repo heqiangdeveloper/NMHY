@@ -205,7 +205,9 @@ public class ShipPlanActivity extends AppCompatActivity {
                             bean.getVoyageNo(),
                             bean.getRouteId(),
                             bean.getRouteName(),
-                            bean.getFstatus()
+                            bean.getFstatus(),
+                            bean.getRentType(),
+                            bean.getFullInclusion()
                     );
                     Intent i = new Intent(mContext,ShipPlanDetailActivity4.class);
                     //每个节点的航次状态数据
@@ -327,7 +329,9 @@ public class ShipPlanActivity extends AppCompatActivity {
                         bean.getVoyageNo(),
                         bean.getRouteId(),
                         bean.getRouteName(),
-                        bean.getFstatus()
+                        bean.getFstatus(),
+                        bean.getRentType(),
+                        bean.getFullInclusion()
                 );
                 Intent i = new Intent(mContext,ShipPlanDetailActivity4.class);
                 //每个节点的航次状态数据

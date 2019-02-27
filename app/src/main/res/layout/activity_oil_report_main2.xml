@@ -226,7 +226,6 @@
                                 android:inputType="numberDecimal"
                                 android:maxLength="11"
                                 android:padding="8dip"
-                                android:drawableRight="@mipmap/white_icon"
                                 android:drawablePadding="@dimen/drawable_padding_size"
                                 android:textColor="@color/main_value_text_color"
                                 android:textSize="@dimen/main_text_size"/>
@@ -525,7 +524,19 @@
                             android:text="" />
                     </TableRow>
                 </TableLayout>
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/label_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#f00"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="20dp"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="@string/no_report_oil_label"/>
                 <Button
+                    android:visibility="gone"
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="10dip"
                     android:id="@+id/commit_bt"

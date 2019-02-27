@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -110,6 +111,8 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
     TextView warn_Tv;
     @Bind(R.id.commit_bt)
     Button commitBt;
+    @Bind(R.id.oil_ll)
+    LinearLayout oil_Ll;
 
     @Bind(R.id.oilAmount1_et)
     EditText oilAmount1_et;
@@ -144,6 +147,8 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
     private boolean isStart = false;
     private int bargeId = -1;
     private int contractId = -1;
+    private String rentType = "";//租用类型
+    private String fullInclusion = "";//是否全包 0-我们供油 1-全包
 
     Handler handler = new Handler(){
         @Override
@@ -190,6 +195,8 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
         item = (ShipPlanVo.DataBean.VoyageDynamicInfosBean)getIntent().getParcelableExtra("item");
         bargeId = getIntent().getIntExtra("bargeId",-1);
         contractId = getIntent().getIntExtra("contractId",-1);
+        rentType = getIntent().getStringExtra("rentType");
+        fullInclusion = getIntent().getStringExtra("fullInclusion");
 
         initTitle();
         calendar = Calendar.getInstance();
@@ -215,14 +222,24 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
 //            addWatcher(latitudeTv);
 //            addWatcher(longitudeTv);
 //            addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
-            addWatcher(oilAmount1_et);
-            addWatcher(oilAmount2_et);
-            addWatcher(oilAmount3_et);
 
+            //如果 rentType = "RT02" && fullInclusion =0 或者
+            //rentType = "RT03"
+            //就报油，其他情况不报油
+            if((rentType.equals(Config.rentTypeMap.get(1)) && fullInclusion.equals("0")) ||
+                    rentType.equals(Config.rentTypeMap.get(2))){
+                //报油
+                addWatcher(oilAmount1_et);
+                addWatcher(oilAmount2_et);
+                addWatcher(oilAmount3_et);
+                oilAmount1_et.setText("");oilAmount2_et.setText("");oilAmount3_et.setText("");
+            }else {
+                commitBt.setClickable(true);
+                commitBt.setBackground(getResources().getDrawable(R.drawable.shape_login_button_on));
+            }
             commitBt.setVisibility(View.VISIBLE);
-            oilAmount1_et.setText("");oilAmount2_et.setText("");oilAmount3_et.setText("");
+
             initData();
-            initContent();
             startLocationService();
         }
     }
@@ -293,14 +310,6 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
         }else{
             return true;
         }
-    }
-
-    public void initContent(){
-        nowTimeStr = DateTool.getSystemDate();
-        //nowTimeStr = nowTimeStr.substring(0,10);
-        estimatedTime_Tv.setText(nowTimeStr);
-        occurTime_Tv.setText(nowTimeStr);
-        reportTime_Tv.setText(nowTimeStr);
     }
 
     private void showSelectDateDialog2() {
@@ -504,6 +513,12 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
         portName_Tv.setText(item.getPortName());
         jobTypeValue_Tv.setText(item.getJobTypeValue());
         voyageStatusDesc_Tv.setText(item.getVoyageStatusDesc());
+
+        nowTimeStr = DateTool.getSystemDate();
+        //nowTimeStr = nowTimeStr.substring(0,10);
+        estimatedTime_Tv.setText(nowTimeStr);
+        occurTime_Tv.setText(nowTimeStr);
+        reportTime_Tv.setText(nowTimeStr);
     }
 
     public void initLocation(){

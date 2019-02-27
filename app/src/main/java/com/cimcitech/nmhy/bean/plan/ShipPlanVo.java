@@ -64,6 +64,8 @@ public class ShipPlanVo {
         private int routeId;//线路id
         private String routeName;//线路名
         private String fstatus;//本航次计划的状态
+        private String rentType;//船类型
+        private String fullInclusion;//是否全包 0-我们供油 1-全包
         private ArrayList<VoyageDynamicInfosBean> voyageDynamicInfos;
 
         public long getVoyagePlanId() {
@@ -435,6 +437,22 @@ public class ShipPlanVo {
 
         public void setVoyageDynamicInfos(ArrayList<VoyageDynamicInfosBean> voyageDynamicInfos) {
             this.voyageDynamicInfos = voyageDynamicInfos;
+        }
+
+        public String getRentType() {
+            return rentType;
+        }
+
+        public void setRentType(String rentType) {
+            this.rentType = rentType;
+        }
+
+        public String getFullInclusion() {
+            return fullInclusion;
+        }
+
+        public void setFullInclusion(String fullInclusion) {
+            this.fullInclusion = fullInclusion;
         }
     }
 }

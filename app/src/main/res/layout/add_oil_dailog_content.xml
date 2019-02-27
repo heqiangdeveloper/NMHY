@@ -17,23 +17,35 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_16"
-            android:text="提交信息"/>
+            android:text="标题"/>
 
         <TextView
             android:id="@+id/time_item_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="提交信息"
+            android:text="时间"
             android:layout_marginTop="@dimen/add_oil_dialog_margin"/>
+        <TextView
+            android:id="@+id/bargeName_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="船名"
+            android:layout_marginTop="@dimen/add_oil_dialog_margin"/>
+        <TextView
+            android:id="@+id/portTransportOrder_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="航次顺序"/>
         <TextView
             android:id="@+id/status_item_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="提交信息"/>
+            android:text="状态"/>
         <TextView
             android:id="@+id/location_item_tv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_oil_dialog_margin"/>
         <TextView
             android:id="@+id/longitude_item_tv"
             android:layout_width="match_parent"

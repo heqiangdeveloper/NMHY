@@ -7,15 +7,22 @@ import java.util.List;
  */
 
 public class OilReportMainReq {
-    private long bargeId;
+    private int bargeId;
     private long voyagePlanId;
-    private int voyageStatusId;
+    private long voyageStatusId;
     private String location;
     private double longitude;
     private double latitude;
+    private String reportTime;
+    private int reporterId;
+    private int currPortId;
     private List<ShipFualDynamicInfosubsBean> ShipFualDynamicInfosubs;
 
-    public OilReportMainReq(long bargeId, long voyagePlanId, int voyageStatusId, String location, double longitude, double latitude, List<ShipFualDynamicInfosubsBean> shipFualDynamicInfosubs) {
+    public OilReportMainReq(int currPortId,String reportTime,int reporterId,int bargeId, long
+            voyagePlanId, long
+            voyageStatusId, String location, double longitude, double latitude, List<ShipFualDynamicInfosubsBean> shipFualDynamicInfosubs) {
+        this.reportTime = reportTime;
+        this.reporterId = reporterId;
         this.bargeId = bargeId;
         this.voyagePlanId = voyagePlanId;
         this.voyageStatusId = voyageStatusId;
@@ -26,30 +33,20 @@ public class OilReportMainReq {
     }
 
     public static class ShipFualDynamicInfosubsBean{
-        private String fuelKind;
-        private int unit;
+        private int fuelKindId;
         private double realStoreQty;
 
-        public ShipFualDynamicInfosubsBean(String fuelKind, int unit, double realStoreQty) {
-            this.fuelKind = fuelKind;
-            this.unit = unit;
+        public ShipFualDynamicInfosubsBean(int fuelKindId,double realStoreQty) {
+            this.fuelKindId = fuelKindId;
             this.realStoreQty = realStoreQty;
         }
 
-        public String getFuelKind() {
-            return fuelKind;
+        public int getFuelKindId() {
+            return fuelKindId;
         }
 
-        public void setFuelKind(String fuelKind) {
-            this.fuelKind = fuelKind;
-        }
-
-        public int getUnit() {
-            return unit;
-        }
-
-        public void setUnit(int unit) {
-            this.unit = unit;
+        public void setFuelKindId(int fuelKindId) {
+            this.fuelKindId = fuelKindId;
         }
 
         public double getRealStoreQty() {

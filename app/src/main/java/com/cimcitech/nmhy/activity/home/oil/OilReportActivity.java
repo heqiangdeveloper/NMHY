@@ -229,7 +229,7 @@ public class OilReportActivity extends MyBaseActivity {
         String json = "";
         OkHttpUtils
                 .postString()
-                .url(Config.get_current_voyageStatus_url)
+                .url(Config.get_current_voyagePlan_info_url)
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .content(json)
                 .build()

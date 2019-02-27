@@ -89,6 +89,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     private boolean isHasPlanStart = false;
     private int bargeId;
     private int contractId;
+    private String rentType;//租用类型
+    private String fullInclusion;//是否全包 0-我们供油 1-全包
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,6 +108,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
         isHasPlanStart = getIntent().getBooleanExtra("isHasPlanStart",false);
         bargeId = req.getBargeId();
         contractId = req.getContractId();
+        rentType = req.getRentType();
+        fullInclusion = req.getFullInclusion();
 
         initTitle();
         hideView();
@@ -174,6 +178,9 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                     i.putExtra("item",item);
                     i.putExtra("bargeId",bargeId);
                     i.putExtra("contractId",contractId);
+                    i.putExtra("rentType",rentType);
+                    i.putExtra("fullInclusion",fullInclusion);
+
                     startActivity(i);
                     //showSelectDateDialog2();
                 }else{
@@ -197,6 +204,8 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                     i.putExtra("isStart",false);
                     i.putExtra("item",item);
                     i.putExtra("bargeId",bargeId);
+                    i.putExtra("rentType",rentType);
+                    i.putExtra("fullInclusion",fullInclusion);
                     startActivity(i);
                 }else{
                     ToastUtil.showToast(getResources().getString(R.string.end_voyage_button_warning3));
@@ -254,7 +263,6 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
             warn_Tv.setText(getResources().getString(R.string.no_data_warn));
             content_Cl.setVisibility(View.GONE);
         }else{
-
             //码头列表
             List<String> portNameList = new ArrayList<>();
             //作业类型列表
@@ -366,12 +374,13 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 port_Ll.addView(mpll);
 
                 mtll = new MyTopLinearLayout(this);
-                mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " +
-                        "<font color='#666666'>" + currentPortName + "</font>";
-                mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " +
-                        "<font color='#666666'>" + jobTypeValueList.get(i) + "</font>";
+                mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " + currentPortName;
+                mPortNameStr = "<font color='#79C4EC'>" + mPortNameStr + "</font>";
+                mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " + jobTypeValueList.get(i);
+                mJobTypeStr = "<font color='#228B22'>" + mJobTypeStr + "</font>";
 
                 mtll.setText(mPortNameStr,mJobTypeStr);
+                //第一条分割线 不显示
                 if(i == 0){
                     mtll.isDividelineVisible(false);
                 }

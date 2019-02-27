@@ -21,11 +21,13 @@ public class ChangeVoyagePlanReq implements Serializable{
     private int routeId;//线路id
     private String routeName;//线路名
     private String fstatus;//本航次计划的状态
+    private String rentType;//船类型
+    private String fullInclusion;//是否全包 0-我们供油 1-全包
 
     public ChangeVoyagePlanReq(long voyagePlanId,String bargeBatchNo, String cShipName, String
             actualSailingTime, String actualStopTime, String estimatedStopTime, String estimatedSailingTime, String portTransportOrder,
                                int bargeId,int contractId, String voyageNo, int routeId, String
-                                       routeName, String fstatus) {
+                                       routeName, String fstatus,String rentType,String fullInclusion) {
         this.voyagePlanId = voyagePlanId;
         this.bargeBatchNo = bargeBatchNo;
         this.cShipName = cShipName;
@@ -40,6 +42,24 @@ public class ChangeVoyagePlanReq implements Serializable{
         this.routeId = routeId;
         this.routeName = routeName;
         this.fstatus = fstatus;
+        this.rentType = rentType;
+        this.fullInclusion = fullInclusion;
+    }
+
+    public String getRentType() {
+        return rentType;
+    }
+
+    public void setRentType(String rentType) {
+        this.rentType = rentType;
+    }
+
+    public String getFullInclusion() {
+        return fullInclusion;
+    }
+
+    public void setFullInclusion(String fullInclusion) {
+        this.fullInclusion = fullInclusion;
     }
 
     public String getActualSailingTime() {

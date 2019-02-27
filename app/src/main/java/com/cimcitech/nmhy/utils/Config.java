@@ -59,10 +59,10 @@ public class Config {
     }};
 
     //燃油类型
-    public static final Map<String,String> fuelTypeMap = new LinkedHashMap<String,String>(){{
-        put("FP01","重油");
-        put("FP02","轻油");
-        put("FP03","机油");
+    public static final Map<Integer,String> fuelTypeMap = new LinkedHashMap<Integer,String>(){{
+        put(30,"重油");
+        put(31,"轻油");
+        put(32,"机油");
     }};
 
     //航次状态
@@ -90,9 +90,9 @@ public class Config {
     //多式联运
     //public static String IP = "http://10.33.178.91:8081/nmhy/";
 
-    //public static String IP = "http://192.168.137.1:8081/nmhy/";
+    public static String IP = "http://192.168.137.1:8081/nmhy/";
 
-    public static String IP = "http://192.168.1.193:8081/nmhy/";
+    //public static String IP = "http://192.168.1.193:8081/nmhy/";
 
     //登录
     public static String login_url = IP + "user/login";
@@ -139,8 +139,9 @@ public class Config {
     //止航
     public static String end_voyage_plan_url = IP + "voyagePlan/endVoyagePlan";
 
-    //获取当前的航次状态
-    public static String get_current_voyageStatus_url = IP + "voyageDynamicInfo/queryNextvoyageStatusId";
+    //获取当前的船名和航线，航次状态
+    public static String get_current_voyagePlan_info_url = IP +
+            "voyagePlan/queryVoyagePlanForReportFualDynamic";
 
     //获取当前的船名和航次号id
     public static String get_bargeName_voyagePlanId_url = IP + "voyagePlan/queryVoyagePlanByFualDynamic";
