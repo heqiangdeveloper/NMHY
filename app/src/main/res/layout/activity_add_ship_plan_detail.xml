@@ -543,7 +543,7 @@
                     android:text="@string/btn_commit_label"
                     android:textColor="@color/white"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/shape_login_button_off"/>
+                    android:background="@drawable/shape_login_button_on"/>
             </LinearLayout>
         </ScrollView>
         <!--已报-->

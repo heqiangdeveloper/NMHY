@@ -149,6 +149,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
     private int contractId = -1;
     private String rentType = "";//租用类型
     private String fullInclusion = "";//是否全包 0-我们供油 1-全包
+    private boolean isCanReportOil = false;
 
     Handler handler = new Handler(){
         @Override
@@ -228,14 +229,19 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
             //就报油，其他情况不报油
             if((rentType.equals(Config.rentTypeMap.get(1)) && fullInclusion.equals("0")) ||
                     rentType.equals(Config.rentTypeMap.get(2))){
+                isCanReportOil = true;
                 //报油
+                oil_Ll.setVisibility(View.VISIBLE);
                 addWatcher(oilAmount1_et);
                 addWatcher(oilAmount2_et);
                 addWatcher(oilAmount3_et);
                 oilAmount1_et.setText("");oilAmount2_et.setText("");oilAmount3_et.setText("");
             }else {
+                isCanReportOil = false;
                 commitBt.setClickable(true);
                 commitBt.setBackground(getResources().getDrawable(R.drawable.shape_login_button_on));
+
+                oil_Ll.setVisibility(View.GONE);
             }
             commitBt.setVisibility(View.VISIBLE);
 
@@ -446,13 +452,21 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
                 reportId,
                 reportTime,
                 voyageStatusId);
-        List<ShipFualDynamicInfosubBean> list = new ArrayList<>();
-        list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(0),
-                Double.parseDouble(oilAmount1_et.getText().toString().trim())));
-        list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(1),
-                Double.parseDouble(oilAmount2_et.getText().toString().trim())));
-        list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(2),
-                Double.parseDouble(oilAmount3_et.getText().toString().trim())));
+        List<ShipFualDynamicInfosubBean> list = null;
+        if(isCanReportOil){
+            list = new ArrayList<>();
+            list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(0),
+                    Double.parseDouble(oilAmount1_et.getText().toString().trim())));
+            list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(1),
+                    Double.parseDouble(oilAmount2_et.getText().toString().trim())));
+            list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(2),
+                    Double.parseDouble(oilAmount3_et.getText().toString().trim())));
+        }else{
+            list = new ArrayList<>();
+            list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(0),0));
+            list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(1),0));
+            list.add(new ShipFualDynamicInfosubBean(Config.fuelTypeList.get(2),0));
+        }
 
         String json = "";
         String url = "";

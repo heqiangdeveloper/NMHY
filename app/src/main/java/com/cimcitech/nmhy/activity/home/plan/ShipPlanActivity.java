@@ -285,6 +285,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 swipeRefreshLayout.setRefreshing(false);
+                                Log.d(TAG,"response is: " + response);
                                 shipPlanVo = new Gson().fromJson(response, ShipPlanVo.class);
                                 if (shipPlanVo != null) {
                                     if (shipPlanVo.isSuccess()) {

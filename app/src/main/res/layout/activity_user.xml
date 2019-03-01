@@ -14,6 +14,7 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <TextView
+            android:visibility="gone"
             android:id="@+id/my_info_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
             android:textSize="@dimen/text_size_16" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/my_company_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
