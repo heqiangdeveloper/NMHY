@@ -2,6 +2,7 @@ package com.cimcitech.nmhy.activity.home.plan;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaCasException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +107,20 @@ public class ShipPlanActivity extends AppCompatActivity {
     }
 
     public void initTitle(){
+        float f =(float) 2.3;
+        short s = 2; s =(short) (s + 3);
+        Log.d(TAG, "8&2=" + (8&2));
+        String tempStr = "";
+        try{
+            tempStr = new String("shipPlanlog".getBytes("ISO-8859-1"),"UTF-8");
+        }catch (UnsupportedEncodingException e){
+
+        }
+        Log.d(TAG, "tempStr = " + tempStr);
+
+        tempStr = tempStr + "dddd";
+        char c = '好';
+
         titleName_Tv.setText(getResources().getString(R.string.item_plan));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.GONE);

@@ -772,6 +772,7 @@ public class OilReportMainActivity extends MyBaseActivity {
                 });
     }
 
+    //获取已报的历史燃油数据
     public void getData() {
         String json = new Gson().toJson(new OilReportHistoryReq(pageNum, 10, "",
                 new OilReportHistoryReq.ShipFualDynamicInfoBean(null,null,null)));

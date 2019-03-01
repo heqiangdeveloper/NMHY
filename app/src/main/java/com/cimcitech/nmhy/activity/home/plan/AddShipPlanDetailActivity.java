@@ -358,7 +358,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                         //.setTitle("提示")
                         .setMessage(mContext.getResources().getString(R.string.add_oil_dialog_title))
                         .setCancelable(true)
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(getResources().getString(R.string.sure_label), new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -366,7 +366,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                                 commitData();
                             }
                         })
-                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getResources().getString(R.string.cancel_label), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
@@ -449,7 +449,7 @@ public class AddShipPlanDetailActivity extends AppCompatActivity {
                                 try{
                                     JSONObject jo = new JSONObject(response);
                                     if(jo.getBoolean("success")){
-                                        // 发布事件
+                                        // 发布事件，关闭ShipPlanDetailActivity4页面，并且通知ShipPlanActivity页面刷新
                                         EventBus.getDefault().post(new EventBusMessage("addShipPlanSuc"));
 
                                         ToastUtil.showToast(getResources().getString(R.string.commit_success_msg));

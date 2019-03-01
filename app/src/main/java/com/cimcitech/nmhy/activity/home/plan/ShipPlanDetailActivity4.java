@@ -350,9 +350,9 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
             //已离港 ，设置顶部的的港口名文本背景色为disableColor
             //正在该港口下，设置顶部的的港口名文本背景色为 currentColor
             //待驶入的港口，设置顶部的的港口名文本背景色为 enableColor
-            int disableColor = Color.rgb(255,127,80);//浅红
-            int currentColor = Color.rgb(34,139,34);//浅绿
-            int enableColor = Color.rgb(120,196,236);//浅蓝
+            int disableColor = Color.rgb(255,127,80);//浅红  #FF7F50
+            int currentColor = Color.rgb(34,139,34);//浅绿  #228B22
+            int enableColor = Color.rgb(120,196,236);//浅蓝 #79C4EC
             for(int i = 0; i < sizen; i++){
                 currentPortName = portNameList.get(i);
                 mpll = new MyPortLinearLayout(this);
@@ -362,22 +362,34 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 }else {
                     mpll.setLineVisibility(true);
                 }
-                if(i < curPositionInPortNameList){
-                    mpll.setTextBackgroundColor(disableColor);
-                }else if(i == curPositionInPortNameList){
-                    mpll.setTextBackgroundColor(currentColor);
-                }else {
-                    mpll.setTextBackgroundColor(enableColor);
-                }
 
                 //添加顶部的港口名称
                 port_Ll.addView(mpll);
 
                 mtll = new MyTopLinearLayout(this);
                 mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " + currentPortName;
-                mPortNameStr = "<font color='#79C4EC'>" + mPortNameStr + "</font>";
                 mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " + jobTypeValueList.get(i);
-                mJobTypeStr = "<font color='#228B22'>" + mJobTypeStr + "</font>";
+
+                //航次已开始
+                if(fstatus.equals(Config.fStatusList.get(2))){
+                    if(i < curPositionInPortNameList){//浅红色
+                        mpll.setTextBackgroundColor(disableColor);
+                        mPortNameStr = "<font color='#FF7F50'>" + mPortNameStr + "</font>";
+                        mJobTypeStr = "<font color='#FF7F50'>" + mJobTypeStr + "</font>";
+                    }else if(i == curPositionInPortNameList){//浅绿色
+                        mpll.setTextBackgroundColor(currentColor);
+                        mPortNameStr = "<font color='#228B22'>" + mPortNameStr + "</font>";
+                        mJobTypeStr = "<font color='#228B22'>" + mJobTypeStr + "</font>";
+                    }else {//浅蓝色
+                        mpll.setTextBackgroundColor(enableColor);
+                        mPortNameStr = "<font color='#79C4EC'>" + mPortNameStr + "</font>";
+                        mJobTypeStr = "<font color='#79C4EC'>" + mJobTypeStr + "</font>";
+                    }
+                }else{//航次未开始
+                    mpll.setTextBackgroundColor(enableColor);
+                    mPortNameStr = "<font color='#79C4EC'>" + mPortNameStr + "</font>";
+                    mJobTypeStr = "<font color='#79C4EC'>" + mJobTypeStr + "</font>";
+                }
 
                 mtll.setText(mPortNameStr,mJobTypeStr);
                 //第一条分割线 不显示

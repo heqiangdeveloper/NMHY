@@ -488,7 +488,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
                                 try{
                                     JSONObject jo = new JSONObject(response);
                                     if(jo.getBoolean("success")){
-                                        // 发布事件
+                                        // 发布事件,关闭ShipPlanDetailActivity4页面，并且通知ShipPlanActivity页面刷新
                                         EventBus.getDefault().post(new EventBusMessage("addShipPlanSuc"));
                                         if(jo.getString("msg").length() != 0){
                                             ToastUtil.showToast(jo.getString("msg"));
