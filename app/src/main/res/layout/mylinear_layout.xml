@@ -6,7 +6,7 @@
     android:id="@+id/linearLayout"
     android:background="@color/white"
     android:layout_marginTop="@dimen/my_linear_margin_top"
-              android:paddingLeft="@dimen/table_margin_left"
+              android:paddingLeft="10dp"
               android:paddingRight="@dimen/table_margin_left">
 
     <TextView

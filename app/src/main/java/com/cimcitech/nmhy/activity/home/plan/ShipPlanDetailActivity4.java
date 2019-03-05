@@ -3,6 +3,7 @@ package com.cimcitech.nmhy.activity.home.plan;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -89,6 +90,7 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
     private boolean isHasPlanStart = false;
     private int bargeId;
     private int contractId;
+    private String voyageNo = "";//航次号
     private String rentType;//租用类型
     private String fullInclusion;//是否全包 0-我们供油 1-全包
 
@@ -110,6 +112,7 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
         contractId = req.getContractId();
         rentType = req.getRentType();
         fullInclusion = req.getFullInclusion();
+        voyageNo = req.getVoyageNo();
 
         initTitle();
         hideView();
@@ -180,6 +183,7 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                     i.putExtra("contractId",contractId);
                     i.putExtra("rentType",rentType);
                     i.putExtra("fullInclusion",fullInclusion);
+                    i.putExtra("voyageNo",voyageNo);//航次号
 
                     startActivity(i);
                     //showSelectDateDialog2();
@@ -367,35 +371,55 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 port_Ll.addView(mpll);
 
                 mtll = new MyTopLinearLayout(this);
-                mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " + currentPortName;
-                mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " + jobTypeValueList.get(i);
+                //mPortNameStr = getResources().getString(R.string.portName_label2) + (i+1) +": " + currentPortName;
+                //mJobTypeStr = getResources().getString(R.string.jobTypeValue_label) + ": " + jobTypeValueList.get(i);
 
+                mPortNameStr = currentPortName;
+                mJobTypeStr = jobTypeValueList.get(i);
+
+                Drawable drawable = null;
                 //航次已开始
                 if(fstatus.equals(Config.fStatusList.get(2))){
                     if(i < curPositionInPortNameList){//浅红色
                         mpll.setTextBackgroundColor(disableColor);
                         mPortNameStr = "<font color='#FF7F50'>" + mPortNameStr + "</font>";
-                        mJobTypeStr = "<font color='#FF7F50'>" + mJobTypeStr + "</font>";
+                        //mJobTypeStr = "<font color='#fff'>" + mJobTypeStr + "</font>";
+                        drawable = getResources().getDrawable(R.drawable
+                                .shape_voyage_dynamic_text_bg_red);
+                        //当前节点的状态： 0 已经过  1 进行中 2 未到达
+                        mtll.setStatusImage(getStatusImageViewDrawable(i,0));
                     }else if(i == curPositionInPortNameList){//浅绿色
                         mpll.setTextBackgroundColor(currentColor);
                         mPortNameStr = "<font color='#228B22'>" + mPortNameStr + "</font>";
-                        mJobTypeStr = "<font color='#228B22'>" + mJobTypeStr + "</font>";
+                        //mJobTypeStr = "<font color='#fff'>" + mJobTypeStr + "</font>";
+                        drawable = getResources().getDrawable(R.drawable
+                                .shape_voyage_dynamic_text_bg_green);
+                        //当前节点的状态： 0 已经过  1 进行中 2 未到达
+                        mtll.setStatusImage(getStatusImageViewDrawable(i,1));
                     }else {//浅蓝色
                         mpll.setTextBackgroundColor(enableColor);
                         mPortNameStr = "<font color='#79C4EC'>" + mPortNameStr + "</font>";
-                        mJobTypeStr = "<font color='#79C4EC'>" + mJobTypeStr + "</font>";
+                        //mJobTypeStr = "<font color='#fff'>" + mJobTypeStr + "</font>";
+                        drawable = getResources().getDrawable(R.drawable
+                                .shape_voyage_dynamic_text_bg_blue);
+                        //当前节点的状态： 0 已经过  1 进行中 2 未到达
+                        mtll.setStatusImage(getStatusImageViewDrawable(i,2));
                     }
                 }else{//航次未开始
                     mpll.setTextBackgroundColor(enableColor);
                     mPortNameStr = "<font color='#79C4EC'>" + mPortNameStr + "</font>";
-                    mJobTypeStr = "<font color='#79C4EC'>" + mJobTypeStr + "</font>";
+                    //mJobTypeStr = "<font color='#fff'>" + mJobTypeStr + "</font>";
+                    drawable = getResources().getDrawable(R.drawable
+                            .shape_voyage_dynamic_text_bg_blue);
+                    mtll.setStatusImage(getStatusImageViewDrawable(i,2));
                 }
 
                 mtll.setText(mPortNameStr,mJobTypeStr);
+                mtll.setWorkTypeBg(drawable);
                 //第一条分割线 不显示
-                if(i == 0){
-                    mtll.isDividelineVisible(false);
-                }
+//                if(i == 0){
+//                    mtll.isDividelineVisible(false);
+//                }
 //            if(fstatusStr.equals("2")){//计划正在执行中
 //                mtll.isCommandAndExceptionTvVisible(true);
 //                mtll.setTimeLabel(getResources().getString(R.string.reportTime_label));
@@ -465,6 +489,45 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public Drawable getStatusImageViewDrawable(int i,int status){
+        Drawable drawable = null;
+
+        if(status == 0){//已经过的港口
+            drawable = getResources().getDrawable(R.mipmap.ok32);
+        }else if(status == 1){//正在作业的港口
+            switch (i) {
+                case 0:
+                    drawable = getResources().getDrawable(R.mipmap.no1_32);
+                    break;
+                case 1:
+                    drawable = getResources().getDrawable(R.mipmap.no2_32);
+                    break;
+                case 2:
+                    drawable = getResources().getDrawable(R.mipmap.no3_32);
+                    break;
+                case 3:
+                    drawable = getResources().getDrawable(R.mipmap.no4_32);
+                    break;
+            }
+        }else{//待到达的港口
+            switch (i) {
+                case 0:
+                    drawable = getResources().getDrawable(R.mipmap.no1_32_off);
+                    break;
+                case 1:
+                    drawable = getResources().getDrawable(R.mipmap.no2_32_off);
+                    break;
+                case 2:
+                    drawable = getResources().getDrawable(R.mipmap.no3_32_off);
+                    break;
+                case 3:
+                    drawable = getResources().getDrawable(R.mipmap.no4_32_off);
+                    break;
+            }
+        }
+        return drawable;
     }
 
     public void initJobTypeValue(List<TextView> jobTypeValueTvList,List<String> jobTypeValueList){

@@ -356,6 +356,7 @@ public class ShipPlanActivity extends AppCompatActivity {
                 i.putExtra("req",req);//更改本航次状态所需要的数据
                 i.putExtra("fstatus",bean.getFstatus());//本航次的航次状态
                 i.putExtra("isHasPlanStart",isHasPlanStart);//是否有已经开始的航次计划
+                //i.putExtra("voyageNo",bean.getVoyageNo());//航次号
                 startActivity(i);
             }
 

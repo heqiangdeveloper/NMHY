@@ -147,6 +147,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
     private boolean isStart = false;
     private int bargeId = -1;
     private int contractId = -1;
+    private String voyageNo = "";//航次号
     private String rentType = "";//租用类型
     private String fullInclusion = "";//是否全包 0-我们供油 1-全包
     private boolean isCanReportOil = false;
@@ -198,6 +199,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
         contractId = getIntent().getIntExtra("contractId",-1);
         rentType = getIntent().getStringExtra("rentType");
         fullInclusion = getIntent().getStringExtra("fullInclusion");
+        voyageNo = getIntent().getStringExtra("voyageNo");
 
         initTitle();
         calendar = Calendar.getInstance();
@@ -227,8 +229,8 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
             //如果 rentType = "RT02" && fullInclusion =0 或者
             //rentType = "RT03"
             //就报油，其他情况不报油
-            if((rentType.equals(Config.rentTypeMap.get(1)) && fullInclusion.equals("0")) ||
-                    rentType.equals(Config.rentTypeMap.get(2))){
+            if((rentType.equals("RT02") && fullInclusion.equals("0")) ||
+                    rentType.equals("RT03")){
                 isCanReportOil = true;
                 //报油
                 oil_Ll.setVisibility(View.VISIBLE);
@@ -473,12 +475,13 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
         if(isStart){//起航
             String actualSailingTime = occurTime_Tv.getText().toString().trim();
             json = new Gson().toJson(new StartShipPlanDynamicReq(voyagePlanId,bargeId,
-                    actualSailingTime,contractId,list,voyageDynamicInfos));
+                    actualSailingTime,contractId,list,voyageDynamicInfos,rentType,fullInclusion,
+                    voyageNo));
             url = Config.start_voyage_plan_url;
         }else{//止航
             String actualStopTime = occurTime_Tv.getText().toString().trim();
             json = new Gson().toJson(new EndShipPlanDynamicReq(voyagePlanId,bargeId,
-                    actualStopTime,list,voyageDynamicInfos));
+                    actualStopTime,list,voyageDynamicInfos,rentType,fullInclusion,voyageNo));
             url = Config.end_voyage_plan_url;
         }
 

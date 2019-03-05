@@ -58,6 +58,14 @@ public class ChangeVoyagePlanReq implements Serializable{
         return fullInclusion;
     }
 
+    public String getVoyageNo() {
+        return voyageNo;
+    }
+
+    public void setVoyageNo(String voyageNo) {
+        this.voyageNo = voyageNo;
+    }
+
     public void setFullInclusion(String fullInclusion) {
         this.fullInclusion = fullInclusion;
     }
