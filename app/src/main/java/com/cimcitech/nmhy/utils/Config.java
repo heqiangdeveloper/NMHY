@@ -82,6 +82,13 @@ public class Config {
         put("航次结束",10);
     }};
 
+    //货物运输状态
+    public static final Map<String,String> goodsStatusMap = new LinkedHashMap<String,String>(){{
+        put("未开始","0");
+        put("正在运","2");
+        put("已运完","3");
+    }};
+
     //智能
     //public static String IP = "http://192.168.137.1:8081/nmhy/";
 
@@ -124,7 +131,7 @@ public class Config {
     //新增 燃油动态  主表+子表 一起添加
     public static String add_oil_report_main_url = IP + "shipFualDynamicInfo/updateShipFualDynamicInfos";
 
-    //分页查询所有航次计划
+    //分页查询所有未结束的航次计划
     public static String query_voyage_plan_url = IP + "voyagePlan/queryByUserId";
 
     //分页查询指定的航次计划
@@ -148,5 +155,8 @@ public class Config {
 
     //更改航次计划的状态
     public static String change_voyagePlan_url = IP + "voyagePlan/saveVoyagePlan";
+
+    //货物查询
+    public static String query_goods_url = IP + "cargoTransdemandDetail/queryAll";
 
 }

@@ -13,8 +13,9 @@
         android:id="@+id/textView1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
+        android:layout_weight="1.2"
+        android:gravity="left"
+        android:paddingLeft="26dp"
         android:text="航次开始"
         android:textSize="@dimen/table_text_size"/>
 
@@ -33,8 +34,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
-        android:gravity="center"
-        android:src="@mipmap/eye32"/>
+        android:gravity="right"
+        android:src="@mipmap/paper32"/>
 
     <!--<ImageView-->
         <!--android:visibility="invisible"-->

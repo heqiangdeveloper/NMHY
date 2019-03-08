@@ -2,6 +2,7 @@ package com.cimcitech.nmhy.activity.home.plan;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.media.MediaCasException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -107,20 +108,6 @@ public class ShipPlanActivity extends AppCompatActivity {
     }
 
     public void initTitle(){
-        float f =(float) 2.3;
-        short s = 2; s =(short) (s + 3);
-        Log.d(TAG, "8&2=" + (8&2));
-        String tempStr = "";
-        try{
-            tempStr = new String("shipPlanlog".getBytes("ISO-8859-1"),"UTF-8");
-        }catch (UnsupportedEncodingException e){
-
-        }
-        Log.d(TAG, "tempStr = " + tempStr);
-
-        tempStr = tempStr + "dddd";
-        char c = '好';
-
         titleName_Tv.setText(getResources().getString(R.string.item_plan));
         back_Iv.setVisibility(View.VISIBLE);
         more_Tv.setVisibility(View.GONE);
@@ -373,4 +360,5 @@ public class ShipPlanActivity extends AppCompatActivity {
         //注销订阅者
         EventBus.getDefault().unregister(this);
     }
+
 }

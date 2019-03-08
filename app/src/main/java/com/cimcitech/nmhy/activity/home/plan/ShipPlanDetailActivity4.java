@@ -439,7 +439,7 @@ public class ShipPlanDetailActivity4 extends AppCompatActivity {
                         if(fstatus.equals(Config.fStatusList.get(2)) &&
                                 currentItem.getReportTime() != null && currentItem.getReportTime()
                                 .length() != 0 && k < (data.size() -1)){
-                            mll.setCommandImageViewSrc(getResources().getDrawable(R.mipmap.eye32));
+                            mll.setCommandImageViewSrc(getResources().getDrawable(R.mipmap.paper32));
                             mll.setImageTag(0);
                         }else if(fstatus.equals(Config.fStatusList.get(2)) && (k == cPosition) && k <
                                 (data.size() -1)){//最后一个状态不允许填，必须点击结束按钮

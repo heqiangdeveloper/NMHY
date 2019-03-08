@@ -218,12 +218,22 @@ public class OilReportMainActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oil_report_main2);
         ButterKnife.bind(this);
-
 //        locationTv.setText("测试目的地");
 //        longitudeTv.setText(23.032+"");
 //        latitudeTv.setText(112.032+"");
         initTitle();
         initView();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Handler mhandler = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        super.handleMessage(msg);
+                    }
+                };
+            }
+        }).start();
     }
 
     public void initTitle(){
@@ -895,6 +905,7 @@ public class OilReportMainActivity extends MyBaseActivity {
         public void onReceiveLocation(BDLocation location) {
             //location.getLocType() = 161 表示定位成功
             Log.d("loclog","loc status is: " + location.getLocType());
+            locationTv.setText("ddd");
             if (null != location && location.getLocType() == BDLocation.TypeNetWorkLocation) {
                 locationService.unregisterListener(mListener);
                 locationService.stop();

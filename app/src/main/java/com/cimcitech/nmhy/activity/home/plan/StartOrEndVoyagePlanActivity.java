@@ -226,6 +226,7 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
 //            addWatcher(longitudeTv);
 //            addWatcher(oilAmount1Et); addWatcher(oilAmount2Et); addWatcher(oilAmount3Et);
 
+            //"RT02" 期租  "RT03"  自有
             //如果 rentType = "RT02" && fullInclusion =0 或者
             //rentType = "RT03"
             //就报油，其他情况不报油
@@ -516,7 +517,9 @@ public class StartOrEndVoyagePlanActivity extends AppCompatActivity {
                                         location_Tv.setText("");
                                         finish();
                                     }else{
-                                        ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));
+                                        String message = jo.getString("msg").length() != 0 ? jo
+                                                .getString("msg"):getResources().getString(R.string.commit_fail_msg);
+                                        ToastUtil.showToast(message);
                                     }
                                 }catch (JSONException e){
                                     ToastUtil.showToast(getResources().getString(R.string.commit_fail_msg));

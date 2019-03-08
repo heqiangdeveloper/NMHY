@@ -141,6 +141,10 @@ public class LoginActivity extends MyBaseActivity {
             case R.id.register_tv:
                 Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(i);
+                String s = "asdf";
+                StringBuffer sb = new StringBuffer(s);
+                sb.reverse();
+                
                 break;
         }
     }

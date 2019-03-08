@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/activity_settings_title"/>
+    <include layout="@layout/activity_search_goods_title"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -24,24 +24,35 @@
                 android:src="@mipmap/ic_empty"
                 android:layout_centerInParent="true"/>
             <TextView
+                android:id="@+id/warn_tv"
                 android:text="@string/no_data_warn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_below="@id/empty_iv"/>
         </RelativeLayout>
-        <!--待报-->
-        <ScrollView
-            android:id="@+id/content_sv"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/content_cl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f2f2f2"
-            android:scrollbars="none"
-            android:layout_marginBottom="0dp"
-            android:visibility="visible"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:visibility="visible">
 
-        </ScrollView>
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"/>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </android.support.design.widget.CoordinatorLayout>
     </FrameLayout>
     <!--more-->
     <LinearLayout

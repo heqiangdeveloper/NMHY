@@ -1,5 +1,6 @@
 package com.cimcitech.nmhy.bean.plan;
 
+import android.hardware.camera2.params.BlackLevelPattern;
 import android.os.Parcel;
 import android.os.Parcelable;
 
