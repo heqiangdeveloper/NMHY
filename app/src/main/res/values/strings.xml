@@ -152,7 +152,7 @@
     <string name="resourcesNum_label">资源号</string>
     <string name="cargoName_label">品名</string>
     <string name="numbers_label">数量</string>
-    <string name="isLoad_label">是否已运</string>
+    <string name="load_status_label">状态</string>
     <string name="baleNum_label">捆包号</string>
     <string name="consigneeUnit_label">收货人单位</string>
     <string name="contractNo_label">合同号</string>

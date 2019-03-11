@@ -84,7 +84,7 @@ public class Config {
 
     //货物运输状态
     public static final Map<String,String> goodsStatusMap = new LinkedHashMap<String,String>(){{
-        put("未开始","0");
+        put("未开始","1");
         put("正在运","2");
         put("已运完","3");
     }};
@@ -156,7 +156,10 @@ public class Config {
     //更改航次计划的状态
     public static String change_voyagePlan_url = IP + "voyagePlan/saveVoyagePlan";
 
-    //货物查询
+    //货物查询 列表
     public static String query_goods_url = IP + "cargoTransdemandDetail/queryAll";
+
+    //货物查询详情页面
+    public static String query_goods_detail_url = IP + "voyagePlan/queryByCargoDetailId";
 
 }

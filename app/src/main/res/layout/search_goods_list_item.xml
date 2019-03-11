@@ -105,7 +105,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@string/isLoad_label"
+            android:text="@string/load_status_label"
             android:textColor="@color/main_title_text_color"
             android:textSize="@dimen/main_text_size"/>
     </LinearLayout>

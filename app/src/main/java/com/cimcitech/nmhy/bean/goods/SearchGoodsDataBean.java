@@ -244,6 +244,15 @@ public class SearchGoodsDataBean {
         private String spec;
         private String unloadPort;
         private int unloadPortId;
+        private String fstatus;
+
+        public String getFstatus() {
+            return fstatus;
+        }
+
+        public void setFstatus(String fstatus) {
+            this.fstatus = fstatus;
+        }
 
         public String getBaleNum() {
             return baleNum;

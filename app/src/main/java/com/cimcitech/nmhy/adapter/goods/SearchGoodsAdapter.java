@@ -14,6 +14,7 @@ import com.cimcitech.nmhy.bean.oil.OilReportHistoryVo;
 import com.cimcitech.nmhy.bean.plan.ShipBean;
 import com.cimcitech.nmhy.bean.plan.ShipPlanVo;
 import com.cimcitech.nmhy.utils.Config;
+import com.cimcitech.nmhy.utils.EnumUtil;
 
 import java.util.List;
 
@@ -123,11 +124,9 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String spec = item.getSpec() != null && !item.getSpec().equals("")
                     ? item.getSpec() : "";
             //是否已运
-            String isLoad = item.getIsLoad() != null && !item.getIsLoad().equals("")
-                    ? item.getIsLoad() : "";
-            isLoad = isLoad.equals("Y")?"正在运":"未开始";
-
-
+            //fstatus表示： “3”已运完   2 "正在运"  其他的0和null都是 未运
+            String isLoad = item.getFstatus() != null && !item.getFstatus().equals("")
+                    ? item.getFstatus() : "1";
             ((ItemViewHolder) holder).loadPort_Tv.setText(loadPort);
             ((ItemViewHolder) holder).unloadPort_Tv.setText(unloadPort);
             ((ItemViewHolder) holder).baleNum_Tv.setText(context.getResources().getString(R
@@ -142,9 +141,24 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     .string.roughWeight_label) + ": " +roughWeight + "");
             ((ItemViewHolder) holder).spec_Tv.setText(context.getResources().getString(R
                     .string.spec_label) + ": " +spec + "");
-            ((ItemViewHolder) holder).isLoad_Tv.setText(Html.fromHtml(context.getResources().getString(R
-                    .string.isLoad_label) + ": " +
-                    "<font color='#ff0000'>" + isLoad + "</font>"));
+            CharSequence cs;
+            if(isLoad.equals("3")){
+                isLoad = context.getResources().getString(R.string.loaded_label);//已运完
+                cs = Html.fromHtml(context.getResources()
+                        .getString(R.string.load_status_label) + ": " + "<font color='#ff0000'>"
+                        + isLoad + "</font>");
+            }else if(isLoad.equals("2")){
+                isLoad = context.getResources().getString(R.string.loading_label);//正在运
+                cs = Html.fromHtml(context.getResources()
+                        .getString(R.string.load_status_label) + ": " + "<font color='#00ff00'>"
+                        + isLoad + "</font>");
+            }else{
+                isLoad = context.getResources().getString(R.string.unLoad_label);//unLoad_label
+                cs = Html.fromHtml(context.getResources()
+                        .getString(R.string.load_status_label) + ": " + "<font color='#0000ff'>"
+                        + isLoad + "</font>");
+            }
+            ((ItemViewHolder) holder).isLoad_Tv.setText(cs);
         }
     }
 

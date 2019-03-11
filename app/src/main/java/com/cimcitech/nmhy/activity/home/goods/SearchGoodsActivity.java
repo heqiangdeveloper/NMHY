@@ -76,7 +76,8 @@ public class SearchGoodsActivity extends MyBaseActivity {
     private boolean isLoading = false;
     private int pageNum = 1;
     private SearchGoodsVo searchGoodsVo;
-    private List<SearchGoodsDataBean.ListBean> data = new ArrayList<>();;
+    private List<SearchGoodsDataBean.ListBean> data = new ArrayList<>();
+    private String status = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +103,11 @@ public class SearchGoodsActivity extends MyBaseActivity {
     }
 
     public void initViewData() {
+        /*
+        *   货物运输状态：0 未开始；2 正在运； 3 已运完
+        * */
+        String statusText = status_Bt.getText().toString().trim();
+        status = Config.goodsStatusMap.get(statusText);
         adapter = new SearchGoodsAdapter(mContext, data);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.post(new Runnable() {
@@ -177,8 +183,10 @@ public class SearchGoodsActivity extends MyBaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 SearchGoodsDataBean.ListBean listBean = (SearchGoodsDataBean.ListBean) adapter.getAll().get(position);
-                Intent intent = new Intent(mContext, SearchGoodsDetailActivity.class);
-                intent.putExtra("listBean", listBean);
+                String fstatus = Config.goodsStatusMap.get(status_Bt.getText().toString().trim());
+                Intent intent = new Intent(mContext, SearchGoodsDetailActivity2.class);
+                intent.putExtra("fStatus",fstatus);
+                intent.putExtra("cargoTransdemandDetailId", listBean.getCargoTransdemandDetailId());
                 startActivity(intent);
             }
 
@@ -226,6 +234,7 @@ public class SearchGoodsActivity extends MyBaseActivity {
     }
 
     public void getData() {
+        //模糊查询： 捆包号 和 牌号
         String codeOrName = search_Et.getText().toString().trim();
         String fstatus = Config.goodsStatusMap.get(status_Bt.getText().toString().trim());
         String json = new Gson().toJson(new SearchGoodsReq(1,10,"",new SearchGoodsReq.CargoTransdemandDetail(codeOrName,fstatus)));

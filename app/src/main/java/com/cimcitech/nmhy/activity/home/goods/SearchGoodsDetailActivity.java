@@ -59,7 +59,7 @@ public class SearchGoodsDetailActivity extends MyBaseActivity {
     TextView titleName_Tv;
 
     private Context mContext = SearchGoodsDetailActivity.this;
-    private SearchGoodsDataBean.ListBean listBean;
+    private long cargoTransdemandDetailId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,8 +68,8 @@ public class SearchGoodsDetailActivity extends MyBaseActivity {
         ButterKnife.bind(this);
         initTitle();
 
-        listBean = (SearchGoodsDataBean.ListBean)getIntent().getSerializableExtra("listBean");
-        initView();
+        cargoTransdemandDetailId = getIntent().getLongExtra("cargoTransdemandDetailId",0);
+        getData();
     }
 
     public void initTitle(){
@@ -86,10 +86,25 @@ public class SearchGoodsDetailActivity extends MyBaseActivity {
         popup_menu_Ll.setVisibility(View.GONE);
     }
 
-    public void initView(){
-        if(null != listBean){
+    public void getData() {
+        OkHttpUtils
+                .post()
+                .url(Config.query_goods_detail_url)
+                .addParams("cargoTransdemandDetailId",cargoTransdemandDetailId + "")
+                .build()
+                .execute(
+                        new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtil.showNetError();
+                            }
 
-        }
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Log.d("heqint","response is: " + response);
+                            }
+                        }
+                );
     }
 
     @OnClick({R.id.back_iv})
