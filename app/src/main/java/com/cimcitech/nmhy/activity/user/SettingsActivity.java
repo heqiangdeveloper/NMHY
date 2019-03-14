@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
             case R.id.service_agree_tv://服务协议
                 break;
             case R.id.about_tv://关于
-               // startActivity(new Intent(context, AboutActivity.class));
+                //startActivity(new Intent(context, AboutActivity.class));
                 break;
             case R.id.check_version_tv://检查版本
                 break;
