@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -108,9 +109,38 @@ public class SettingsActivity extends AppCompatActivity {
             case R.id.service_agree_tv://服务协议
                 break;
             case R.id.about_tv://关于
-                //startActivity(new Intent(context, AboutActivity.class));
+//                Intent intent = SettingsActivity.this.getPackageManager()
+//                        .getLaunchIntentForPackage("com.cimcitech.cimcly");
+                Intent i = new Intent(SettingsActivity.this,AboutActivity.class);
+                startActivity(i);
                 break;
             case R.id.check_version_tv://检查版本
+                /*if (!checkApkVersion()) {
+                    Toast.makeText(getActivity(), "已经是最新版本！", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!isNetworkAvalible(getActivity())) {
+                        Toast.makeText(getActivity(), "无法连接网络，请检查网络！", Toast.LENGTH_SHORT).show();
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("提示")
+                                .setMessage("检测到新版本是否下载？")
+                                .setCancelable(false)
+                                .setPositiveButton("下载安装", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        startToDownload();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }).create().show();
+                    }
+                }*/
+                Toast.makeText(SettingsActivity.this, "已经是最新版本！", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.out_login:
                 new AlertDialog.Builder(context)

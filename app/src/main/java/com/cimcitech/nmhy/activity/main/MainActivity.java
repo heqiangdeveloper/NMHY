@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         //默认关闭了滑动效果
         bbL.setSmoothScroll(false);
 
-        bbL.showNotify(1);
-        bbL.setMsg(2,"NEW");
+        //bbL.showNotify(1);
+        //bbL.setMsg(2,"NEW");
 
         initBBL();
         bbL.getBottomItem(1).callOnClick();//选中消息页

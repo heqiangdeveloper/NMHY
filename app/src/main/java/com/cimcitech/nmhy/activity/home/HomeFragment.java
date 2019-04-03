@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,9 +41,24 @@ public class HomeFragment extends Fragment implements OnBannerListener {
     private ArrayList<Integer> list_path;
     private ArrayList<String> list_title;
 
+    private View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_home, container, false);
+        //hq add 2019-03-14
+        //避免同一activity下 多个fragment 切换时重复执行onCreateView方法
+        //解决办法如下：
+        /*if(rootView == null){
+            rootView = inflater.inflate(R.layout.activity_home, container, false);
+        }else{
+            //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
+            ViewGroup parent = (ViewGroup)rootView.getParent();
+            if(parent != null){
+                parent.removeView(rootView);
+            }
+            return rootView;
+        }*/
+
         ButterKnife.bind(this, view);
         initView();
         initViewData();
